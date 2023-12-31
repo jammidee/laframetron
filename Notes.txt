@@ -1,0 +1,171 @@
+Created by Jammi Dee
+Date: 12/30/2023
+
+La Kubo tron
+La - lalula
+kubo - frame
+tron - electron
+
+**Make sure to install the NodeJS preferbly LTS
+**Install the latest VSCode
+
+1. Create a folder and enter the folder
+
+   npx create-electron-app@latest lakubotron
+
+ 	cd lakubotron
+
+2. Initialize NPM:
+
+	npm init
+
+	Answer: lakubotron, 1.0.0, Lalulla Electron Framework
+	Author: Jammi Dee
+	license: MIT
+
+3. Install electron package
+
+   npm install --save-dev electron
+
+4. Create a file main.js - leave blank
+
+5. Create a file name index.html and place the following inside it:
+
+   <!DOCTYPE html>
+   <html>
+   <head>
+      <meta charset="UTF-8">
+      <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+      <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+      <title>Hello World!</title>
+   </head>
+   <body>
+      <h1>Hello World!</h1>
+      We are using Node.js <span id="node-version"></span>,
+      Chromium <span id="chrome-version"></span>,
+      and Electron <span id="electron-version"></span>.
+   </body>
+   </html>
+
+6. In the package.json, edit...
+
+   {
+   "scripts": {
+      "start": "electron ."
+   }
+   }
+
+7. Edit main.js...
+
+   // Modules to control application life and create native browser window
+   const { app, BrowserWindow } = require('electron')
+   const path = require('node:path')
+
+   const createWindow = () => {
+   // Create the browser window.
+   const mainWindow = new BrowserWindow({
+      width: 800,
+      height: 600,
+      webPreferences: {
+         preload: path.join(__dirname, 'preload.js')
+      }
+   })
+
+   // and load the index.html of the app.
+   mainWindow.loadFile('index.html')
+
+   // Open the DevTools.
+   // mainWindow.webContents.openDevTools()
+   }
+
+   // This method will be called when Electron has finished
+   // initialization and is ready to create browser windows.
+   // Some APIs can only be used after this event occurs.
+   app.whenReady().then(() => {
+   createWindow()
+
+   app.on('activate', () => {
+      // On macOS it's common to re-create a window in the app when the
+      // dock icon is clicked and there are no other windows open.
+      if (BrowserWindow.getAllWindows().length === 0) createWindow()
+   })
+   })
+
+   // Quit when all windows are closed, except on macOS. There, it's common
+   // for applications and their menu bar to stay active until the user quits
+   // explicitly with Cmd + Q.
+   app.on('window-all-closed', () => {
+   if (process.platform !== 'darwin') app.quit()
+   })
+
+   // In this file you can include the rest of your app's specific main process
+   // code. You can also put them in separate files and require them here.
+
+
+
+8. create a file preload.js in the root folder with content...
+
+   // All the Node.js APIs are available in the preload process.
+   // It has the same sandbox as a Chrome extension.
+   window.addEventListener('DOMContentLoaded', () => {
+      const replaceText = (selector, text) => {
+         const element = document.getElementById(selector)
+         if (element) element.innerText = text
+      }
+   
+      for (const dependency of ['chrome', 'node', 'electron']) {
+         replaceText(`${dependency}-version`, process.versions[dependency])
+      }
+   })
+
+9. To start electron, just run
+
+   npm start
+
+10.
+
+PACKAGING Electron
+
+1. Install the cli library...
+
+   npm install --save-dev @electron-forge/cli
+   npx electron-forge import
+
+2. 
+
+
+EXTENSIONS
+
+1. Rest Client - Huachao Mao
+2. Tabstop Whitespace Converter - Johnny Wong
+3. Prettier - Code Fomratter - Prettier
+4. JavaSscript Debugger (Nightly) - Microsoft
+5. Material Icon Theme - Philipp Kief
+
+LIBRARIES
+
+**PUG 09/17/2023
+npm install bootstrap@latest --save
+
+GIT - G1thUUb@!!M3
+---
+
+Create .gitignore on the app root folder
+# Ignore node_modules
+node_modules/
+
+git init           # Initialize a Git repository
+git add .          # Add all files in your project to the staging area
+git config --global user.email "jammi_dee@yahoo.com"
+git config --global user.name "Jammi Dee"
+git commit -m "Initial commit Lalulla Framework for ElectronJS"  # Commit your changes
+git branch -M main  # Rename the default branch to 'main'
+git remote add origin https://github.com/jammidee/laframetron.git  # Replace with your GitHub repository URL
+git pull origin main  #if there is error in push
+git pull origin main --allow-unrelated-histories #if there are errors
+git push -u origin main  # Push your code to GitHub
+git rm -r --cached logs
+
+git status
+git log
+git log --all --graph
