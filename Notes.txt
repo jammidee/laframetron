@@ -40,8 +40,9 @@ EXTENSIONS
 
 LIBRARIES
 
-**PUG 09/17/2023
-npm install bootstrap@latest --save
+**dotenv 12/31/2023
+npm install dotenv --save
+npm install axios --save
 
 GIT - G1thUUb@!!M3
 ---
