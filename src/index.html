@@ -8,5 +8,42 @@
   <body>
     <h1>💖 Hello World!</h1>
     <p>Welcome to your Electron application.</p>
+    <br>
+    <form id="myForm">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" required>
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required>
+
+      <button type="button" onclick="submitForm()">Submit</button>
+    </form>
+    <br>
+
+    <div id="myClickableDiv" class="clickable-div">Click me!</div>
+
+    <!-- Include your external script file -->
+    <script>
+
+      const { ipcRenderer } = require('electron');
+      window.ipcRenderer = ipcRenderer;
+
+      function submitForm() {
+          const name = document.getElementById('name').value;
+          const email = document.getElementById('email').value;
+
+          if (window.ipcRenderer) {
+              window.ipcRenderer.send('form-submission', { name, email });
+          } else {
+              console.error('ipcRenderer is not defined.');
+          }
+      }
+
+      document.getElementById('myClickableDiv').addEventListener('click', () => {
+            ipcRenderer.send('div-clicked', 'The div was clicked!');
+      });
+
+    </script>
+
   </body>
 </html>

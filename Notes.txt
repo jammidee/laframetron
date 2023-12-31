@@ -43,6 +43,7 @@ LIBRARIES
 **dotenv 12/31/2023
 npm install dotenv --save
 npm install axios --save
+npm install serialport --save
 
 GIT - G1thUUb@!!M3
 ---

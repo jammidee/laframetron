@@ -1,0 +1,20 @@
+============================================================================
+Lalulla Framework
+============================================================================
+Copyright (C) Lalulla OPC , Inc - All Rights Reserved
+Written by Joel M. Damaso <jammidee@gmail.com>, September 10, 2023
+============================================================================
+ 
+Software Architect: 		Jammi Dee
+Framework Design: 			Jammi Dee
+Developed / Programmed by : Joel Margate Damaso aka Jammi Dee
+Tested / QA by:				Jammi Dee
+
+12/31/2023  - Lalulla framework for Electron
+            - added axios, dotenv, serialport
+            - added form in the main page with submission
+            - added submit example
+            - hide the menu of chrome browser
+            - added icon in the window
+            - added calling another function from html --> main.js 
+            - 

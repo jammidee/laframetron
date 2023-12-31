@@ -1,6 +1,6 @@
 require('dotenv').config(); // Load environment variables from .env file
 
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain, Menu  } = require('electron');
 const path = require('path');
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -13,16 +13,27 @@ const createWindow = () => {
   const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
+    icon: path.join(__dirname, 'favicon.ico'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
+      nodeIntegration: true,
+      contextIsolation: false,
     },
   });
 
   // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
 
+  // Create an empty menu
+  const menu = Menu.buildFromTemplate([]);
+  Menu.setApplicationMenu(menu);
+
+    // Maximize the window
+    mainWindow.maximize();
+
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  //mainWindow.webContents.openDevTools();
+
 };
 
 // This method will be called when Electron has finished
@@ -50,4 +61,18 @@ app.on('activate', () => {
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
 
+// Add this line to expose ipcRenderer to the renderer process
+//global.ipcRenderer = require('electron').ipcRenderer;
 
+// Handle form submission from renderer process
+ipcMain.on('form-submission', (event, formData) => {
+  console.log('Form Data:', formData);
+  // Process the form data as needed
+});
+
+// Listen for the div click event from the renderer process
+require('./modfunc')(ipcMain);
+// ipcMain.on('div-clicked', (event, message) => {
+//   console.log(message);
+//   // Handle the click event as needed
+// });
