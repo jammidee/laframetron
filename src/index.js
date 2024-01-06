@@ -29,6 +29,7 @@ require('dotenv').config();
 const { app, BrowserWindow, ipcMain, Menu, ipcRenderer } = require('electron');
 const path = require('path');
 
+//Use for the login window
 const { createLoginWindow } = require('./winlogin/index');
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -36,6 +37,9 @@ if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
+//==============================
+// Declare the main window here
+//==============================
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -72,13 +76,41 @@ const createWindow = () => {
   // Maximize the window
   mainWindow.maximize();
 
+  //====================
   // Open the DevTools.
+  //====================
   //mainWindow.webContents.openDevTools();
+
+  //=============================================================
+  // Demo mode scripts. This will protect the app from executing 
+  // when the date had expired.
+  // Added by Jammi Dee 02/10/2019
+  //=============================================================
+
+    //Expiration date of the demo app
+    var xdate = new Date("2030-07-19");
+    //The current date
+    var cdate = new Date();
+
+    if( cdate > xdate){
+      //throw  new Error ('Time-bound access to the app error!');
+      console.log('==============================================');
+      console.log('Time-bound access to the app has been reached!');
+      console.log('The limit is ' + xdate );
+      console.log('==============================================');
+      
+      app.quit();
+      
+    }
+
+  //=============================================================
 
   //============================
   // Require login for the user
   //============================
-  createLoginWindow( mainWindow );
+  if( (process.env.ALLOW_LOGIN || 'NO') === 'YES'){
+    createLoginWindow( mainWindow );
+  }
 
 };
 

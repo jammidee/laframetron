@@ -18,6 +18,18 @@ Tested / QA by:				Jammi Dee
             - added config window
             - added query during quit
             - added login window
+            - Added closing a login window that quits the app
+            - Added preload JavaSscript
+            - Fixed the about page
+            - Added la.bat to build and run Electron
+            - Fixed icons
+            - Fixed the configuration page adding sample: database information
+            - Added saving to directory
+            - Added loading of data from env in the config window
+            - Make the about and configuration non-resizable
+            - Added new Form Entry page
+            - Make the form occupy the entire screen
+            - completed the index window form
             - 
 
 01/01/2024  - added a function that will have also a reply

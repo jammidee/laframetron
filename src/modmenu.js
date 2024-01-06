@@ -28,6 +28,7 @@ const Swal = require('sweetalert2');
 
 const { createAboutWindow } = require('./winabout/index');
 const { createConfigWindow } = require('./winconfig/index');
+const { createFormWindow } = require('./winform/index');
 
 const iconSize = { width: 16, height: 16 };
 
@@ -54,18 +55,29 @@ function createMainMenu(app, mainWindow) {
 
               },
               icon: nativeImage
+              .createFromPath(path.join(__dirname, 'icons/std/mdpi/4_collections_collection.png'))
+            },
+            {
+              label: 'New Data Entry',
+              accelerator: 'CmdOrCtrl+N',
+              click: async () => {
+
+                createFormWindow( mainWindow );
+
+              },
+              icon: nativeImage
               .createFromPath(path.join(__dirname, 'icons/std/mdpi/5_content_new.png'))
             },
             {
-              label: 'New',
-              accelerator: 'CmdOrCtrl+N',
+              label: 'Configure',
+              accelerator: 'CmdOrCtrl+C',
               click: async () => {
 
                 createConfigWindow( mainWindow );
 
               },
               icon: nativeImage
-              .createFromPath(path.join(__dirname, 'icons/std/mdpi/5_content_new.png'))
+              .createFromPath(path.join(__dirname, 'icons/std/mdpi/2_action_settings.png'))
             },
             {
               type: 'separator',
@@ -98,23 +110,23 @@ function createMainMenu(app, mainWindow) {
             },
           ],
         },
-        {
-          label: 'Edit',
-          submenu: [
-            {
-              label: 'Cut',
-              role: 'cut',
-            },
-            {
-              label: 'Copy',
-              role: 'copy',
-            },
-            {
-              label: 'Paste',
-              role: 'paste',
-            },
-          ],
-        },
+        // {
+        //   label: 'Edit',
+        //   submenu: [
+        //     {
+        //       label: 'Cut',
+        //       role: 'cut',
+        //     },
+        //     {
+        //       label: 'Copy',
+        //       role: 'copy',
+        //     },
+        //     {
+        //       label: 'Paste',
+        //       role: 'paste',
+        //     },
+        //   ],
+        // },
         {
           label: 'View',
           submenu: [

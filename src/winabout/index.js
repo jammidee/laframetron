@@ -30,10 +30,11 @@ const path = require('path');
 
 function createAboutWindow( mainWindow ) {
   const newWindow = new BrowserWindow({
-    width: 400,
-    height: 300,
+    width: 500,
+    height: 400,
     parent: mainWindow, //make modal
     modal: true, //make modal
+    resizable: false,
     icon: path.join(__dirname, '../favicon.ico'),
     webPreferences: {
       nodeIntegration: true,
@@ -51,23 +52,28 @@ function createAboutWindow( mainWindow ) {
 
 
   newWindow.webContents.on('dom-ready', () => {
-
     newWindow.webContents.send('data-to-about', pagedata );
-
-    //Close the current window
-    ipcMain.on('close-to-about', () => {
-
-      const currentWindow = BrowserWindow.getFocusedWindow();
-      if (currentWindow) {
-        currentWindow.close();
-      } else {
-        console.log('No focused window found.');
-      }
-    });
-
-
   });
 
+  //Close the current window
+  ipcMain.on('close-to-about', () => {
+
+    const currentWindow = BrowserWindow.getFocusedWindow();
+    if (currentWindow) {
+      currentWindow.close();
+    } else {
+      console.log('No focused window found.');
+    }
+  });
+
+  //Send the version to the window
+  newWindow.webContents.on('did-finish-load', () => {
+    const appInfo = {
+      name: app.getName(),
+      version: app.getVersion(),
+    };
+    newWindow.webContents.send('version-to-about', appInfo);
+  });
 
   newWindow.on('close', (event) => {
 

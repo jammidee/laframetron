@@ -1,18 +1,62 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>About</title>
-    <link rel="stylesheet" href="../index.css" />
-    <link rel="stylesheet" href="../node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+    <title>Configure</title>
+    <!-- <link rel="stylesheet" href="../index.css" />
+    <link rel="stylesheet" href="../node_modules/@fortawesome/fontawesome-free/css/all.min.css"> -->
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        margin: 20px;
+      }
+  
+      label {
+        display: block;
+        margin-bottom: 5px;
+      }
+  
+      input {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 15px;
+        box-sizing: border-box;
+      }
+  
+      button {
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+  
+      button:hover {
+        background-color: #45a049;
+      }
+    </style>
   </head>
   <body>
-    <h1>Configuration</h1>
 
-    <div class="flex-container" >
-      <div>
-        <div id="evtClose" class="clickable-div">Close</div>
-      </div>
-    </div>
+    <h1>Database Configuration</h1>
+
+    <label for="dbHost">Database Host:</label>
+    <input type="text" id="dbHost" placeholder="Enter database host">
+  
+    <label for="dbUser">Database User:</label>
+    <input type="text" id="dbUser" placeholder="Enter database user">
+  
+    <label for="dbPassword">Database Password:</label>
+    <input type="password" id="dbPassword" placeholder="Enter database password">
+  
+    <label for="dbName">Database Name:</label>
+    <input type="text" id="dbName" placeholder="Enter database name">
+  
+    <button onclick="saveConfig()">Save Configuration</button>
 
     <!-- Include your external script file -->
     <script>
@@ -35,14 +79,53 @@
       // Custom page events and functions
       //==================================
 
-      document.getElementById('evtClose').addEventListener('click', async () => {
-        try {
+      // Send a message to the main process to
+      // load the initial configuration
+      ipcRenderer.send('load-config');
 
-          ipcRenderer.send('close-to-config');
+      // Listen for the 'initial-config' event from the main process
+      ipcRenderer.on('initial-config', (event, initialConfig) => {
+        // Populate the form with initial values
+        populateForm(initialConfig);
+      });
 
-        } catch (error) {
-          console.log(`Error while closing window ${document.title}:`, error);
-        }
+      // Function to populate the form with initial values
+      function populateForm(initialConfig) {
+        document.getElementById('dbHost').value     = initialConfig.dbHost      || '127.0.0.1';
+        document.getElementById('dbUser').value     = initialConfig.dbUser      || 'dbuser';
+        document.getElementById('dbPassword').value = initialConfig.dbPassword  || 'dbpassword';
+        document.getElementById('dbName').value     = initialConfig.dbName      || 'dbwavegis';
+      }
+
+      function saveConfig() {
+        const dbHost      = document.getElementById('dbHost').value;
+        const dbUser      = document.getElementById('dbUser').value;
+        const dbPassword  = document.getElementById('dbPassword').value;
+        const dbName      = document.getElementById('dbName').value;
+
+        const config = {
+          dbHost,
+          dbUser,
+          dbPassword,
+          dbName,
+        };
+
+        // Send the configuration to the main process
+        ipcRenderer.send('save-config', config);
+      }
+
+      // Listen for the 'save-config-success' event from the main process
+      ipcRenderer.on('save-config-success', () => {
+        // Handle the success event here
+        //alert('Configuration saved successfully!');
+        const Swal = require('sweetalert2');
+        Swal.fire({
+                    title: 'Save Operation',
+                    text: 'Successfully written configuration to file.',
+                    icon: 'success',
+        });
+
+        ipcRenderer.send('close-to-config', 'OK');
 
       });
 

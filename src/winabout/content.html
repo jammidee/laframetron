@@ -2,16 +2,20 @@
 <html>
   <head>
     <title>About</title>
-    <link rel="stylesheet" href="../index.css" />
-    <link rel="stylesheet" href="../node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+    <!-- <link rel="stylesheet" href="../index.css" />
+    <link rel="stylesheet" href="../node_modules/@fortawesome/fontawesome-free/css/all.min.css"> -->
+    <link rel="stylesheet" href="./styles.css">
   </head>
   <body>
-    <h1>About Window</h1>
-
-    <div class="flex-container" >
-      <div>
-        <div id="evtClose" class="clickable-div">Close</div>
-      </div>
+    <div class="about-container">
+      <h1>Lalulla Electra</h1>
+      <p>
+        Welcome to Your App, a powerful and user-friendly application.
+        This app is designed to help you with [describe the purpose of your app].
+      </p>
+      <p id="txtversion">Version: 1.0.0</p>
+      <p id="txtauthor">Author: Your Name</p>
+      <button id="evtClose">Close</button>
     </div>
 
     <!-- Include your external script file -->
@@ -30,6 +34,12 @@
         const { title, ...otherdata } = data;
         document.title = title;
       });
+
+      ipcRenderer.on('version-to-about', (event, appinfo) => {
+        // Update the version in the placeholder element
+        document.getElementById('txtauthor').innerText = `Name: ${appinfo.name}`;
+        document.getElementById('txtversion').innerText = `Version: ${appinfo.version}`;
+      })
 
       //==================================
       // Custom page events and functions

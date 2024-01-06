@@ -16,22 +16,13 @@
  * 
  * Framework Designed by: Jammi Dee (jammi_dee@yahoo.com)
  *
- * File Create Date: 01/06/2024
+ * File Create Date: 01/06/2024 10:42PM
  * Created by: Jammi Dee
  * Modified by: Jammi Dee
  *
 */
 
-// See the Electron documentation for details on how to use preload scripts:
-// https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
+const { createNewWindow } = require('./index');
 
-// Load environment variables from .env file
-require('dotenv').config();
-
-window.electron = {
-    env: process.env,
-    ipcRenderer: require('electron').ipcRenderer,
-  };
-
-console.log('Preload script loaded');
-
+// Call the function when needed
+createNewWindow();

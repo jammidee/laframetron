@@ -1,0 +1,28 @@
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
+    Arial, sans-serif;
+  margin: auto;
+  max-width: 38rem;
+  padding: 2rem;
+
+}
+
+.flex-container {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+/* body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+} */
+
+.clickable-div {
+    padding: 20px;
+    background-color: lightblue;
+    border: 1px solid #999;
+    cursor: pointer;
+}

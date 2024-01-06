@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle Test Form</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        margin: 20px;
+        display: flex;
+      }
+  
+      #maindiv {
+        flex: 3;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 5px 0 10px rgba(0, 0, 0, 0.1); /* Shadow on the right side */
+        padding: 20px;
+      }
+  
+      #sidediv {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        box-shadow: -5px 0 10px rgba(0, 0, 0, 0.1); /* Shadow on the left side */
+        padding: 20px;
+      }
+  
+      .row {
+        margin-bottom: 20px;
+      }
+  
+      .button-row {
+        margin-top: auto; /* Push buttons to the bottom */
+      }
+  
+      button {
+        padding: 10px;
+        margin-right: 10px;
+      }
+    </style>
+  
+  </head>
+  <body>
+    <div id="maindiv">
+      <div class="row" id="ownerdiv">
+        <h2>Owner Information</h2>
+        <label for="firstname">First Name:</label>
+        <input type="text" id="firstname" name="firstname" placeholder="John">
+  
+        <label for="middlename">Middle Name:</label>
+        <input type="text" id="middlename" name="middlename" placeholder="Doe">
+  
+        <label for="lastname">Last Name:</label>
+        <input type="text" id="lastname" name="lastname" placeholder="Smith">
+  
+        <label for="company">Company:</label>
+        <input type="text" id="company" name="company" placeholder="ABC Corp">
+  
+        <label for="address">Address:</label>
+        <textarea id="address" name="address" placeholder="123 Main St, City, Country"></textarea>
+      </div>
+  
+      <div class="row" id="vehiclediv">
+        <h2>Vehicle Information</h2>
+        <label for="mvFileNo">MV File No:</label>
+        <input type="text" id="mvFileNo" name="mvFileNo" placeholder="12345">
+  
+        <label for="plateNo">Plate No:</label>
+        <input type="text" id="plateNo" name="plateNo" placeholder="ABC123">
+  
+        <label for="chassisNo">Chassis No:</label>
+        <input type="text" id="chassisNo" name="chassisNo" placeholder="123ABC456DEF789">
+  
+        <label for="engineNo">Engine No:</label>
+        <input type="text" id="engineNo" name="engineNo" placeholder="ABC123456">
+  
+        <label for="mvType">MV Type:</label>
+        <select id="mvType" name="mvType">
+          <option value="car">Car</option>
+          <option value="truck">Truck</option>
+        </select>
+  
+        <label for="body">Body:</label>
+        <select id="body" name="body">
+          <option value="pickup">Pickup</option>
+          <option value="sedan">Sedan</option>
+        </select>
+  
+        <label for="make">Make:</label>
+        <input type="text" id="make" name="make" placeholder="Toyota">
+  
+        <label for="color">Color:</label>
+        <input type="text" id="color" name="color" placeholder="Red">
+  
+        <label for="series">Series:</label>
+        <select id="series" name="series">
+          <option value="sedan">Sedan</option>
+          <option value="compact">Compact</option>
+        </select>
+  
+        <label for="classification">Classification:</label>
+        <select id="classification" name="classification">
+          <option value="private">Private</option>
+          <option value="company">Company</option>
+          <option value="public">Public</option>
+        </select>
+  
+        <label for="yearModel">Year Model:</label>
+        <input type="text" id="yearModel" name="yearModel" placeholder="2022">
+  
+        <label for="fuelType">Fuel Type:</label>
+        <select id="fuelType" name="fuelType">
+          <option value="diesel">Diesel</option>
+          <option value="gas">Gas</option>
+        </select>
+  
+        <label for="grossMvWeight">Gross MV Weight:</label>
+        <input type="text" id="grossMvWeight" name="grossMvWeight" placeholder="1500 kg">
+  
+        <label for="dieselType">Diesel Type:</label>
+        <input type="text" id="dieselType" name="dieselType" placeholder="Regular">
+  
+        <label for="hasCatalyticConverter">Has Catalytic Converter:</label>
+        <input type="checkbox" id="hasCatalyticConverter" name="hasCatalyticConverter">
+  
+        <label for="firstRegistrationDate">First Registration Date:</label>
+        <input type="date" id="firstRegistrationDate" name="firstRegistrationDate">
+  
+        <label for="crNo">CR No:</label>
+        <input type="text" id="crNo" name="crNo" placeholder="CR123456">
+  
+        <label for="orNo">OR No:</label>
+        <input type="text" id="orNo" name="orNo" placeholder="OR789012">
+  
+        <label for="orType">OR Type:</label>
+        <select id="orType" name="orType">
+          <option value="regular">Regular</option>
+          <option value="special">Special</option>
+        </select>
+  
+        <label for="technician">Technician:</label>
+        <input type="text" id="technician" name="technician" placeholder="John Doe">
+  
+      </div>
+  
+      <div class="button-row" id="actiondiv">
+        <h2>Action</h2>
+        <button>New Test</button>
+        <button>Re-Test</button>
+        <button>Reprint</button>
+        <button>Clear</button>
+        <button>Undo</button>
+        <button>Upload</button>
+        <button>Report</button>
+      </div>
+    </div>
+  
+    <div id="sidediv">
+      <div class="row" id="cameradiv">
+        <h2>Camera</h2>
+        <img src="placeholder-image.png" alt="Camera Image" style="max-width: 100%;">
+        <button>Capture Image</button>
+      </div>
+  
+      <div class="row" id="testdiv">
+        <h2>Test Information</h2>
+        <label for="purpose">Purpose:</label>
+        <input type="text" id="purpose" name="purpose" placeholder="Emission Test">
+  
+        <label for="datetimeTested">Date/Time Tested:</label>
+        <input type="datetime-local" id="datetimeTested" name="datetimeTested" placeholder="2022-01-01T12:00">
+  
+        <label for="cecNo">CEC No:</label>
+        <input type="text" id="cecNo" name="cecNo" placeholder="CEC123456">
+  
+        <label for="hydrocarbonResult">Result: Hydrocarbon (ppm):</label>
+        <input type="text" id="hydrocarbonResult" name="hydrocarbonResult" placeholder="20">
+  
+        <label for="carbonMonoxideResult">Result: Carbon Monoxide (%):</label>
+        <input type="text" id="carbonMonoxideResult" name="carbonMonoxideResult" placeholder="0.5">
+  
+        <label for="carbonDioxideResult">Result: Carbon Dioxide (%):</label>
+        <input type="text" id="carbonDioxideResult" name="carbonDioxideResult" placeholder="14">
+  
+        <label for="testStatus">Test Status:</label>
+        <select id="testStatus" name="testStatus">
+          <option value="pass">Pass</option>
+          <option value="fail">Fail</option>
+        </select>
+  
+        <button>Test Button</button>
+      </div>
+    </div>
+  
+    <!-- Include your external script file -->
+    <script>
+
+      const { remote } = require('electron');
+
+      //Declare library for IPC here
+      const { ipcRenderer } = require('electron');
+      window.ipcRenderer = ipcRenderer;
+
+      //=================
+      // Initialize page
+      //=================
+      ipcRenderer.on('data-to-form', (event, data) => {
+        const { title, ...otherdata } = data;
+        document.title = title;
+      });
+
+      ipcRenderer.on('version-to-about', (event, appinfo) => {
+        // Update the version in the placeholder element
+        document.getElementById('txtauthor').innerText = `Name: ${appinfo.name}`;
+        document.getElementById('txtversion').innerText = `Version: ${appinfo.version}`;
+      })
+
+      //==================================
+      // Custom page events and functions
+      //==================================
+
+      // document.getElementById('evtClose').addEventListener('click', async () => {
+      //   try {
+
+      //     ipcRenderer.send('close-to-form');
+
+      //   } catch (error) {
+      //     console.log(`Error while closing window ${document.title}:`, error);
+      //   }
+
+      // });
+
+    </script>
+
+  </body>
+</html>

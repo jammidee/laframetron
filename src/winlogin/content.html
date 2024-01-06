@@ -1,17 +1,22 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>About</title>
-    <link rel="stylesheet" href="../index.css" />
-    <link rel="stylesheet" href="../node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="./styles.css">
   </head>
   <body>
-    <h1>Login</h1>
-
-    <div class="flex-container" >
-      <div>
-        <div id="evtClose" class="clickable-div">Close</div>
-      </div>
+    <div class="login-container">
+      <h2>Login</h2>
+      <form id="loginForm">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        <button type="submit">Login</button>
+      </form>
+      <button id="closeButton">Close</button>
     </div>
 
     <!-- Include your external script file -->
@@ -35,16 +40,28 @@
       // Custom page events and functions
       //==================================
 
-      document.getElementById('evtClose').addEventListener('click', async () => {
-        try {
+      // document.getElementById('evtClose').addEventListener('click', async () => {
+      //   try {
 
-          ipcRenderer.send('close-to-login');
+      //     ipcRenderer.send('close-to-login');
 
-        } catch (error) {
-          console.log(`Error while closing window ${document.title}:`, error);
-        }
+      //   } catch (error) {
+      //     console.log(`Error while closing window ${document.title}:`, error);
+      //   }
 
+      // });
+
+      document.getElementById('loginForm').addEventListener('submit', (event) => {
+        event.preventDefault();
+        // Add your login logic here
+        ipcRenderer.send('login-success');
       });
+
+      document.getElementById('closeButton').addEventListener('click', () => {
+        //ipcRenderer.send('login-modal-closed');
+        ipcRenderer.send('quit-to-index', 'OK')
+      });
+
 
     </script>
 

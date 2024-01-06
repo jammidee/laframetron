@@ -16,7 +16,7 @@
  * 
  * Framework Designed by: Jammi Dee (jammi_dee@yahoo.com)
  *
- * File Create Date: 01/06/2024 05:25PM
+ * File Create Date: 01/06/2024 10:42PM
  * Created by: Jammi Dee
  * Modified by: Jammi Dee
  *
@@ -25,21 +25,24 @@
 // Load environment variables from .env file
 require('dotenv').config();
 
-const { app, BrowserWindow, Menu, ipcMain, ipcRenderer } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain, screen  } = require('electron');
 const path = require('path');
 
-function createLoginWindow( mainWindow ) {
+function createFormWindow( mainWindow ) {
+
+  const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+
   const newWindow = new BrowserWindow({
-    width: 400,
-    height: 400,
+    width: width,
+    height: height,
     parent: mainWindow, //make modal
     modal: true, //make modal
+    //resizable: false,
     icon: path.join(__dirname, '../favicon.ico'),
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
-    },
-    frame: false,
+    }
   });
 
   newWindow.loadFile(path.join(__dirname, './content.html'));
@@ -48,15 +51,15 @@ function createLoginWindow( mainWindow ) {
   const menu = Menu.buildFromTemplate([]);
   newWindow.setMenu(menu);
 
-  const pagedata = { title: process.env.PAGE_LOGIN_TITLE || 'Login' };
+  const pagedata = { title: process.env.PAGE_FORM_TITLE || 'Form' };
 
 
   newWindow.webContents.on('dom-ready', () => {
-    newWindow.webContents.send('data-to-login', pagedata );
+    newWindow.webContents.send('data-to-form', pagedata );
   });
 
   //Close the current window
-  ipcMain.on('close-to-login', () => {
+  ipcMain.on('close-to-form', () => {
 
     const currentWindow = BrowserWindow.getFocusedWindow();
     if (currentWindow) {
@@ -66,11 +69,20 @@ function createLoginWindow( mainWindow ) {
     }
   });
 
+  //Send the version to the window
+  newWindow.webContents.on('did-finish-load', () => {
+    const appInfo = {
+      name: app.getName(),
+      version: app.getVersion(),
+    };
+    newWindow.webContents.send('version-to-about', appInfo);
+  });
+
   newWindow.on('close', (event) => {
 
     // Perform any cleanup or additional actions before the window is closed
     // You can use `event.preventDefault()` to prevent the window from closing
-    console.log('LoginWindow is closing');
+    console.log('FormWindow is closing');
 
     // In this example, we prevent the window from closing
     // You might want to prompt the user or save data before closing
@@ -78,15 +90,6 @@ function createLoginWindow( mainWindow ) {
 
   });
 
-  ipcMain.on('login-modal-closed', () => {
-    const currentWindow = BrowserWindow.getFocusedWindow();
-    if (currentWindow) {
-      currentWindow.close();
-    } else {
-      console.log('No focused window found.');
-    }
-  });
-
 }
 
-module.exports = { createLoginWindow };
+module.exports = { createFormWindow };

@@ -1,14 +1,117 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8" />
-    <title>Hello World!</title>
-    <link rel="stylesheet" href="./index.css" />
-    <link rel="stylesheet" href="node_modules/@fortawesome/fontawesome-free/css/all.min.css">
-  </head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lalulla Electra</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f0f0;
+      }
+  
+      .paper-area {
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        padding: 20px;
+        max-width: 600px;
+        width: 100%;
+      }
+  
+      .flex-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+  
+      #welcome {
+        margin-bottom: 20px;
+      }
+  
+      #mainform {
+        margin-top: 20px;
+      }
+  
+      .flex-container {
+        display: flex;
+        flex-direction: column;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+      }
+  
+      label {
+        margin-bottom: 8px;
+      }
+  
+      input {
+        padding: 8px;
+        margin-bottom: 16px;
+      }
+  
+      button {
+        padding: 12px;
+        background-color: #4caf50;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+  
+      button:hover {
+        background-color: #45a049;
+      }
+    </style>
+      </head>
   <body>
 
-    <div id="welcome" class="flex-container" style="display: block;" >
+    <div class="flex-container">
+      <div id="welcome" class="paper-area">
+        <center>
+          <h1>Welcome to Lalulla Electra</h1>
+        </center>
+        <center>
+          <p>
+            This is a front-end template for using for Lalulla Framework.
+          </p>
+        </center>
+      </div>
+  
+      <div id="mainform" class="paper-area">
+        <div>
+          <h1>💖 Hello World!</h1>
+          <p>Welcome to your Electron application.</p>
+        </div>
+        <div>
+          <form id="myForm">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+  
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+  
+            <button type="button" onclick="submitForm()">Submit</button>
+          </form>
+          <br>
+        </div>
+        <div>
+          <p>
+            This is an example of posting a form in the back-end.
+          </p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- <div id="welcome" class="flex-container" style="display: block;" >
       <div>
         <div id="myClickableDiv" class="clickable-div">Click me!</div>
       </div>
@@ -17,32 +120,7 @@
           This is an example of calling a function using invoke and handle of IPCRenderer.
         </p>
       </div>
-    </div>
-
-    <div id="mainform" class="flex-container" style="display: block;" >
-      <div>
-        <h1>💖 Hello World!</h1>
-        <p>Welcome to your Electron application.</p>
-      </div>
-      <div>
-        <form id="myForm">
-          <label for="name">Name:</label>
-          <input type="text" id="name" name="name" required>
-    
-          <label for="email">Email:</label>
-          <input type="email" id="email" name="email" required>
-    
-          <button type="button" onclick="submitForm()">Submit</button>
-        </form>
-        <br>
-      </div>
-      <div>
-        <p>
-          This is an example of posting a form in the back-end.
-        </p>
-      </div>
-    </div>
-
+    </div> -->
 
     <!-- Include your external script file -->
     <script>
@@ -50,6 +128,7 @@
       //Declare library for IPC here
       const { ipcRenderer } = require('electron');
       window.ipcRenderer = ipcRenderer;
+      const { electron } = window;
 
       //=================
       // Initialize page
@@ -62,12 +141,25 @@
       //==================================
       // Custom form initialization
       //==================================
-      const welcome = document.getElementById('welcome');
-      welcome.style.display = 'block';
-      
-      const iniForm = document.getElementById('mainform');
-      iniForm.style.display = 'none';
 
+      //electron comes from preload
+      if( electron.env.ALLOW_LOGIN === 'NO'){
+
+        const welcome = document.getElementById('welcome');
+        welcome.style.display = 'block';
+
+        const iniForm = document.getElementById('mainform');
+        iniForm.style.display = 'block';
+
+      } else {
+
+        const welcome = document.getElementById('welcome');
+        welcome.style.display = 'block';
+
+        const iniForm = document.getElementById('mainform');
+        iniForm.style.display = 'none';
+
+      }
 
       //==================================
       // Custom page events and functions
