@@ -5,12 +5,11 @@ body {
   max-width: 38rem;
   padding: 2rem;
 
-  /* display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0; */
+}
 
+.flex-container {
+  display: flex;
+  flex-flow: row wrap;
 }
 
 /* body {
@@ -26,9 +25,4 @@ body {
     background-color: lightblue;
     border: 1px solid #999;
     cursor: pointer;
-}
-
-.flex-container {
-  display: flex;
-  flex-flow: row wrap;
 }

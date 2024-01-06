@@ -16,7 +16,7 @@
  * 
  * Framework Designed by: Jammi Dee (jammi_dee@yahoo.com)
  *
- * File Create Date: 01/06/2024
+ * File Create Date: 01/06/2024 04:29PM
  * Created by: Jammi Dee
  * Modified by: Jammi Dee
  *
@@ -28,7 +28,7 @@ require('dotenv').config();
 const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const path = require('path');
 
-function createAboutWindow( mainWindow ) {
+function createConfigWindow( mainWindow ) {
   const newWindow = new BrowserWindow({
     width: 400,
     height: 300,
@@ -47,15 +47,15 @@ function createAboutWindow( mainWindow ) {
   const menu = Menu.buildFromTemplate([]);
   newWindow.setMenu(menu);
 
-  const pagedata = { title: process.env.PAGE_ABOUT_TITLE || 'About' };
+  const pagedata = { title: process.env.PAGE_ABOUT_TITLE || 'Configuration' };
 
 
   newWindow.webContents.on('dom-ready', () => {
 
-    newWindow.webContents.send('data-to-about', pagedata );
+    newWindow.webContents.send('data-to-config', pagedata );
 
     //Close the current window
-    ipcMain.on('close-to-about', () => {
+    ipcMain.on('close-to-config', () => {
 
       const currentWindow = BrowserWindow.getFocusedWindow();
       if (currentWindow) {
@@ -83,4 +83,4 @@ function createAboutWindow( mainWindow ) {
 
 }
 
-module.exports = { createAboutWindow };
+module.exports = { createConfigWindow };
