@@ -87,3 +87,20 @@ ipcMain.on('form-submission', (event, formData) => {
 //=======================================
 require('./modipchandler')(ipcMain);
 
+function createAboutWindow() {
+  const aboutWindow = new BrowserWindow({
+    width: 400,
+    height: 300,
+    webPreferences: {
+      nodeIntegration: true
+    }
+  });
+
+  // Load the HTML file for the new window
+  aboutWindow.loadFile('about.html');
+}
+
+module.exports = {
+  createWindow,
+  createAboutWindow
+};

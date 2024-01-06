@@ -1,4 +1,10 @@
-const { Menu } = require('electron');
+const { Menu, nativeImage } = require('electron');
+const path = require('path');
+const Swal = require('sweetalert2');
+
+const { createAboutWindow } = require('./winabout/index');
+
+const iconSize = { width: 16, height: 16 };
 
 function createMainMenu(app, mainWindow) {
 
@@ -9,9 +15,21 @@ function createMainMenu(app, mainWindow) {
             {
               label: 'Open',
               accelerator: 'CmdOrCtrl+O',
-              click: () => {
+              click: async () => {
+
                 // Add your "Open" functionality here
+                //mainWindow.webContents.executeJavaScript('alert("File/Open Clicked!!!");');
+                mainWindow.webContents.executeJavaScript(`
+                Swal.fire({
+                  title: 'Div Clicked!',
+                  text: 'File/Open Clicked!!!',
+                  icon: 'success',
+                });
+              `);
+
               },
+              icon: nativeImage
+              .createFromPath(path.join(__dirname, 'icons/std/mdpi/5_content_new.png'))
             },
             {
               type: 'separator',
@@ -22,6 +40,8 @@ function createMainMenu(app, mainWindow) {
               click: () => {
                 app.quit();
               },
+              icon: nativeImage
+              .createFromPath(path.join(__dirname, 'icons/std/mdpi/1_navigation_cancel.png'))
             },
           ],
         },
@@ -61,9 +81,19 @@ function createMainMenu(app, mainWindow) {
             },
           ],
         },
+        {
+          label: 'About',
+          accelerator: 'CmdOrCtrl+A',
+          click: () => {
+            createAboutWindow();
+          },
+          icon: nativeImage
+          .createFromPath(path.join(__dirname, 'icons/std/mdpi/1_navigation_cancel.png'))
+        },
       ]);
 
     Menu.setApplicationMenu(mainMenu);
 }
 
 module.exports = createMainMenu;
+

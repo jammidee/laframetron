@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Electron App</title>
+  </head>
+  <body>
+    <h1>About Window</h1>
+
+    <!-- Include your external script file -->
+    <script>
+
+      //Declare library for IPC here
+      const { ipcRenderer } = require('electron');
+      window.ipcRenderer = ipcRenderer;
+
+      //=================
+      // Initialize page
+      //=================
+      ipcRenderer.on('data-to-about', (event, data) => {
+        const { title, ...otherdata } = data;
+        document.title = title;
+      });
+
+      //==================================
+      // Custom page events and functions
+      //==================================
+
+
+    </script>
+
+  </body>
+</html>

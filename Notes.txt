@@ -45,6 +45,8 @@ npm install dotenv --save
 npm install axios --save
 npm install serialport --save
 npm install sweetalert2 --save
+npm install --save @fortawesome/fontawesome-free --save
+npm install --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons --save
 
 GIT - G1thUUb@!!M3
 ---
