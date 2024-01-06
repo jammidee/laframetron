@@ -10,6 +10,12 @@ Framework Design: 			Jammi Dee
 Developed / Programmed by : Joel Margate Damaso aka Jammi Dee
 Tested / QA by:				Jammi Dee
 
+01/01/2024  - added a function that will have also a reply
+            - added a way to change the title of the page
+            - Started using the invoke / handle of ipc renderer
+            - added flex on the html
+            - 
+
 12/31/2023  - Lalulla framework for Electron
             - added axios, dotenv, serialport
             - added form in the main page with submission

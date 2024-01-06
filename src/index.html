@@ -6,27 +6,51 @@
     <link rel="stylesheet" href="index.css" />
   </head>
   <body>
-    <h1>💖 Hello World!</h1>
-    <p>Welcome to your Electron application.</p>
-    <br>
-    <form id="myForm">
-      <label for="name">Name:</label>
-      <input type="text" id="name" name="name" required>
 
-      <label for="email">Email:</label>
-      <input type="email" id="email" name="email" required>
+    <div class="flex-container" >
+      <div>
+        <h1>💖 Hello World!</h1>
+        <p>Welcome to your Electron application.</p>
+      </div>
+      <div>
+        <form id="myForm">
+          <label for="name">Name:</label>
+          <input type="text" id="name" name="name" required>
+    
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" required>
+    
+          <button type="button" onclick="submitForm()">Submit</button>
+        </form>
+        <br>
+      </div>
+      <div>
+        <div id="myClickableDiv" class="clickable-div">Click me!</div>
+      </div>
+    </div>
 
-      <button type="button" onclick="submitForm()">Submit</button>
-    </form>
-    <br>
-
-    <div id="myClickableDiv" class="clickable-div">Click me!</div>
 
     <!-- Include your external script file -->
     <script>
 
+      //Declare library for IPC here
       const { ipcRenderer } = require('electron');
       window.ipcRenderer = ipcRenderer;
+
+      //=================
+      // Initialize page
+      //=================
+      ipcRenderer.on('data-to-index', (event, data) => {
+        const { title, ...otherdata } = data;
+        document.title = title;
+      });
+
+      //==================================
+      // Custom page events and functions
+      //==================================
+      
+      // ipcRenderer.send('channel', <data to send>)
+      // ipcRenderer.send('div-clicked', 'The div was clicked!')
 
       function submitForm() {
           const name = document.getElementById('name').value;
@@ -39,8 +63,23 @@
           }
       }
 
-      document.getElementById('myClickableDiv').addEventListener('click', () => {
-            ipcRenderer.send('div-clicked', 'The div was clicked!');
+      //Call and wait for response
+      const Swal = require('sweetalert2');
+      document.getElementById('myClickableDiv').addEventListener('click', async () => {
+        try {
+          const response = await ipcRenderer.invoke('div-clicked', 'The div was clicked!');
+          console.log('Received reply from main process:', response);
+          
+          //alert( response );
+          await Swal.fire({
+            title: 'Div Clicked!',
+            text: response,
+            icon: 'success',
+          });
+
+        } catch (error) {
+          console.error('Error while waiting for reply:', error);
+        }
       });
 
     </script>

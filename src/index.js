@@ -1,6 +1,8 @@
-require('dotenv').config(); // Load environment variables from .env file
+// Load environment variables from .env file
+require('dotenv').config();
 
-const { app, BrowserWindow, ipcMain, Menu  } = require('electron');
+//Declare other important libraries here
+const { app, BrowserWindow, ipcMain, Menu, ipcRenderer } = require('electron');
 const path = require('path');
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -24,12 +26,25 @@ const createWindow = () => {
   // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
 
-  // Create an empty menu
-  const menu = Menu.buildFromTemplate([]);
-  Menu.setApplicationMenu(menu);
+  const pagedata = { title: process.env.PAGE_INDEX_TITLE || 'Electron' };
 
-    // Maximize the window
-    mainWindow.maximize();
+  // mainWindow.webContents.on('dom-ready', () => {
+  //   mainWindow.webContents.executeJavaScript(`document.title = "${pagedata.title}";`);
+  // });
+  mainWindow.webContents.on('dom-ready', () => {
+    mainWindow.webContents.send('data-to-index', pagedata );
+  });
+
+  // Create an empty menu
+  // const menu = Menu.buildFromTemplate([]);
+  // Menu.setApplicationMenu(menu);
+
+  //Create the customized menu here
+  const createMainMenu = require('./modmenu');
+  createMainMenu(app, mainWindow);
+
+  // Maximize the window
+  mainWindow.maximize();
 
   // Open the DevTools.
   //mainWindow.webContents.openDevTools();
@@ -61,18 +76,14 @@ app.on('activate', () => {
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
 
-// Add this line to expose ipcRenderer to the renderer process
-//global.ipcRenderer = require('electron').ipcRenderer;
-
 // Handle form submission from renderer process
 ipcMain.on('form-submission', (event, formData) => {
   console.log('Form Data:', formData);
   // Process the form data as needed
 });
 
-// Listen for the div click event from the renderer process
-require('./modfunc')(ipcMain);
-// ipcMain.on('div-clicked', (event, message) => {
-//   console.log(message);
-//   // Handle the click event as needed
-// });
+//=======================================
+// Listen to all IPC calls and handle it
+//=======================================
+require('./modipchandler')(ipcMain);
+
