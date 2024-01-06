@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="../node_modules/@fortawesome/fontawesome-free/css/all.min.css">
   </head>
   <body>
-    <h1>Configuration</h1>
+    <h1>Login</h1>
 
     <div class="flex-container" >
       <div>
@@ -26,7 +26,7 @@
       //=================
       // Initialize page
       //=================
-      ipcRenderer.on('data-to-config', (event, data) => {
+      ipcRenderer.on('data-to-login', (event, data) => {
         const { title, ...otherdata } = data;
         document.title = title;
       });
@@ -38,7 +38,7 @@
       document.getElementById('evtClose').addEventListener('click', async () => {
         try {
 
-          ipcRenderer.send('close-to-config');
+          ipcRenderer.send('close-to-login');
 
         } catch (error) {
           console.log(`Error while closing window ${document.title}:`, error);

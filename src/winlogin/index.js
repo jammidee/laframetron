@@ -16,7 +16,7 @@
  * 
  * Framework Designed by: Jammi Dee (jammi_dee@yahoo.com)
  *
- * File Create Date: 01/06/2024 04:29PM
+ * File Create Date: 01/06/2024 05:25PM
  * Created by: Jammi Dee
  * Modified by: Jammi Dee
  *
@@ -28,7 +28,7 @@ require('dotenv').config();
 const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const path = require('path');
 
-function createConfigWindow( mainWindow ) {
+function createLoginWindow( mainWindow ) {
   const newWindow = new BrowserWindow({
     width: 400,
     height: 300,
@@ -47,15 +47,15 @@ function createConfigWindow( mainWindow ) {
   const menu = Menu.buildFromTemplate([]);
   newWindow.setMenu(menu);
 
-  const pagedata = { title: process.env.PAGE_CONFIG_TITLE || 'Configuration' };
+  const pagedata = { title: process.env.PAGE_LOGIN_TITLE || 'Login' };
 
 
   newWindow.webContents.on('dom-ready', () => {
 
-    newWindow.webContents.send('data-to-config', pagedata );
+    newWindow.webContents.send('data-to-login', pagedata );
 
     //Close the current window
-    ipcMain.on('close-to-config', () => {
+    ipcMain.on('close-to-login', () => {
 
       const currentWindow = BrowserWindow.getFocusedWindow();
       if (currentWindow) {
@@ -73,7 +73,7 @@ function createConfigWindow( mainWindow ) {
 
     // Perform any cleanup or additional actions before the window is closed
     // You can use `event.preventDefault()` to prevent the window from closing
-    console.log('MainWindow is closing');
+    console.log('LoginWindow is closing');
 
     // In this example, we prevent the window from closing
     // You might want to prompt the user or save data before closing
@@ -83,4 +83,4 @@ function createConfigWindow( mainWindow ) {
 
 }
 
-module.exports = { createConfigWindow };
+module.exports = { createLoginWindow };

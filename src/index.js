@@ -29,6 +29,8 @@ require('dotenv').config();
 const { app, BrowserWindow, ipcMain, Menu, ipcRenderer } = require('electron');
 const path = require('path');
 
+const { createLoginWindow } = require('./winlogin/index');
+
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
   app.quit();
@@ -73,6 +75,11 @@ const createWindow = () => {
   // Open the DevTools.
   //mainWindow.webContents.openDevTools();
 
+  //============================
+  // Require login for the user
+  //============================
+  createLoginWindow( mainWindow );
+
 };
 
 // This method will be called when Electron has finished
@@ -97,6 +104,12 @@ app.on('activate', () => {
   }
 });
 
+// Ask for confirmation before quitting
+app.on('before-quit', (event) => {
+  //event.preventDefault(); // Prevent the app from quitting immediately
+});
+
+
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
 
@@ -106,25 +119,14 @@ ipcMain.on('form-submission', (event, formData) => {
   // Process the form data as needed
 });
 
+// Handle the request to Quit the application
+ipcMain.on('quit-to-index', (event, formData) => {
+  app.quit();
+});
+
 //=======================================
 // Listen to all IPC calls and handle it
 //=======================================
 require('./modipchandler')(ipcMain);
 
-// function createAboutWindow() {
-//   const aboutWindow = new BrowserWindow({
-//     width: 400,
-//     height: 300,
-//     webPreferences: {
-//       nodeIntegration: true
-//     }
-//   });
-
-//   // Load the HTML file for the new window
-//   aboutWindow.loadFile('about.html');
-// }
-
-module.exports = {
-  createWindow
-  //createAboutWindow
-};
+module.exports = {  createWindow };

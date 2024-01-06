@@ -15,6 +15,9 @@ Tested / QA by:				Jammi Dee
             - added header comments
             - added close event to window
             - added code to make the window modal
+            - added config window
+            - added query during quit
+            - added login window
             - 
 
 01/01/2024  - added a function that will have also a reply

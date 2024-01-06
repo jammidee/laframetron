@@ -8,7 +8,18 @@
   </head>
   <body>
 
-    <div class="flex-container" >
+    <div id="welcome" class="flex-container" style="display: block;" >
+      <div>
+        <div id="myClickableDiv" class="clickable-div">Click me!</div>
+      </div>
+      <div>
+        <p>
+          This is an example of calling a function using invoke and handle of IPCRenderer.
+        </p>
+      </div>
+    </div>
+
+    <div id="mainform" class="flex-container" style="display: block;" >
       <div>
         <h1>💖 Hello World!</h1>
         <p>Welcome to your Electron application.</p>
@@ -31,16 +42,6 @@
         </p>
       </div>
     </div>
-    <div class="flex-container" >
-      <div>
-        <div id="myClickableDiv" class="clickable-div">Click me!</div>
-      </div>
-      <div>
-        <p>
-          This is an example of calling a function using invoke and handle of IPCRenderer.
-        </p>
-      </div>
-    </div>
 
 
     <!-- Include your external script file -->
@@ -57,6 +58,16 @@
         const { title, ...otherdata } = data;
         document.title = title;
       });
+
+      //==================================
+      // Custom form initialization
+      //==================================
+      const welcome = document.getElementById('welcome');
+      welcome.style.display = 'block';
+      
+      const iniForm = document.getElementById('mainform');
+      iniForm.style.display = 'none';
+
 
       //==================================
       // Custom page events and functions

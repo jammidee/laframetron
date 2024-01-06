@@ -27,6 +27,7 @@ const path = require('path');
 const Swal = require('sweetalert2');
 
 const { createAboutWindow } = require('./winabout/index');
+const { createConfigWindow } = require('./winconfig/index');
 
 const iconSize = { width: 16, height: 16 };
 
@@ -41,15 +42,26 @@ function createMainMenu(app, mainWindow) {
               accelerator: 'CmdOrCtrl+O',
               click: async () => {
 
-                // Add your "Open" functionality here
-                //mainWindow.webContents.executeJavaScript('alert("File/Open Clicked!!!");');
-                mainWindow.webContents.executeJavaScript(`
-                Swal.fire({
-                  title: 'Div Clicked!',
-                  text: 'File/Open Clicked!!!',
-                  icon: 'success',
-                });
-              `);
+                  // Add your "Open" functionality here
+                  //mainWindow.webContents.executeJavaScript('alert("File/Open Clicked!!!");');
+                  mainWindow.webContents.executeJavaScript(`
+                  Swal.fire({
+                    title: 'Div Clicked!',
+                    text: 'File/Open Clicked!!!',
+                    icon: 'success',
+                  });
+                `);
+
+              },
+              icon: nativeImage
+              .createFromPath(path.join(__dirname, 'icons/std/mdpi/5_content_new.png'))
+            },
+            {
+              label: 'New',
+              accelerator: 'CmdOrCtrl+N',
+              click: async () => {
+
+                createConfigWindow( mainWindow );
 
               },
               icon: nativeImage
@@ -62,7 +74,24 @@ function createMainMenu(app, mainWindow) {
               label: 'Exit',
               accelerator: 'CmdOrCtrl+Q',
               click: () => {
-                app.quit();
+
+                mainWindow.webContents.executeJavaScript(`
+                  Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'Do you really want to quit?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, quit!'
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      // If the user clicks "Yes, quit!" in the dialog, quit the app
+                      //app.quit();
+                      ipcRenderer.send('quit-to-index', 'OK')
+                    }
+                  });
+                `);
               },
               icon: nativeImage
               .createFromPath(path.join(__dirname, 'icons/std/mdpi/1_navigation_cancel.png'))
