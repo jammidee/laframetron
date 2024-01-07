@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Video</title>
+    <!-- <link rel="stylesheet" href="../index.css" />
+    <link rel="stylesheet" href="../node_modules/@fortawesome/fontawesome-free/css/all.min.css"> -->
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <div class="about-container">
+      <h1>Lalulla Electra</h1>
+      <p>
+        Welcome to Your App, a powerful and user-friendly application.
+        This app is designed to help you with [describe the purpose of your app].
+      </p>
+      <p id="txtversion">Version: 1.0.0</p>
+      <p id="txtauthor">Author: Your Name</p>
+      <button id="evtClose">Close</button>
+    </div>
+
+    <!-- Include your external script file -->
+    <script>
+
+      const { remote } = require('electron');
+
+      //Declare library for IPC here
+      const { ipcRenderer } = require('electron');
+      window.ipcRenderer = ipcRenderer;
+
+      //=================
+      // Initialize page
+      //=================
+      ipcRenderer.on('data-to-video', (event, data) => {
+        const { title, ...otherdata } = data;
+        document.title = title;
+      });
+
+      ipcRenderer.on('version-to-video', (event, appinfo) => {
+        // Update the version in the placeholder element
+        document.getElementById('txtauthor').innerText = `Name: ${appinfo.name}`;
+        document.getElementById('txtversion').innerText = `Version: ${appinfo.version}`;
+      })
+
+      //==================================
+      // Custom page events and functions
+      //==================================
+
+      document.getElementById('evtClose').addEventListener('click', async () => {
+        try {
+
+          ipcRenderer.send('close-to-video');
+
+        } catch (error) {
+          console.log(`Error while closing window ${document.title}:`, error);
+        }
+
+      });
+
+    </script>
+
+  </body>
+</html>

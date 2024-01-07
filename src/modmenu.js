@@ -22,13 +22,14 @@
  *
 */
 
-const { Menu, nativeImage } = require('electron');
+const { Menu, nativeImage, ipcRenderer } = require('electron');
 const path = require('path');
 const Swal = require('sweetalert2');
 
-const { createAboutWindow } = require('./winabout/index');
-const { createConfigWindow } = require('./winconfig/index');
-const { createFormWindow } = require('./winform/index');
+const { createAboutWindow } = require('./win/winabout/index');
+const { createConfigWindow } = require('./win/winconfig/index');
+const { createFormWindow } = require('./win/winform/index');
+const { createVideoWindow } = require('./win/winvideo/index');
 
 const iconSize = { width: 16, height: 16 };
 
@@ -45,13 +46,16 @@ function createMainMenu(app, mainWindow) {
 
                   // Add your "Open" functionality here
                   //mainWindow.webContents.executeJavaScript('alert("File/Open Clicked!!!");');
+                //   mainWindow.webContents.executeJavaScript(`
+                //   Swal.fire({
+                //     title: 'Div Clicked!',
+                //     text: 'File/Open Clicked!!!',
+                //     icon: 'success',
+                //   });
+                // `);
                   mainWindow.webContents.executeJavaScript(`
-                  Swal.fire({
-                    title: 'Div Clicked!',
-                    text: 'File/Open Clicked!!!',
-                    icon: 'success',
-                  });
-                `);
+                    ipcRenderer.send('main-open-file-dialog', 'OK')
+                  `);
 
               },
               icon: nativeImage
@@ -63,6 +67,17 @@ function createMainMenu(app, mainWindow) {
               click: async () => {
 
                 createFormWindow( mainWindow );
+
+              },
+              icon: nativeImage
+              .createFromPath(path.join(__dirname, 'icons/std/mdpi/5_content_new.png'))
+            },
+            {
+              label: 'Capture Video',
+              accelerator: 'CmdOrCtrl+V',
+              click: async () => {
+
+                createVideoWindow( mainWindow );
 
               },
               icon: nativeImage

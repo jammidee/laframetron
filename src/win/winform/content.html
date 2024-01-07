@@ -197,7 +197,7 @@
     <!-- Include your external script file -->
     <script>
 
-      const { remote } = require('electron');
+      const { remote, dialog } = require('electron');
 
       //Declare library for IPC here
       const { ipcRenderer } = require('electron');
@@ -211,11 +211,11 @@
         document.title = title;
       });
 
-      ipcRenderer.on('version-to-about', (event, appinfo) => {
-        // Update the version in the placeholder element
-        document.getElementById('txtauthor').innerText = `Name: ${appinfo.name}`;
-        document.getElementById('txtversion').innerText = `Version: ${appinfo.version}`;
-      })
+      // ipcRenderer.on('version-to-about', (event, appinfo) => {
+      //   // Update the version in the placeholder element
+      //   document.getElementById('txtauthor').innerText = `Name: ${appinfo.name}`;
+      //   document.getElementById('txtversion').innerText = `Version: ${appinfo.version}`;
+      // })
 
       //==================================
       // Custom page events and functions

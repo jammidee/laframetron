@@ -16,7 +16,7 @@
  * 
  * Framework Designed by: Jammi Dee (jammi_dee@yahoo.com)
  *
- * File Create Date: 01/06/2024 10:42PM
+ * File Create Date: 01/07/2024 02:43pm
  * Created by: Jammi Dee
  * Modified by: Jammi Dee
  *
@@ -25,20 +25,17 @@
 // Load environment variables from .env file
 require('dotenv').config();
 
-const { app, BrowserWindow, Menu, ipcMain, screen  } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const path = require('path');
 
-function createFormWindow( mainWindow ) {
-
-  const { width, height } = screen.getPrimaryDisplay().workAreaSize;
-
+function createVideoWindow( mainWindow ) {
   const newWindow = new BrowserWindow({
-    width: width,
-    height: height,
+    width: 500,
+    height: 400,
     parent: mainWindow, //make modal
     modal: true, //make modal
-    //resizable: false,
-    icon: path.join(__dirname, '../favicon.ico'),
+    resizable: false,
+    icon: path.join(__dirname, '../../favicon.ico'),
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
@@ -51,15 +48,15 @@ function createFormWindow( mainWindow ) {
   const menu = Menu.buildFromTemplate([]);
   newWindow.setMenu(menu);
 
-  const pagedata = { title: process.env.PAGE_FORM_TITLE || 'Form' };
+  const pagedata = { title: process.env.PAGE_ABOUT_TITLE || 'Video' };
 
 
   newWindow.webContents.on('dom-ready', () => {
-    newWindow.webContents.send('data-to-form', pagedata );
+    newWindow.webContents.send('data-to-video', pagedata );
   });
 
   //Close the current window
-  ipcMain.on('close-to-form', () => {
+  ipcMain.on('close-to-video', () => {
 
     const currentWindow = BrowserWindow.getFocusedWindow();
     if (currentWindow) {
@@ -75,14 +72,14 @@ function createFormWindow( mainWindow ) {
       name: app.getName(),
       version: app.getVersion(),
     };
-    newWindow.webContents.send('version-to-about', appInfo);
+    newWindow.webContents.send('version-to-video', appInfo);
   });
 
   newWindow.on('close', (event) => {
 
     // Perform any cleanup or additional actions before the window is closed
     // You can use `event.preventDefault()` to prevent the window from closing
-    console.log('FormWindow is closing');
+    console.log('VideoWindow is closing');
 
     // In this example, we prevent the window from closing
     // You might want to prompt the user or save data before closing
@@ -92,4 +89,4 @@ function createFormWindow( mainWindow ) {
 
 }
 
-module.exports = { createFormWindow };
+module.exports = { createVideoWindow };

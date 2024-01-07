@@ -36,7 +36,7 @@ function createConfigWindow( mainWindow ) {
     parent: mainWindow, //make modal
     modal: true, //make modal
     resizable: false,
-    icon: path.join(__dirname, '../favicon.ico'),
+    icon: path.join(__dirname, '../../favicon.ico'),
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,

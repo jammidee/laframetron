@@ -10,6 +10,11 @@ Framework Design: 			Jammi Dee
 Developed / Programmed by : Joel Margate Damaso aka Jammi Dee
 Tested / QA by:				Jammi Dee
 
+01/07/2024  - Added the file dialog JavaSscript
+            - Added selection of file function - generic
+            - Added video window
+            - 
+
 01/06/2024  - added image in the menu
             - added code to add another window independently of the main window.
             - added header comments

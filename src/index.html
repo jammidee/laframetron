@@ -125,6 +125,8 @@
     <!-- Include your external script file -->
     <script>
 
+      const Swal = require('sweetalert2');
+
       //Declare library for IPC here
       const { ipcRenderer } = require('electron');
       window.ipcRenderer = ipcRenderer;
@@ -136,6 +138,19 @@
       ipcRenderer.on('data-to-index', (event, data) => {
         const { title, ...otherdata } = data;
         document.title = title;
+      });
+
+      // const Swal = require('sweetalert2');
+      ipcRenderer.on('selected-file', (event, path) => {
+
+        //console.log('Selected file:', path);
+        //alert(path);
+        Swal.fire({
+            title: 'File Dialog',
+            text: 'File ' + path + ' has been selected!',
+            icon: 'success',
+        });
+
       });
 
       //==================================
@@ -180,7 +195,6 @@
       }
 
       //Call and wait for response
-      const Swal = require('sweetalert2');
       document.getElementById('myClickableDiv').addEventListener('click', async () => {
         try {
           const response = await ipcRenderer.invoke('div-clicked', 'The div was clicked!');

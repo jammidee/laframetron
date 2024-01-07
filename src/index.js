@@ -26,7 +26,7 @@
 require('dotenv').config();
 
 //Declare other important libraries here
-const { app, BrowserWindow, ipcMain, Menu, ipcRenderer } = require('electron');
+const { app, BrowserWindow, ipcMain, Menu, ipcRenderer, dialog } = require('electron');
 const path = require('path');
 
 //Use for the login window
@@ -112,6 +112,27 @@ const createWindow = () => {
     createLoginWindow( mainWindow );
   }
 
+  // Add this part to handle the "Open File" functionality
+  ipcMain.on('main-open-file-dialog', function (event) {
+    dialog.showOpenDialog(mainWindow, {
+      properties: ['openFile'],
+      filters: [
+        { name: 'Text Files', extensions: ['txt'] },
+        { name: 'All Files', extensions: ['*'] },
+      ],
+    })
+    .then(result => {
+      if (!result.canceled) {
+        event.sender.send('selected-file', result.filePaths[0]);
+      } else {
+        console.log('No selected file!');
+      }
+    })
+    .catch(err => {
+      console.error(err);
+    });
+  });
+
 };
 
 // This method will be called when Electron has finished
@@ -155,6 +176,7 @@ ipcMain.on('form-submission', (event, formData) => {
 ipcMain.on('quit-to-index', (event, formData) => {
   app.quit();
 });
+
 
 //=======================================
 // Listen to all IPC calls and handle it
