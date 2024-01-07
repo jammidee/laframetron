@@ -195,22 +195,22 @@
       }
 
       //Call and wait for response
-      document.getElementById('myClickableDiv').addEventListener('click', async () => {
-        try {
-          const response = await ipcRenderer.invoke('div-clicked', 'The div was clicked!');
-          console.log('Received reply from main process:', response);
+      // document.getElementById('myClickableDiv').addEventListener('click', async () => {
+      //   try {
+      //     const response = await ipcRenderer.invoke('div-clicked', 'The div was clicked!');
+      //     console.log('Received reply from main process:', response);
 
-          //alert( response );
-          await Swal.fire({
-            title: 'Div Clicked!',
-            text: response,
-            icon: 'success',
-          });
+      //     //alert( response );
+      //     await Swal.fire({
+      //       title: 'Div Clicked!',
+      //       text: response,
+      //       icon: 'success',
+      //     });
 
-        } catch (error) {
-          console.error('Error while waiting for reply:', error);
-        }
-      });
+      //   } catch (error) {
+      //     console.error('Error while waiting for reply:', error);
+      //   }
+      // });
 
     </script>
 

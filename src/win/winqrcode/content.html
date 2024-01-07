@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>QR Code</title>
+    <style>
+      video {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <video id="scanner" playsinline></video>
+
+    <!-- Include your external script file -->
+    <script>
+
+      const { remote } = require('electron');
+
+      //Declare library for IPC here
+      const { ipcRenderer } = require('electron');
+      window.ipcRenderer = ipcRenderer;
+
+      //=================
+      // Initialize page
+      //=================
+      ipcRenderer.on('data-to-qrcode', (event, data) => {
+        const { title, ...otherdata } = data;
+        document.title = title;
+      });
+
+      //==================================
+      // Custom page events and functions
+      //==================================
+
+      ipcRenderer.on('display-result', (event, result) => {
+        alert(result);
+      })
+
+      const jsQR = require('jsqr');
+      
+      console.log('Before getUserMedia');
+      navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => {
+      
+          const video = document.getElementById('scanner');
+          video.srcObject = stream;
+      
+          video.play();
+      
+          const canvasElement = document.createElement('canvas');
+          const canvasContext = canvasElement.getContext('2d');
+            
+          video.addEventListener('loadedmetadata', () => {
+            
+            canvasElement.width = video.videoWidth;
+            canvasElement.height = video.videoHeight;
+          });
+      
+          video.addEventListener('timeupdate', () => {
+      
+            canvasContext.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
+            const imageData = canvasContext.getImageData(0, 0, canvasElement.width, canvasElement.height);
+            const code = jsQR(imageData.data, imageData.width, imageData.height);
+            console.log('Decoded QR code:', code);
+      
+            if (code) {
+              ipcRenderer.send('display-result', code.data);
+            }
+          });
+        })
+        .catch(error => console.error('Error accessing camera:', error));
+
+
+    </script>
+
+  </body>
+</html>

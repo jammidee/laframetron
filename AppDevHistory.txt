@@ -10,6 +10,9 @@ Framework Design: 			Jammi Dee
 Developed / Programmed by : Joel Margate Damaso aka Jammi Dee
 Tested / QA by:				Jammi Dee
 
+01/08/2024  - Completed the scanner window functionality
+            - 
+
 01/07/2024  - Added the file dialog JavaSscript
             - Added selection of file function - generic
             - Added video window
@@ -20,6 +23,8 @@ Tested / QA by:				Jammi Dee
             - Added serial capture to menu
             - Added html-pdf library
             - Added qr-code reader and hid library
+            - Added Window for QR Code reading
+            - Added jsqr library
             - 
 
 01/06/2024  - added image in the menu

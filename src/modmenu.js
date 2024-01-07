@@ -26,11 +26,15 @@ const { Menu, nativeImage, ipcRenderer } = require('electron');
 const path = require('path');
 const Swal = require('sweetalert2');
 
+//====================
+// Declare forms here
+//====================
 const { createAboutWindow }   = require('./win/winabout/index');
 const { createConfigWindow }  = require('./win/winconfig/index');
 const { createFormWindow }    = require('./win/winform/index');
 const { createVideoWindow }   = require('./win/winvideo/index');
 const { createSerialWindow }  = require('./win/winserial/index');
+const { createQrcodeWindow }  = require('./win/winqrcode/index');
 
 const iconSize = { width: 16, height: 16 };
 
@@ -94,6 +98,17 @@ function createMainMenu(app, mainWindow) {
               },
               icon: nativeImage
               .createFromPath(path.join(__dirname, 'icons/std/mdpi/10_device_access_usb.png'))
+            },
+            {
+              label: 'QR Code Reader',
+              accelerator: 'CmdOrCtrl+R',
+              click: async () => {
+
+                createQrcodeWindow( mainWindow );
+
+              },
+              icon: nativeImage
+              .createFromPath(path.join(__dirname, 'icons/std/mdpi/4_collections_go_to_today.png'))
             },
             {
               label: 'Configure',

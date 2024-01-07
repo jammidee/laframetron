@@ -48,6 +48,11 @@ npm install sweetalert2 --save
 npm install --save @fortawesome/fontawesome-free --save
 npm install --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons --save
 npm install webcamjs --save 01/07/2024
+npm install html-pdf --save 01/07/2024
+
+npm install qrcode-reader --save 01/07/2024
+npm install node-hid --save 01/07/2024
+npm install jsqr --save 01/07/2024
 
 GIT - G1thUUb@!!M3
 ---
