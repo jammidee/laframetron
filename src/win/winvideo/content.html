@@ -1,22 +1,83 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Video</title>
-    <!-- <link rel="stylesheet" href="../index.css" />
-    <link rel="stylesheet" href="../node_modules/@fortawesome/fontawesome-free/css/all.min.css"> -->
-    <link rel="stylesheet" href="./styles.css">
+    <title>Video Capture</title>
+    <style>
+      body {
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        background-color: #282c34;
+        color: white;
+      }
+  
+      #camera {
+        border: 2px solid white;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        display: block;
+      }
+  
+      #capturedImage {
+        border: 2px solid white;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        display: none;
+      }
+  
+      #cameraControls {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+      }
+  
+      #cameraDropdown {
+        margin-right: 10px;
+      }
+  
+      #saveButton,
+      #captureButton,
+      #resetButton,
+      #toggleTimestampButton {
+        padding: 10px;
+        background-color: #61dafb;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-right: 10px;
+      }
+  
+      #timestampOption {
+        display: flex;
+        align-items: center;
+        color: white;
+        margin-bottom: 10px;
+      }
+  
+      #timestampCheckbox {
+        margin-right: 10px;
+      }
+    </style>
   </head>
   <body>
-    <div class="about-container">
-      <h1>Lalulla Electra</h1>
-      <p>
-        Welcome to Your App, a powerful and user-friendly application.
-        This app is designed to help you with [describe the purpose of your app].
-      </p>
-      <p id="txtversion">Version: 1.0.0</p>
-      <p id="txtauthor">Author: Your Name</p>
-      <button id="evtClose">Close</button>
+    <video id="camera" autoplay playsinline></video>
+    <img id="capturedImage">
+    <div id="cameraControls">
+      <select id="cameraDropdown"></select>
+      <button id="captureButton" onclick="captureImage()">Capture</button>
+      <button id="resetButton" onclick="resetCamera()">Reset</button>
+      <button id="saveButton" onclick="saveImage()">Save Image</button>
+      <div id="timestampOption">
+        <input type="checkbox" id="timestampCheckbox" onchange="toggleTimestamp()">
+        <label for="timestampCheckbox">Show Timestamp</label>
+      </div>
     </div>
+    <script src="renderer.js"></script>
+  
 
     <!-- Include your external script file -->
     <script>
@@ -35,26 +96,26 @@
         document.title = title;
       });
 
-      ipcRenderer.on('version-to-video', (event, appinfo) => {
-        // Update the version in the placeholder element
-        document.getElementById('txtauthor').innerText = `Name: ${appinfo.name}`;
-        document.getElementById('txtversion').innerText = `Version: ${appinfo.version}`;
-      })
+      // ipcRenderer.on('version-to-video', (event, appinfo) => {
+      //   // Update the version in the placeholder element
+      //   document.getElementById('txtauthor').innerText = `Name: ${appinfo.name}`;
+      //   document.getElementById('txtversion').innerText = `Version: ${appinfo.version}`;
+      // })
 
       //==================================
       // Custom page events and functions
       //==================================
 
-      document.getElementById('evtClose').addEventListener('click', async () => {
-        try {
+      // document.getElementById('evtClose').addEventListener('click', async () => {
+      //   try {
 
-          ipcRenderer.send('close-to-video');
+      //     ipcRenderer.send('close-to-video');
 
-        } catch (error) {
-          console.log(`Error while closing window ${document.title}:`, error);
-        }
+      //   } catch (error) {
+      //     console.log(`Error while closing window ${document.title}:`, error);
+      //   }
 
-      });
+      // });
 
     </script>
 

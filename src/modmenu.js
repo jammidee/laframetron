@@ -81,7 +81,7 @@ function createMainMenu(app, mainWindow) {
 
               },
               icon: nativeImage
-              .createFromPath(path.join(__dirname, 'icons/std/mdpi/5_content_new.png'))
+              .createFromPath(path.join(__dirname, 'icons/std/mdpi/10_device_access_camera.png'))
             },
             {
               label: 'Configure',

@@ -30,11 +30,11 @@ const path = require('path');
 
 function createVideoWindow( mainWindow ) {
   const newWindow = new BrowserWindow({
-    width: 500,
-    height: 400,
+    width: 700,
+    height: 600,
     parent: mainWindow, //make modal
     modal: true, //make modal
-    resizable: false,
+    //resizable: false,
     icon: path.join(__dirname, '../../favicon.ico'),
     webPreferences: {
       nodeIntegration: true,
@@ -48,7 +48,7 @@ function createVideoWindow( mainWindow ) {
   const menu = Menu.buildFromTemplate([]);
   newWindow.setMenu(menu);
 
-  const pagedata = { title: process.env.PAGE_ABOUT_TITLE || 'Video' };
+  const pagedata = { title: process.env.PAGE_VIDEO_TITLE || 'Video' };
 
 
   newWindow.webContents.on('dom-ready', () => {

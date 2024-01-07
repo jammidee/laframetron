@@ -13,6 +13,9 @@ Tested / QA by:				Jammi Dee
 01/07/2024  - Added the file dialog JavaSscript
             - Added selection of file function - generic
             - Added video window
+            - Move all forms to win folder
+            - Added webcam.js library
+            - Completed the UI for the video/camera capture
             - 
 
 01/06/2024  - added image in the menu
