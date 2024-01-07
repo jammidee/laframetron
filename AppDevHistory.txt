@@ -16,6 +16,10 @@ Tested / QA by:				Jammi Dee
             - Move all forms to win folder
             - Added webcam.js library
             - Completed the UI for the video/camera capture
+            - Added serial capture window
+            - Added serial capture to menu
+            - Added html-pdf library
+            - Added qr-code reader and hid library
             - 
 
 01/06/2024  - added image in the menu

@@ -26,10 +26,11 @@ const { Menu, nativeImage, ipcRenderer } = require('electron');
 const path = require('path');
 const Swal = require('sweetalert2');
 
-const { createAboutWindow } = require('./win/winabout/index');
-const { createConfigWindow } = require('./win/winconfig/index');
-const { createFormWindow } = require('./win/winform/index');
-const { createVideoWindow } = require('./win/winvideo/index');
+const { createAboutWindow }   = require('./win/winabout/index');
+const { createConfigWindow }  = require('./win/winconfig/index');
+const { createFormWindow }    = require('./win/winform/index');
+const { createVideoWindow }   = require('./win/winvideo/index');
+const { createSerialWindow }  = require('./win/winserial/index');
 
 const iconSize = { width: 16, height: 16 };
 
@@ -82,6 +83,17 @@ function createMainMenu(app, mainWindow) {
               },
               icon: nativeImage
               .createFromPath(path.join(__dirname, 'icons/std/mdpi/10_device_access_camera.png'))
+            },
+            {
+              label: 'Capture Serial',
+              accelerator: 'CmdOrCtrl+S',
+              click: async () => {
+
+                createSerialWindow( mainWindow );
+
+              },
+              icon: nativeImage
+              .createFromPath(path.join(__dirname, 'icons/std/mdpi/10_device_access_usb.png'))
             },
             {
               label: 'Configure',
