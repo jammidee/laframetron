@@ -54,6 +54,11 @@ npm install qrcode-reader --save 01/07/2024
 npm install node-hid --save 01/07/2024
 npm install jsqr --save 01/07/2024
 
+npm install serialport-electron --save 01/08/2024
+npm install mdbtools --save 01/08/2024
+
+npm install @el3um4s/mdbtools --save 01/08/2024
+
 GIT - G1thUUb@!!M3
 ---
 

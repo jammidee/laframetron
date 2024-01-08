@@ -2,21 +2,37 @@
 <html>
   <head>
     <title>Serial</title>
-    <!-- <link rel="stylesheet" href="../index.css" />
-    <link rel="stylesheet" href="../node_modules/@fortawesome/fontawesome-free/css/all.min.css"> -->
-    <link rel="stylesheet" href="./styles.css">
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        margin: 20px;
+      }
+  
+      #input-box {
+        margin-bottom: 10px;
+      }
+  
+      #serial-data {
+        border: 1px solid #ddd;
+        padding: 10px;
+        max-height: 300px;
+        overflow-y: auto;
+      }
+  
+      #serial-data p {
+        margin: 0;
+        padding: 8px;
+        border-bottom: 1px solid #eee;
+      }
+    </style>
   </head>
   <body>
-    <div class="about-container">
-      <h1>Lalulla Electra</h1>
-      <p>
-        Welcome to Your App, a powerful and user-friendly application.
-        This app is designed to help you with [describe the purpose of your app].
-      </p>
-      <p id="txtversion">Version: 1.0.0</p>
-      <p id="txtauthor">Author: Your Name</p>
-      <button id="evtClose">Close</button>
+    <div>
+      <input type="text" id="input-box" placeholder="Type here...">
+      <button onclick="sendData()">Send Data</button>
     </div>
+    <div id="serial-data">Waiting for serial data...</div>
+    <script src="renderer.js"></script>
 
     <!-- Include your external script file -->
     <script>
@@ -35,11 +51,11 @@
         document.title = title;
       });
 
-      ipcRenderer.on('version-to-serial', (event, appinfo) => {
-        // Update the version in the placeholder element
-        document.getElementById('txtauthor').innerText = `Name: ${appinfo.name}`;
-        document.getElementById('txtversion').innerText = `Version: ${appinfo.version}`;
-      })
+      // ipcRenderer.on('version-to-serial', (event, appinfo) => {
+      //   // Update the version in the placeholder element
+      //   document.getElementById('txtauthor').innerText = `Name: ${appinfo.name}`;
+      //   document.getElementById('txtversion').innerText = `Version: ${appinfo.version}`;
+      // })
 
       //==================================
       // Custom page events and functions
@@ -48,7 +64,7 @@
       document.getElementById('evtClose').addEventListener('click', async () => {
         try {
 
-          ipcRenderer.send('close-to-about');
+          ipcRenderer.send('close-to-serial');
 
         } catch (error) {
           console.log(`Error while closing window ${document.title}:`, error);

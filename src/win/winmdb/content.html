@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>About</title>
+    <title>MDB Database</title>
     <!-- <link rel="stylesheet" href="../index.css" />
     <link rel="stylesheet" href="../node_modules/@fortawesome/fontawesome-free/css/all.min.css"> -->
     <link rel="stylesheet" href="./styles.css">
@@ -31,16 +31,23 @@
       //=================
       // Initialize page
       //=================
-      ipcRenderer.on('data-to-about', (event, data) => {
+      ipcRenderer.on('data-to-mdb', (event, data) => {
         const { title, ...otherdata } = data;
         document.title = title;
       });
 
-      ipcRenderer.on('version-to-about', (event, appinfo) => {
-        // Update the version in the placeholder element
-        document.getElementById('txtauthor').innerText = `Name: ${appinfo.name}`;
-        document.getElementById('txtversion').innerText = `Version: ${appinfo.version}`;
-      })
+      ipcRenderer.send('get-mdb-version');
+      ipcRenderer.on('resp-mdb-version', (event, data) => {
+
+        alert( data );
+
+      });
+
+      // ipcRenderer.on('version-to-mdb', (event, appinfo) => {
+      //   // Update the version in the placeholder element
+      //   document.getElementById('txtauthor').innerText = `Name: ${appinfo.name}`;
+      //   document.getElementById('txtversion').innerText = `Version: ${appinfo.version}`;
+      // })
 
       //==================================
       // Custom page events and functions
@@ -49,7 +56,7 @@
       document.getElementById('evtClose').addEventListener('click', async () => {
         try {
 
-          ipcRenderer.send('close-to-about');
+          ipcRenderer.send('close-to-mdb');
 
         } catch (error) {
           console.log(`Error while closing window ${document.title}:`, error);

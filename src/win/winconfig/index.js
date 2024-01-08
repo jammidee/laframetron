@@ -65,6 +65,7 @@ function createConfigWindow( mainWindow ) {
     } else {
       console.log('No focused window found.');
     }
+    
   });
 
   // Listen for the 'load-config' message from the renderer process

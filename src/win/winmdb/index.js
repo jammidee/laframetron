@@ -16,7 +16,7 @@
  * 
  * Framework Designed by: Jammi Dee (jammi_dee@yahoo.com)
  *
- * File Create Date: 01/06/2024 10:42PM
+ * File Create Date: 01/08/2024 03:54PM
  * Created by: Jammi Dee
  * Modified by: Jammi Dee
  *
@@ -25,20 +25,17 @@
 // Load environment variables from .env file
 require('dotenv').config();
 
-const { app, BrowserWindow, Menu, ipcMain, screen  } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const path = require('path');
-const { postDataToEncrypt, } = require('./modfunc');
+const { versionMdbTools } = require('@el3um4s/mdbtools');
 
-function createFormWindow( mainWindow ) {
-
-  const { width, height } = screen.getPrimaryDisplay().workAreaSize;
-
+function createMdbWindow( mainWindow ) {
   const newWindow = new BrowserWindow({
-    width: width,
-    height: height,
+    width: 500,
+    height: 430,
     parent: mainWindow, //make modal
     modal: true, //make modal
-    //resizable: false,
+    resizable: false,
     icon: path.join(__dirname, '../../favicon.ico'),
     webPreferences: {
       nodeIntegration: true,
@@ -52,15 +49,14 @@ function createFormWindow( mainWindow ) {
   const menu = Menu.buildFromTemplate([]);
   newWindow.setMenu(menu);
 
-  const pagedata = { title: process.env.PAGE_FORM_TITLE || 'Form' };
-
+  const pagedata = { title: process.env.PAGE_MDB_TITLE || 'MDB Database' };
 
   newWindow.webContents.on('dom-ready', () => {
-    newWindow.webContents.send('data-to-form', pagedata );
+    newWindow.webContents.send('data-to-mdb', pagedata );
   });
 
   //Close the current window
-  ipcMain.on('close-to-form', () => {
+  ipcMain.on('close-to-about', () => {
 
     const currentWindow = BrowserWindow.getFocusedWindow();
     if (currentWindow) {
@@ -68,27 +64,41 @@ function createFormWindow( mainWindow ) {
     } else {
       console.log('No focused window found.');
     }
-  });
-
-  //Send the version to the window
-  newWindow.webContents.on('did-finish-load', () => {
-
-    postDataToEncrypt('Hello World');
-
-    // const appInfo = {
-    //   name: app.getName(),
-    //   version: app.getVersion(),
-    // };
-    // newWindow.webContents.send('version-to-about', appInfo);
-
 
   });
+
+  ipcMain.on('get-mdb-version', async (event, query) => {
+    
+    const windowsPath = path.join(__dirname, '../../tools/mdbtools-win');
+    const versionW = await versionMdbTools(windowsPath);
+    newWindow.webContents.send('resp-mdb-version', versionW);
+
+  });
+
+  ipcMain.on('get-mdb-tablelist', async (event, query) => {
+    
+    const windowsPath = path.join(__dirname, '../../tools/mdbtools-win');
+    const versionW = await versionMdbTools(windowsPath);
+    newWindow.webContents.send('resp-mdb-tablelist', versionW);
+
+  });
+
+  // //Send the version to the window
+  // newWindow.webContents.on('did-finish-load', () => {
+
+  //   const appInfo = {
+  //     name: app.getName(),
+  //     version: app.getVersion(),
+  //   };
+  //   newWindow.webContents.send('version-to-mdb', appInfo);
+
+  // });
 
   newWindow.on('close', (event) => {
 
     // Perform any cleanup or additional actions before the window is closed
     // You can use `event.preventDefault()` to prevent the window from closing
-    console.log('Form Window is closing');
+    console.log('MDB Window is closing');
 
     // In this example, we prevent the window from closing
     // You might want to prompt the user or save data before closing
@@ -98,4 +108,4 @@ function createFormWindow( mainWindow ) {
 
 }
 
-module.exports = { createFormWindow };
+module.exports = { createMdbWindow };

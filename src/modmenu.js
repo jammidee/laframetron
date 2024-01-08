@@ -35,6 +35,7 @@ const { createFormWindow }    = require('./win/winform/index');
 const { createVideoWindow }   = require('./win/winvideo/index');
 const { createSerialWindow }  = require('./win/winserial/index');
 const { createQrcodeWindow }  = require('./win/winqrcode/index');
+const { createMdbWindow }     = require('./win/winmdb/index');
 
 const iconSize = { width: 16, height: 16 };
 
@@ -109,6 +110,17 @@ function createMainMenu(app, mainWindow) {
               },
               icon: nativeImage
               .createFromPath(path.join(__dirname, 'icons/std/mdpi/4_collections_go_to_today.png'))
+            },
+            {
+              label: 'Mdb Reader',
+              accelerator: 'CmdOrCtrl+M',
+              click: async () => {
+
+                createMdbWindow( mainWindow );
+
+              },
+              icon: nativeImage
+              .createFromPath(path.join(__dirname, 'icons/std/mdpi/10_device_access_sd_storage.png'))
             },
             {
               label: 'Configure',

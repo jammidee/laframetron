@@ -27,6 +27,8 @@ require('dotenv').config();
 
 const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const path = require('path');
+const { SerialPort } = require('serialport');
+
 
 function createSerialWindow( mainWindow ) {
   const newWindow = new BrowserWindow({
@@ -55,6 +57,16 @@ function createSerialWindow( mainWindow ) {
     newWindow.webContents.send('data-to-serial', pagedata );
   });
 
+  // Open the serial port and listen for data
+  const port = new SerialPort({ path: process.env.PORT_RCV_NAME || 'COM3',
+    baudRate: parseInt(process.env.PORT_RCV_BAUD) || 9600,
+  });
+
+  port.on('data', (data) => {
+    // Send the received data to the renderer process
+    newWindow.webContents.send('serial-data', data.toString());
+  });
+
   //Close the current window
   ipcMain.on('close-to-serial', () => {
 
@@ -67,19 +79,19 @@ function createSerialWindow( mainWindow ) {
   });
 
   //Send the version to the window
-  newWindow.webContents.on('did-finish-load', () => {
-    const appInfo = {
-      name: app.getName(),
-      version: app.getVersion(),
-    };
-    newWindow.webContents.send('version-to-serial', appInfo);
-  });
+  // newWindow.webContents.on('did-finish-load', () => {
+  //   const appInfo = {
+  //     name: app.getName(),
+  //     version: app.getVersion(),
+  //   };
+  //   newWindow.webContents.send('version-to-serial', appInfo);
+  // });
 
   newWindow.on('close', (event) => {
 
     // Perform any cleanup or additional actions before the window is closed
     // You can use `event.preventDefault()` to prevent the window from closing
-    console.log('SerialWindow is closing');
+    console.log('Serial Window is closing');
 
     // In this example, we prevent the window from closing
     // You might want to prompt the user or save data before closing

@@ -12,8 +12,18 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100vh;
+        min-height: 100vh;
         background-color: #f0f0f0;
+      }
+  
+      .flex-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: stretch;
+        width: 100%;
+        max-width: 1200px; /* Adjust the max-width as needed */
+        margin: 0 auto;
+        overflow-y: auto; /* Enable vertical scrolling if content exceeds viewport height */
       }
   
       .paper-area {
@@ -21,17 +31,15 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         border-radius: 8px;
         padding: 20px;
-        max-width: 600px;
         width: 100%;
       }
   
-      .flex-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+      #welcome, #hightlight, #mainform {
+        flex: 1;
+        margin: 10px;
       }
   
-      #welcome {
+      #welcome, #hightlight {
         margin-bottom: 20px;
       }
   
@@ -39,11 +47,10 @@
         margin-top: 20px;
       }
   
-      .flex-container {
-        display: flex;
-        flex-direction: column;
+      #hightlight h1 {
+        margin-bottom: 10px;
       }
-
+  
       form {
         display: flex;
         flex-direction: column;
@@ -71,7 +78,7 @@
         background-color: #45a049;
       }
     </style>
-      </head>
+  </head>
   <body>
 
     <div class="flex-container">
@@ -89,17 +96,22 @@
       <div id="hightlight" class="paper-area">
         <div>
           <h1>💖 Hello World!</h1>
-          <p>Welcome to your ElectronJS boilerplate by Lalulla.</p>
+          <p>Welcome to your Electron application.</p>
           <p>🌟 Star: Represents excellence, achievement, or special recognition.</p>
+          <p>🎉 Party Popper: Signifies celebration and excitement.</p>
           <p>🔥 Fire: Indicates something that is trendy, hot, or on fire.</p>
           <p>👍 Thumbs Up: A positive gesture or agreement.</p>
           <p>🌈 Rainbow: Symbolizes diversity, inclusivity, or positivity.</p>
           <p>❤️ Red Heart: Represents love, affection, or approval.</p>
+          <p>🚀 Rocket: Suggests progress, innovation, or launching something new.</p>
+          <p>🌸 Cherry Blossom: Can symbolize beauty, simplicity, or the fleeting nature of life.</p>
+          <p>🤝 Handshake: Represents agreement, partnership, or collaboration.</p>
+          <p>💡 Light Bulb: Signifies a bright idea or moment of inspiration.</p>
         
         </div>
       </div>
 
-      <!-- <div id="mainform" class="paper-area">
+      <div id="mainform" class="paper-area">
         <div>
           <h1>💖 Hello World!</h1>
           <p>Welcome to your Electron application.</p>
@@ -121,8 +133,7 @@
             This is an example of posting a form in the back-end.
           </p>
         </div>
-      </div> -->
-
+      </div>
     </div>
     
     <!-- <div id="welcome" class="flex-container" style="display: block;" >

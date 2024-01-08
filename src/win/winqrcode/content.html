@@ -38,8 +38,6 @@
       })
 
       const jsQR = require('jsqr');
-      
-      console.log('Before getUserMedia');
       navigator.mediaDevices.getUserMedia({ video: true })
         .then(stream => {
       
@@ -62,7 +60,7 @@
             canvasContext.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
             const imageData = canvasContext.getImageData(0, 0, canvasElement.width, canvasElement.height);
             const code = jsQR(imageData.data, imageData.width, imageData.height);
-            console.log('Decoded QR code:', code);
+            //console.log('Decoded QR code:', code);
       
             if (code) {
               ipcRenderer.send('display-result', code.data);
@@ -70,7 +68,6 @@
           });
         })
         .catch(error => console.error('Error accessing camera:', error));
-
 
     </script>
 

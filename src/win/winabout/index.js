@@ -31,7 +31,7 @@ const path = require('path');
 function createAboutWindow( mainWindow ) {
   const newWindow = new BrowserWindow({
     width: 500,
-    height: 400,
+    height: 430,
     parent: mainWindow, //make modal
     modal: true, //make modal
     resizable: false,
@@ -50,7 +50,6 @@ function createAboutWindow( mainWindow ) {
 
   const pagedata = { title: process.env.PAGE_ABOUT_TITLE || 'About' };
 
-
   newWindow.webContents.on('dom-ready', () => {
     newWindow.webContents.send('data-to-about', pagedata );
   });
@@ -64,22 +63,25 @@ function createAboutWindow( mainWindow ) {
     } else {
       console.log('No focused window found.');
     }
+
   });
 
   //Send the version to the window
   newWindow.webContents.on('did-finish-load', () => {
+
     const appInfo = {
       name: app.getName(),
       version: app.getVersion(),
     };
     newWindow.webContents.send('version-to-about', appInfo);
+
   });
 
   newWindow.on('close', (event) => {
 
     // Perform any cleanup or additional actions before the window is closed
     // You can use `event.preventDefault()` to prevent the window from closing
-    console.log('MainWindow is closing');
+    console.log('About Window is closing');
 
     // In this example, we prevent the window from closing
     // You might want to prompt the user or save data before closing

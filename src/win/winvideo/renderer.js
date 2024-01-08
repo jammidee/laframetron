@@ -1,12 +1,37 @@
+/**
+ * Copyright (C) 2023 Lalulla, Inc. All rights reserved.
+ * Copyright (c) 2024 - Joel M. Damaso - mailto:jammi_dee@yahoo.com Manila/Philippines
+ * This file is part of Lalulla System.
+ * 
+ * LaKuboTron Framework is distributed under the terms of the GNU General Public License 
+ * as published by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * LaKuboTron System is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A 
+ * PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with Lalulla System.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * Framework Designed by: Jammi Dee (jammi_dee@yahoo.com)
+ *
+ * File Create Date: 01/07/2024 02:43pm
+ * Created by: Jammi Dee
+ * Modified by: Jammi Dee
+ *
+*/
+
 document.addEventListener('DOMContentLoaded', function () {
-    const videoElement = document.getElementById('camera');
-    const capturedImageElement = document.getElementById('capturedImage');
-    const cameraDropdown = document.getElementById('cameraDropdown');
-    const captureButton = document.getElementById('captureButton');
-    const resetButton = document.getElementById('resetButton');
-    const saveButton = document.getElementById('saveButton');
-    const timestampOption = document.getElementById('timestampOption');
-    const timestampCheckbox = document.getElementById('timestampCheckbox');
+
+    const videoElement          = document.getElementById('camera');
+    const capturedImageElement  = document.getElementById('capturedImage');
+    const cameraDropdown        = document.getElementById('cameraDropdown');
+    const captureButton         = document.getElementById('captureButton');
+    const resetButton           = document.getElementById('resetButton');
+    const saveButton            = document.getElementById('saveButton');
+    const timestampOption       = document.getElementById('timestampOption');
+    const timestampCheckbox     = document.getElementById('timestampCheckbox');
   
     let currentStream;
   
@@ -21,10 +46,12 @@ document.addEventListener('DOMContentLoaded', function () {
   
           // Populate the dropdown with camera options
           videoDevices.forEach((device, index) => {
+
             const option = document.createElement('option');
             option.value = device.deviceId;
-            option.text = `Camera ${index + 1}`;
+            option.text  = `Camera ${index + 1}`;
             cameraDropdown.appendChild(option);
+
           });
   
           // Set the default camera (first in the list)
@@ -86,8 +113,8 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
       }
   
-      const canvas = document.createElement('canvas');
-      canvas.width = videoElement.videoWidth;
+      const canvas  = document.createElement('canvas');
+      canvas.width  = videoElement.videoWidth;
       canvas.height = videoElement.videoHeight;
   
       const ctx = canvas.getContext('2d');
@@ -153,5 +180,6 @@ document.addEventListener('DOMContentLoaded', function () {
     captureButton.addEventListener('click', captureImage);
     resetButton.addEventListener('click', resetCamera);
     saveButton.addEventListener('click', saveImage);
+    
   });
   

@@ -73,20 +73,11 @@ function createQrcodeWindow( mainWindow ) {
     console.log(data);
   });
 
-  //Send the version to the window
-  newWindow.webContents.on('did-finish-load', () => {
-    const appInfo = {
-      name: app.getName(),
-      version: app.getVersion(),
-    };
-    newWindow.webContents.send('version-to-qrcode', appInfo);
-  });
-
   newWindow.on('close', (event) => {
 
     // Perform any cleanup or additional actions before the window is closed
     // You can use `event.preventDefault()` to prevent the window from closing
-    console.log('QRCodeWindow is closing');
+    console.log('QRCode Window is closing');
 
     // In this example, we prevent the window from closing
     // You might want to prompt the user or save data before closing
@@ -96,7 +87,6 @@ function createQrcodeWindow( mainWindow ) {
 
 
 }
-
 
 
 module.exports = { createQrcodeWindow };

@@ -11,7 +11,17 @@ Developed / Programmed by : Joel Margate Damaso aka Jammi Dee
 Tested / QA by:				Jammi Dee
 
 01/08/2024  - Completed the scanner window functionality
-            - 
+            - organize code, clean up
+            - improve the .md file
+            - improve the index,js
+            - improve the serial window codes and add more functionality
+            - Added serialport-electron 
+            - Completed the serial port communication
+            - Added window for MS Access database Access
+            - Added DB_ENTITY in the .env file
+            - Added library mdbtools
+            - Added linrary @el3um4s/mdbtools
+            - successfully installed mdbtools
 
 01/07/2024  - Added the file dialog JavaSscript
             - Added selection of file function - generic
