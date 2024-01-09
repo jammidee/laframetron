@@ -16,7 +16,7 @@
  * 
  * Framework Designed by: Jammi Dee (jammi_dee@yahoo.com)
  *
- * File Create Date: 01/06/2024 10:42PM
+ * File Create Date: 01/08/2024 06:29PM
  * Created by: Jammi Dee
  * Modified by: Jammi Dee
  *
@@ -25,17 +25,14 @@
 // Load environment variables from .env file
 require('dotenv').config();
 
-const { app, BrowserWindow, Menu, ipcMain, screen  } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const path = require('path');
-const { postDataToEncrypt, } = require('./modfunc');
+const axios = require('axios');
 
-function createFormWindow( mainWindow ) {
-
-  const { width, height } = screen.getPrimaryDisplay().workAreaSize;
-
+function createApiWindow( mainWindow ) {
   const newWindow = new BrowserWindow({
-    width: width,
-    height: height,
+    width: 500,
+    height: 430,
     parent: mainWindow, //make modal
     modal: true, //make modal
     //resizable: false,
@@ -52,15 +49,14 @@ function createFormWindow( mainWindow ) {
   const menu = Menu.buildFromTemplate([]);
   newWindow.setMenu(menu);
 
-  const pagedata = { title: process.env.PAGE_FORM_TITLE || 'Form' };
-
+  const pagedata = { title: process.env.PAGE_API_TITLE || 'API' };
 
   newWindow.webContents.on('dom-ready', () => {
-    newWindow.webContents.send('data-to-form', pagedata );
+    newWindow.webContents.send('data-to-api', pagedata );
   });
 
   //Close the current window
-  ipcMain.on('close-to-form', () => {
+  ipcMain.on('close-to-api', () => {
 
     const currentWindow = BrowserWindow.getFocusedWindow();
     if (currentWindow) {
@@ -68,20 +64,25 @@ function createFormWindow( mainWindow ) {
     } else {
       console.log('No focused window found.');
     }
+
   });
 
   //Send the version to the window
-  newWindow.webContents.on('did-finish-load', () => {
+  // newWindow.webContents.on('did-finish-load', () => {
 
-    postDataToEncrypt('Hello World');
+  //   const appInfo = {
+  //     name: app.getName(),
+  //     version: app.getVersion(),
+  //   };
+  //   newWindow.webContents.send('version-to-api', appInfo);
 
-  });
+  // });
 
   newWindow.on('close', (event) => {
 
     // Perform any cleanup or additional actions before the window is closed
     // You can use `event.preventDefault()` to prevent the window from closing
-    console.log('Form Window is closing');
+    console.log('API Window is closing');
 
     // In this example, we prevent the window from closing
     // You might want to prompt the user or save data before closing
@@ -89,6 +90,34 @@ function createFormWindow( mainWindow ) {
 
   });
 
+  ipcMain.on('login-request', async (event, { username, password }) => {
+    try {
+      await checkConnectivity();
+
+      const response = await axios.post(
+        `${process.env.APP_PROTOCOL}://${process.env.APP_HOST}:${process.env.APP_PORT}/m/utility/login`,
+        {
+          username,
+          password,
+        }
+      );
+
+      event.reply('login-response', response.data);
+    } catch (error) {
+      console.error('Error:', error.message);
+      event.reply('login-response', { error: 'Failed to connect to the server' });
+    }
+  });
+
+  async function checkConnectivity() {
+    try {
+      await axios.get(`${process.env.APP_PROTOCOL}://${process.env.APP_HOST}:${process.env.APP_PORT}/ping`);
+    } catch (error) {
+      //throw new Error('No connectivity');
+      return 'OK';
+    }
+  }
+
 }
 
-module.exports = { createFormWindow };
+module.exports = { createApiWindow };

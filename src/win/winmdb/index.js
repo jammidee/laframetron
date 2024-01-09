@@ -27,15 +27,16 @@ require('dotenv').config();
 
 const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const path = require('path');
-const { versionMdbTools } = require('@el3um4s/mdbtools');
+const { versionMdbTools, version } = require('@el3um4s/mdbtools');
+const { exec } = require('child_process');
 
 function createMdbWindow( mainWindow ) {
   const newWindow = new BrowserWindow({
-    width: 500,
-    height: 430,
+    width: 800,
+    height: 600,
     parent: mainWindow, //make modal
     modal: true, //make modal
-    resizable: false,
+    //resizable: false,
     icon: path.join(__dirname, '../../favicon.ico'),
     webPreferences: {
       nodeIntegration: true,
@@ -67,19 +68,64 @@ function createMdbWindow( mainWindow ) {
 
   });
 
-  ipcMain.on('get-mdb-version', async (event, query) => {
+  ipcMain.on('get-mdbtools-version', async (event, query) => {
     
     const windowsPath = path.join(__dirname, '../../tools/mdbtools-win');
     const versionW = await versionMdbTools(windowsPath);
-    newWindow.webContents.send('resp-mdb-version', versionW);
+    newWindow.webContents.send('resp-mdbtools-version', versionW);
 
+  });
+
+  ipcMain.on('get-mdb-version', async (event, query) => {
+    
+    const mdbtoolPath = path.join(__dirname, '../../tools/mdbtools-win');
+    const mdbPath = process.env.MDB_DBPATH;
+    
+    // Execute mdb-tools to query the MDB database
+    const command = `${mdbtoolPath}/mdb-ver ${mdbPath}`;
+    exec(command, (error, stdout, stderr) => {
+      if (error) {
+        console.error('Error executing mdbtools command:', error.message);
+        newWindow.webContents.send('version-error', error.message);
+      } else {
+        newWindow.webContents.send('resp-mdbtools-version', stdout);
+      }
+    });
   });
 
   ipcMain.on('get-mdb-tablelist', async (event, query) => {
     
-    const windowsPath = path.join(__dirname, '../../tools/mdbtools-win');
-    const versionW = await versionMdbTools(windowsPath);
-    newWindow.webContents.send('resp-mdb-tablelist', versionW);
+    const mdbtoolPath = path.join(__dirname, '../../tools/mdbtools-win');
+    const mdbPath = process.env.MDB_DBPATH;
+    
+    // Execute mdb-tools to query the MDB database
+    const command = `${mdbtoolPath}/mdb-tables ${mdbPath}`;
+    exec(command, (error, stdout, stderr) => {
+      if (error) {
+        console.error('Error executing mdbtools command:', error.message);
+        newWindow.webContents.send('version-error', error.message);
+      } else {
+        newWindow.webContents.send('resp-mdb-tablelist', stdout);
+      }
+    });
+
+  });
+
+  ipcMain.on('get-mdb-records', async (event, query) => {
+    
+    const mdbtoolPath = path.join(__dirname, '../../tools/mdbtools-win');
+    const mdbPath = process.env.MDB_DBPATH;
+    
+    // Execute mdb-tools to query the MDB database
+    const command = `${mdbtoolPath}/mdb-json ${mdbPath} Reacord`;
+    exec(command, (error, stdout, stderr) => {
+      if (error) {
+        console.error('Error executing mdbtools command:', error.message);
+        newWindow.webContents.send('version-error', error.message);
+      } else {
+        newWindow.webContents.send('resp-mdb-tablelist', stdout);
+      }
+    });
 
   });
 

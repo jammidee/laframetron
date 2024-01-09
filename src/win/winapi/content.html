@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>API Call</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f0f0;
+      }
+  
+      .paper-area {
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        padding: 20px;
+        max-width: 600px;
+        width: 100%;
+      }
+  
+      .flex-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+  
+      #welcome {
+        margin-bottom: 20px;
+      }
+  
+      #mainform {
+        margin-top: 20px;
+      }
+  
+      form {
+        display: flex;
+        flex-direction: column;
+      }
+  
+      label {
+        margin-bottom: 8px;
+      }
+  
+      input {
+        padding: 8px;
+        margin-bottom: 16px;
+      }
+  
+      button {
+        padding: 12px;
+        background-color: #4caf50;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+  
+      button:hover {
+        background-color: #45a049;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="paper-area">
+      <div id="welcome">Welcome to the API Window</div>
+      <div id="mainform">
+        <form id="apiForm">
+          <label for="username">Username:</label>
+          <input type="text" id="username" name="username" required>
+          <label for="password">Password:</label>
+          <input type="password" id="password" name="password" required>
+          <button type="button" id="apiCallButton">Make API Call</button>
+        </form>
+      </div>
+      <div id="apiResult"></div>
+    </div>
+    <script src="renderer.js"></script>
+
+    <!-- Include your external script file -->
+    <script>
+
+      const { remote } = require('electron');
+
+      //Declare library for IPC here
+      const { ipcRenderer } = require('electron');
+      window.ipcRenderer = ipcRenderer;
+
+      //=================
+      // Initialize page
+      //=================
+      ipcRenderer.on('data-to-api', (event, data) => {
+        const { title, ...otherdata } = data;
+        document.title = title;
+      });
+
+      // ipcRenderer.on('version-to-api', (event, appinfo) => {
+      //   // Update the version in the placeholder element
+      //   document.getElementById('txtauthor').innerText = `Name: ${appinfo.name}`;
+      //   document.getElementById('txtversion').innerText = `Version: ${appinfo.version}`;
+      // })
+
+      //==================================
+      // Custom page events and functions
+      //==================================
+
+      // document.getElementById('evtClose').addEventListener('click', async () => {
+      //   try {
+
+      //     ipcRenderer.send('close-to-api');
+
+      //   } catch (error) {
+      //     console.log(`Error while closing window ${document.title}:`, error);
+      //   }
+
+      // });
+
+    </script>
+
+  </body>
+</html>

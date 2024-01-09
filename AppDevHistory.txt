@@ -10,6 +10,11 @@ Framework Design: 			Jammi Dee
 Developed / Programmed by : Joel Margate Damaso aka Jammi Dee
 Tested / QA by:				Jammi Dee
 
+01/09/2024  - integrated with mdbtools via exec
+            - executed command mdb-ver, mdb-tables, mdb-records,
+            - mdb-json d://Test.mdb Reacord > tbl-Reacord.json
+            - 
+
 01/08/2024  - Completed the scanner window functionality
             - organize code, clean up
             - improve the .md file
@@ -22,6 +27,12 @@ Tested / QA by:				Jammi Dee
             - Added library mdbtools
             - Added linrary @el3um4s/mdbtools
             - successfully installed mdbtools
+            - make the mdb response sent to text in the window
+            - Added API window example
+            - Corrected the index window title
+            - Added API Window
+            - Added call to remote API in API window
+            - 
 
 01/07/2024  - Added the file dialog JavaSscript
             - Added selection of file function - generic

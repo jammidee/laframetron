@@ -9,13 +9,7 @@
   <body>
     <div class="about-container">
       <h1>🔥Lalulla Laframetron</h1>
-      <p>
-        Welcome to Lalulla Laframetron, a robust and user-friendly boilerplate for ElectronJS. 
-        This application is crafted to assist you in developing Electron-based applications by 
-        providing pre-coded essentials required for such applications.
-      </p>
-      <p id="txtversion">Version: 1.0.0</p>
-      <p id="txtauthor">Author: Your Name</p>
+      <p id="mdb-response">Version: 1.0.0</p>
       <button id="evtClose">Close</button>
     </div>
 
@@ -36,10 +30,31 @@
         document.title = title;
       });
 
-      ipcRenderer.send('get-mdb-version');
+      //ipcRenderer.send('get-mdbtools-version');
+      ipcRenderer.on('resp-mdbtools-version', (event, data) => {
+
+        document.getElementById('mdb-response').innerText = `${data}`;
+
+      });
+
+      //ipcRenderer.send('get-mdb-version');
       ipcRenderer.on('resp-mdb-version', (event, data) => {
 
-        alert( data );
+        document.getElementById('mdb-response').innerText = `${data}`;
+
+      });
+
+      //ipcRenderer.send('get-mdb-tablelist');
+      ipcRenderer.on('resp-mdb-tablelist', (event, data) => {
+
+        document.getElementById('mdb-response').innerText = `${data}`;
+
+      });
+
+      ipcRenderer.send('get-mdb-records');
+      ipcRenderer.on('resp-mdb-records', (event, data) => {
+
+        document.getElementById('mdb-response').innerText = `${data}`;
 
       });
 

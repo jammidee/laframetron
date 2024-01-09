@@ -36,6 +36,7 @@ const { createVideoWindow }   = require('./win/winvideo/index');
 const { createSerialWindow }  = require('./win/winserial/index');
 const { createQrcodeWindow }  = require('./win/winqrcode/index');
 const { createMdbWindow }     = require('./win/winmdb/index');
+const { createApiWindow }     = require('./win/winapi/index');
 
 const iconSize = { width: 16, height: 16 };
 
@@ -121,6 +122,17 @@ function createMainMenu(app, mainWindow) {
               },
               icon: nativeImage
               .createFromPath(path.join(__dirname, 'icons/std/mdpi/10_device_access_sd_storage.png'))
+            },
+            {
+              label: 'API Call',
+              accelerator: 'CmdOrCtrl+A',
+              click: async () => {
+
+                createApiWindow( mainWindow );
+
+              },
+              icon: nativeImage
+              .createFromPath(path.join(__dirname, 'icons/std/mdpi/9_av_shuffle.png'))
             },
             {
               label: 'Configure',

@@ -1,7 +1,7 @@
 {
   "name": "lakubotron",
   "productName": "lakubotron",
-  "version": "1.0.84",
+  "version": "1.0.102",
   "description": "My Electron application description",
   "main": "src/index.js",
   "scripts": {
