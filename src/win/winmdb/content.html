@@ -51,8 +51,15 @@
 
       });
 
-      ipcRenderer.send('get-mdb-records');
+      //ipcRenderer.send('get-mdb-records');
       ipcRenderer.on('resp-mdb-records', (event, data) => {
+
+        document.getElementById('mdb-response').innerText = `${data}`;
+
+      });
+
+      ipcRenderer.send('get-mdb-lastrecord');
+      ipcRenderer.on('resp-mdb-lastrecord', (event, data) => {
 
         document.getElementById('mdb-response').innerText = `${data}`;
 

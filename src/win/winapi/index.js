@@ -95,7 +95,7 @@ function createApiWindow( mainWindow ) {
       await checkConnectivity();
 
       const response = await axios.post(
-        `${process.env.APP_PROTOCOL}://${process.env.APP_HOST}:${process.env.APP_PORT}/m/utility/login`,
+        `${process.env.APP_PROTOCOL}://${process.env.APP_HOST}:${process.env.APP_PORT}/m/index/login`,
         {
           username,
           password,
@@ -111,7 +111,7 @@ function createApiWindow( mainWindow ) {
 
   async function checkConnectivity() {
     try {
-      await axios.get(`${process.env.APP_PROTOCOL}://${process.env.APP_HOST}:${process.env.APP_PORT}/ping`);
+      await axios.get(`${process.env.APP_PROTOCOL}://${process.env.APP_HOST}:${process.env.APP_PORT}/m/index/`);
     } catch (error) {
       //throw new Error('No connectivity');
       return 'OK';

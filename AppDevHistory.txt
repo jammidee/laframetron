@@ -13,6 +13,7 @@ Tested / QA by:				Jammi Dee
 01/09/2024  - integrated with mdbtools via exec
             - executed command mdb-ver, mdb-tables, mdb-records,
             - mdb-json d://Test.mdb Reacord > tbl-Reacord.json
+            - Get the last record of a Jet4 table.
             - 
 
 01/08/2024  - Completed the scanner window functionality

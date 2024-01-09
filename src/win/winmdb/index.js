@@ -27,7 +27,7 @@ require('dotenv').config();
 
 const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const path = require('path');
-const { versionMdbTools, version } = require('@el3um4s/mdbtools');
+const { versionMdbTools, version, sql } = require('@el3um4s/mdbtools');
 const { exec } = require('child_process');
 
 function createMdbWindow( mainWindow ) {
@@ -126,6 +126,41 @@ function createMdbWindow( mainWindow ) {
         newWindow.webContents.send('resp-mdb-tablelist', stdout);
       }
     });
+
+  });
+
+  ipcMain.on('get-mdb-lastrecord', async (event, query) => {
+
+    const mdbtoolPath = path.join(__dirname, '../../tools/mdbtools-win');
+    const mdbPath = process.env.MDB_DBPATH;
+    // const s = "SELECT * FROM Reacord order by ID desc limit 1;";
+    // const result = await sql({ mdbPath, mdbtoolPath, sql: s });
+
+    // Execute mdb-tools to query the MDB database
+    const command = `${mdbtoolPath}/mdb-json ${mdbPath} Reacord`;
+    exec(command, (error, stdout, stderr) => {
+      if (error) {
+        console.error('Error executing mdbtools command:', error.message);
+        newWindow.webContents.send('version-error', error.message);
+      } else {
+        try {
+          // Parse the JSON string into an array of objects
+          const records = JSON.parse(`[${stdout.trim().replace(/\}\s*\{/g, '},{')}]`);
+    
+          // Find the record with the highest ID value
+          const lastRecord = records.reduce((maxRecord, currentRecord) => {
+            return currentRecord.ID > maxRecord.ID ? currentRecord : maxRecord;
+          });
+    
+          // Send the last record to the renderer process
+          newWindow.webContents.send('resp-mdb-lastrecord', JSON.stringify(lastRecord) );
+        } catch (parseError) {
+          console.error('Error parsing JSON:', parseError.message);
+          newWindow.webContents.send('version-error', parseError.message);
+        }
+      }
+    });
+
 
   });
 
