@@ -207,7 +207,7 @@ function createTray() {
         mainWindow.maximize();
       },
       icon: nativeImage
-      .createFromPath(path.join(__dirname, 'icons/std/mdpi/1_navigation_back.png'))
+      .createFromPath(path.join(__dirname, 'icons/std/mdpi/1_navigation_back.png')).resize({ width: 16, height: 16 })
     },
     {
       label: 'Quit',
@@ -216,7 +216,7 @@ function createTray() {
         app.quit();
       },
       icon: nativeImage
-      .createFromPath(path.join(__dirname, 'icons/std/mdpi/1_navigation_cancel.png'))
+      .createFromPath(path.join(__dirname, 'icons/std/mdpi/1_navigation_cancel.png')).resize({ width: 16, height: 16 })
     }
   ]);
 

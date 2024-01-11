@@ -18,6 +18,11 @@ Tested / QA by:				Jammi Dee
             - Added OS Detection in main index.js
             - Added icon try / context menu feature
             - Added icon in the context menu
+            - Successfully added font-awesome
+            - Added bootstrap
+            - Successfully integrated bootstrap in renderer
+            - Relocated bootstrap and fontawesome inside the src folder for integration
+            - Successfully adjust icon size in the menu and in the icon tray.
             - 
 
 01/09/2024  - integrated with mdbtools via exec

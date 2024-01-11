@@ -1,7 +1,7 @@
 {
   "name": "lakubotron",
   "productName": "lakubotron",
-  "version": "1.0.123",
+  "version": "1.0.135",
   "description": "Lalulla ElecronJS Boilerplate",
   "main": "src/index.js",
   "scripts": {
@@ -27,6 +27,7 @@
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
     "axios": "^1.6.3",
+    "bootstrap": "^5.3.2",
     "dotenv": "^16.3.1",
     "electron-squirrel-startup": "^1.0.0",
     "html-pdf": "^3.0.1",
@@ -47,5 +48,22 @@
     "@electron-forge/maker-zip": "^7.2.0",
     "@electron-forge/plugin-auto-unpack-natives": "^7.2.0",
     "electron": "28.1.0"
+  },
+  "config": {
+    "forge": {
+      "packagerConfig": {
+        "files": [
+          "src/**/*"
+        ]
+      },
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "lakubotron"
+          }
+        }
+      ]
+    }
   }
 }

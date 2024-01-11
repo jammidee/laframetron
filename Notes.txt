@@ -58,6 +58,8 @@ npm install @el3um4s/mdbtools --save 01/08/2024
 npm install node-machine-id --save 01/11/2024
 npm install node-os-utils --save 01/11/2024
 
+npm install bootstrap --save 01/11/2024
+
 GIT - G1thUUb@!!M3
 ---
 

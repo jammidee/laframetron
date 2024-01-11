@@ -66,7 +66,8 @@ function createMainMenu(app, mainWindow) {
 
               },
               icon: nativeImage
-              .createFromPath(path.join(__dirname, 'icons/std/mdpi/4_collections_collection.png'))
+              .createFromPath(path.join(__dirname, 'icons/std/mdpi/4_collections_collection.png')).resize({ width: 24, height: 24 })
+
             },
             {
               label: 'New Data Entry',
@@ -77,7 +78,7 @@ function createMainMenu(app, mainWindow) {
 
               },
               icon: nativeImage
-              .createFromPath(path.join(__dirname, 'icons/std/mdpi/5_content_new.png'))
+              .createFromPath(path.join(__dirname, 'icons/std/mdpi/5_content_new.png')).resize({ width: 24, height: 24 })
             },
             {
               label: 'Capture Video',
@@ -88,7 +89,7 @@ function createMainMenu(app, mainWindow) {
 
               },
               icon: nativeImage
-              .createFromPath(path.join(__dirname, 'icons/std/mdpi/10_device_access_camera.png'))
+              .createFromPath(path.join(__dirname, 'icons/std/mdpi/10_device_access_camera.png')).resize({ width: 24, height: 24 })
             },
             {
               label: 'Capture Serial',
@@ -99,7 +100,7 @@ function createMainMenu(app, mainWindow) {
 
               },
               icon: nativeImage
-              .createFromPath(path.join(__dirname, 'icons/std/mdpi/10_device_access_usb.png'))
+              .createFromPath(path.join(__dirname, 'icons/std/mdpi/10_device_access_usb.png')).resize({ width: 24, height: 24 })
             },
             {
               label: 'QR Code Reader',
@@ -110,7 +111,7 @@ function createMainMenu(app, mainWindow) {
 
               },
               icon: nativeImage
-              .createFromPath(path.join(__dirname, 'icons/std/mdpi/4_collections_go_to_today.png'))
+              .createFromPath(path.join(__dirname, 'icons/std/mdpi/4_collections_go_to_today.png')).resize({ width: 24, height: 24 })
             },
             {
               label: 'Mdb Reader',
@@ -121,7 +122,7 @@ function createMainMenu(app, mainWindow) {
 
               },
               icon: nativeImage
-              .createFromPath(path.join(__dirname, 'icons/std/mdpi/10_device_access_sd_storage.png'))
+              .createFromPath(path.join(__dirname, 'icons/std/mdpi/10_device_access_sd_storage.png')).resize({ width: 24, height: 24 })
             },
             {
               label: 'API Call',
@@ -132,7 +133,7 @@ function createMainMenu(app, mainWindow) {
 
               },
               icon: nativeImage
-              .createFromPath(path.join(__dirname, 'icons/std/mdpi/9_av_shuffle.png'))
+              .createFromPath(path.join(__dirname, 'icons/std/mdpi/9_av_shuffle.png')).resize({ width: 24, height: 24 })
             },
             {
               label: 'Configure',
@@ -143,7 +144,7 @@ function createMainMenu(app, mainWindow) {
 
               },
               icon: nativeImage
-              .createFromPath(path.join(__dirname, 'icons/std/mdpi/2_action_settings.png'))
+              .createFromPath(path.join(__dirname, 'icons/std/mdpi/2_action_settings.png')).resize({ width: 24, height: 24 })
             },
             {
               type: 'separator',
@@ -172,7 +173,7 @@ function createMainMenu(app, mainWindow) {
                 `);
               },
               icon: nativeImage
-              .createFromPath(path.join(__dirname, 'icons/std/mdpi/1_navigation_cancel.png'))
+              .createFromPath(path.join(__dirname, 'icons/std/mdpi/1_navigation_cancel.png')).resize({ width: 24, height: 24 })
             },
           ],
         },
@@ -219,7 +220,7 @@ function createMainMenu(app, mainWindow) {
             createAboutWindow( mainWindow );
           },
           icon: nativeImage
-          .createFromPath(path.join(__dirname, 'icons/std/mdpi/1_navigation_cancel.png'))
+          .createFromPath(path.join(__dirname, 'icons/std/mdpi/1_navigation_cancel.png')).resize({ width: 24, height: 24 })
         },
       ]);
 
