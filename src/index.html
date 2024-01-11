@@ -167,6 +167,15 @@
 
       });
 
+      //Detected machine ID JMD 01/11/2024
+      ipcRenderer.on('machine-id', (event, machid) => {
+        Swal.fire({
+            title: 'File Dialog',
+            text: 'Machine ID: ' + machid + '',
+            icon: 'success',
+        });
+      });
+
       //==================================
       // Custom form initialization
       //==================================

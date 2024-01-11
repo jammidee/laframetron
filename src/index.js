@@ -28,6 +28,8 @@ require('dotenv').config();
 //Declare other important libraries here
 const { app, BrowserWindow, ipcMain, Menu, ipcRenderer, dialog } = require('electron');
 const path = require('path');
+const machineId = require('node-machine-id');
+const { exec } = require('child_process');
 
 //Use for the login window
 const { createLoginWindow } = require('./winlogin/index');
@@ -80,6 +82,29 @@ const createWindow = () => {
   // Open the DevTools.
   //====================
   //mainWindow.webContents.openDevTools();
+
+  // Get the unique machine ID  JMD 01/11/2024
+  machineId.machineId().then(id => {
+    console.log('Machine ID:', id);
+
+    // Pass the machine ID to the renderer process if needed
+    //mainWindow.webContents.send('machine-id', id);
+  });
+
+  // Execute the VBScript JMD 01/11/2024
+  const wintoolPath = path.join(__dirname, './tools/winscripts');
+  exec(`cscript.exe //nologo ${wintoolPath}/getDeviceID.vbs`, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`Error executing VBScript: ${error.message}`);
+      return;
+    }
+
+    const deviceID = stdout.trim();
+    console.log('Device ID:', deviceID);
+
+    // Pass the device ID to the renderer process if needed
+    mainWindow.webContents.send('machine-id', deviceID);
+  });
 
   //=============================================================
   // Demo mode scripts. This will protect the app from executing 
