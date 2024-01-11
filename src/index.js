@@ -26,10 +26,15 @@
 require('dotenv').config();
 
 //Declare other important libraries here
-const { app, BrowserWindow, ipcMain, Menu, ipcRenderer, dialog } = require('electron');
+const { app, BrowserWindow, nativeImage, ipcMain, Menu, ipcRenderer, dialog, Tray } = require('electron');
 const path = require('path');
 const machineId = require('node-machine-id');
 const { exec } = require('child_process');
+
+const os = require('os');
+const osUtils = require('node-os-utils');
+const driveInfo = osUtils.drive;
+const osInfo = osUtils.os;
 
 //Use for the login window
 const { createLoginWindow } = require('./winlogin/index');
@@ -42,11 +47,13 @@ if (require('electron-squirrel-startup')) {
 //==============================
 // Declare the main window here
 //==============================
+let mainWindow;
 const createWindow = () => {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
+    //frame: false,
     icon: path.join(__dirname, 'favicon.ico'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
@@ -106,6 +113,33 @@ const createWindow = () => {
     mainWindow.webContents.send('machine-id', deviceID);
   });
 
+  //===========================================
+  // Get the OS information using node-os-utils
+  const osInformation = {
+    platform: os.platform(),
+    arch: os.arch(),
+    release: os.release(),
+    totalMemory: os.totalmem(),
+    freeMemory: os.freemem(),
+    cpuModel: os.cpus()[0].model,
+    cpuCores: os.cpus().length,
+  };
+
+  console.log('OS Information:', osInformation);
+  //============================================
+
+  // Execute the VBScript:Get drive C:\ Serial number JMD 01/11/2024
+  exec(`cscript.exe //nologo ${wintoolPath}/getDriveSerial.vbs`, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`Error executing VBScript: ${error.message}`);
+      return;
+    }
+
+    const driveCSerial = stdout.trim();
+    console.log('Drive C: serial number', driveCSerial);
+
+  });
+
   //=============================================================
   // Demo mode scripts. This will protect the app from executing 
   // when the date had expired.
@@ -160,10 +194,52 @@ const createWindow = () => {
 
 };
 
+//Added by Jammi Dee
+function createTray() {
+  const iconPath = path.join(__dirname, 'favicon.ico'); // Replace with your icon path
+  let tray = new Tray(iconPath);
+
+  const contextMenu = Menu.buildFromTemplate([
+    {
+      label: 'Show App',
+      click: function () {
+        mainWindow.show();
+        mainWindow.maximize();
+      },
+      icon: nativeImage
+      .createFromPath(path.join(__dirname, 'icons/std/mdpi/1_navigation_back.png'))
+    },
+    {
+      label: 'Quit',
+      click: function () {
+        app.isQuiting = true;
+        app.quit();
+      },
+      icon: nativeImage
+      .createFromPath(path.join(__dirname, 'icons/std/mdpi/1_navigation_cancel.png'))
+    }
+  ]);
+
+  tray.setToolTip(app.getName());
+  tray.setContextMenu(contextMenu);
+};
+
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow);
+//app.on('ready', createWindow);
+app.whenReady().then(() => {
+  createWindow();
+
+  app.on('activate', function () {
+    if (BrowserWindow.getAllWindows().length === 0) {
+      createWindow();
+    }
+  });
+
+  createTray();
+});
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits

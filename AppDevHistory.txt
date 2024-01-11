@@ -15,6 +15,9 @@ Tested / QA by:				Jammi Dee
             - Added script to detect OS device id
             - Added script to detect drive C: serial number
             - Added a way of calling vbscripts via exec.
+            - Added OS Detection in main index.js
+            - Added icon try / context menu feature
+            - Added icon in the context menu
             - 
 
 01/09/2024  - integrated with mdbtools via exec

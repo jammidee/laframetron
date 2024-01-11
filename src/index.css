@@ -1,3 +1,28 @@
+.title-bar {
+  -webkit-app-region: no-drag;
+  background: #333;
+  color: #fff;
+  padding: 8px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+}
+
+/* Style the window controls (minimize, maximize, close) */
+.title-bar .window-controls {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.title-bar .window-controls button {
+  background: none;
+  border: none;
+  color: #fff;
+  margin: 0 5px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   margin: 0;
