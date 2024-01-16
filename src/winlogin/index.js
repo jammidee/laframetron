@@ -53,7 +53,6 @@ function createLoginWindow( mainWindow ) {
   const basicUser = process.env.BASIC_USER || '' ;
   const basicPass = process.env.BASIC_PASS || '' ;
 
-
   newWindow.webContents.on('dom-ready', () => {
     newWindow.webContents.send('data-to-login', pagedata );
     newWindow.webContents.send('basic-to-login', { user: basicUser, password: basicPass } );

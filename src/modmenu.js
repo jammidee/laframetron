@@ -37,6 +37,7 @@ const { createSerialWindow }  = require('./win/winserial/index');
 const { createQrcodeWindow }  = require('./win/winqrcode/index');
 const { createMdbWindow }     = require('./win/winmdb/index');
 const { createApiWindow }     = require('./win/winapi/index');
+const { createReportWindow }  = require('./win/winreport/index');
 
 const iconSize = { width: 16, height: 16 };
 
@@ -134,6 +135,17 @@ function createMainMenu(app, mainWindow) {
               },
               icon: nativeImage
               .createFromPath(path.join(__dirname, 'icons/std/mdpi/9_av_shuffle.png')).resize({ width: 24, height: 24 })
+            },
+            {
+              label: 'Report',
+              accelerator: 'CmdOrCtrl+R',
+              click: async () => {
+
+                createReportWindow( mainWindow );
+
+              },
+              icon: nativeImage
+              .createFromPath(path.join(__dirname, 'icons/std/mdpi/5_content_paste.png')).resize({ width: 24, height: 24 })
             },
             {
               label: 'Configure',
