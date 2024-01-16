@@ -16,7 +16,7 @@
         <input type="password" id="password" name="password" required>
         <button type="submit">Login</button>
       </form>
-      <button id="closeButton">Close</button>
+      <!-- <button id="closeButton">Close</button> -->
     </div>
 
     <!-- Include your external script file -->
@@ -34,6 +34,20 @@
       ipcRenderer.on('data-to-login', (event, data) => {
         const { title, ...otherdata } = data;
         document.title = title;
+      });
+      ipcRenderer.on('basic-to-login', (event, data) => {
+        
+        console.log('Received data:', data);
+        const { user, password } = data;
+
+        // Ensure that user and password are strings
+        const strUser = user.toString();
+        const strPassword = password.toString();
+
+        // Update the content of the username and password fields
+        document.getElementById('username').value = strUser;
+        document.getElementById('password').value = strPassword;
+
       });
 
       //==================================
@@ -53,8 +67,34 @@
 
       document.getElementById('loginForm').addEventListener('submit', (event) => {
         event.preventDefault();
-        // Add your login logic here
-        ipcRenderer.send('login-success');
+
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        ipcRenderer.send('login-request', { username, password });
+      });
+
+      ipcRenderer.on('login-response', (event, response) => {
+        if (response.success) {
+          // Handle successful login
+          const token = response.token;
+          console.log('Successful login. Token:', token);
+          // Optionally, perform other actions with the token
+
+          // Close the login window
+          ipcRenderer.send('login-modal-closed');
+        } else {
+          // Handle login failure
+          console.error('Login failed:', response.error);
+
+          // Show SweetAlert2 alert on login failure
+          const Swal = require('sweetalert2');
+          Swal.fire({
+            icon: 'error',
+            title: 'Login Failed',
+            text: 'Invalid username or password. Please try again.',
+          });
+        }
       });
 
       document.getElementById('closeButton').addEventListener('click', () => {

@@ -10,6 +10,13 @@ Framework Design: 			Jammi Dee
 Developed / Programmed by : Joel Margate Damaso aka Jammi Dee
 Tested / QA by:				Jammi Dee
 
+01/16/2024  - completed the login code behinds
+            - successfully tested the getaccesscode call to the server
+            - organized env file
+            - successfully loaded basic_user and basic_pass to login window
+            - Added checking for connectivity during login request
+            - 
+
 01/11/2024  - added npm install node-os-utils --save
             - npm install node-machine-id
             - Added script to detect OS device id

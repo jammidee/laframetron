@@ -26,7 +26,8 @@
 require('dotenv').config();
 
 const { app, BrowserWindow, Menu, ipcMain, ipcRenderer } = require('electron');
-const path = require('path');
+const path    = require('path');
+const axios   = require('axios');
 
 function createLoginWindow( mainWindow ) {
   const newWindow = new BrowserWindow({
@@ -49,10 +50,13 @@ function createLoginWindow( mainWindow ) {
   newWindow.setMenu(menu);
 
   const pagedata = { title: process.env.PAGE_LOGIN_TITLE || 'Login' };
+  const basicUser = process.env.BASIC_USER || '' ;
+  const basicPass = process.env.BASIC_PASS || '' ;
 
 
   newWindow.webContents.on('dom-ready', () => {
     newWindow.webContents.send('data-to-login', pagedata );
+    newWindow.webContents.send('basic-to-login', { user: basicUser, password: basicPass } );
   });
 
   //Close the current window
@@ -86,6 +90,47 @@ function createLoginWindow( mainWindow ) {
       console.log('No focused window found.');
     }
   });
+
+  //Custom scripts JMD 01/16/2024
+  ipcMain.on('login-request', async (event, { username, password }) => {
+    try {
+
+      //Check for connectivity
+      const constatus = await checkConnectivity();
+      if( constatus === 'ERROR'){
+        event.sender.send('login-response', { success: false, error: 'Connectvity error!' });
+      }
+      // Get base URL from environment variables
+      const baseUrl = `${process.env.APP_PROTOCOL}://${process.env.APP_HOST}:${process.env.APP_PORT}`;
+  
+      // Request for token
+      const response = await axios.get(`${baseUrl}/m/mdbex/getaccesstoken`, {
+        headers: {
+          Authorization: `Basic ${Buffer.from(`${username}:${password}`).toString('base64')}`,
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      // Assuming the server responds with a JWT token in the 'token' field
+      const token = response.data.token;
+  
+      // Send the token back to content.html
+      event.sender.send('login-response', { success: true, token });
+    } catch (error) {
+      console.error('Login failed:', error.message);
+      // Handle login failure here (e.g., show an error message)
+      event.sender.send('login-response', { success: false, error: error.message });
+    }
+  });
+
+  async function checkConnectivity() {
+    try {
+      await axios.get(`${process.env.APP_PROTOCOL}://${process.env.APP_HOST}:${process.env.APP_PORT}/m/mdbex/`);
+    } catch (error) {
+      //throw new Error('No connectivity');
+      return 'ERROR';
+    }
+  }
 
 }
 
