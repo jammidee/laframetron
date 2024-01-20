@@ -30,7 +30,7 @@ const path = require('path');
 const { versionMdbTools, version, sql } = require('@el3um4s/mdbtools');
 const { exec } = require('child_process');
 
-function createMdbWindow( mainWindow ) {
+function createMdbWindow( mainWindow, glovars ) {
   const newWindow = new BrowserWindow({
     width: 800,
     height: 600,

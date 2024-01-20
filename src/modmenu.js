@@ -41,7 +41,7 @@ const { createReportWindow }  = require('./win/winreport/index');
 
 const iconSize = { width: 16, height: 16 };
 
-function createMainMenu(app, mainWindow) {
+function createMainMenu(app, mainWindow, gvars) {
 
     const mainMenu = Menu.buildFromTemplate([
         {
@@ -75,7 +75,7 @@ function createMainMenu(app, mainWindow) {
               accelerator: 'CmdOrCtrl+N',
               click: async () => {
 
-                createFormWindow( mainWindow );
+                createFormWindow( mainWindow, gvars );
 
               },
               icon: nativeImage
@@ -86,7 +86,7 @@ function createMainMenu(app, mainWindow) {
               accelerator: 'CmdOrCtrl+V',
               click: async () => {
 
-                createVideoWindow( mainWindow );
+                createVideoWindow( mainWindow, gvars );
 
               },
               icon: nativeImage
@@ -97,7 +97,7 @@ function createMainMenu(app, mainWindow) {
               accelerator: 'CmdOrCtrl+S',
               click: async () => {
 
-                createSerialWindow( mainWindow );
+                createSerialWindow( mainWindow, gvars );
 
               },
               icon: nativeImage
@@ -108,7 +108,7 @@ function createMainMenu(app, mainWindow) {
               accelerator: 'CmdOrCtrl+R',
               click: async () => {
 
-                createQrcodeWindow( mainWindow );
+                createQrcodeWindow( mainWindow, gvars );
 
               },
               icon: nativeImage
@@ -119,7 +119,7 @@ function createMainMenu(app, mainWindow) {
               accelerator: 'CmdOrCtrl+M',
               click: async () => {
 
-                createMdbWindow( mainWindow );
+                createMdbWindow( mainWindow, gvars );
 
               },
               icon: nativeImage
@@ -130,7 +130,7 @@ function createMainMenu(app, mainWindow) {
               accelerator: 'CmdOrCtrl+A',
               click: async () => {
 
-                createApiWindow( mainWindow );
+                createApiWindow( mainWindow, gvars );
 
               },
               icon: nativeImage
@@ -141,7 +141,7 @@ function createMainMenu(app, mainWindow) {
               accelerator: 'CmdOrCtrl+R',
               click: async () => {
 
-                createReportWindow( mainWindow );
+                createReportWindow( mainWindow, gvars );
 
               },
               icon: nativeImage
@@ -152,7 +152,7 @@ function createMainMenu(app, mainWindow) {
               accelerator: 'CmdOrCtrl+C',
               click: async () => {
 
-                createConfigWindow( mainWindow );
+                createConfigWindow( mainWindow, gvars );
 
               },
               icon: nativeImage

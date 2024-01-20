@@ -29,7 +29,7 @@ const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const path = require('path');
 const axios = require('axios');
 
-function createApiWindow( mainWindow ) {
+function createApiWindow( mainWindow, glovars ) {
   const newWindow = new BrowserWindow({
     width: 500,
     height: 430,
@@ -90,22 +90,63 @@ function createApiWindow( mainWindow ) {
 
   });
 
-  ipcMain.on('login-request', async (event, { username, password }) => {
+  ipcMain.on('request-to-call', async (event, { username, password }) => {
     try {
-      await checkConnectivity();
 
-      const response = await axios.post(
-        `${process.env.APP_PROTOCOL}://${process.env.APP_HOST}:${process.env.APP_PORT}/m/index/login`,
-        {
-          username,
-          password,
-        }
-      );
+      //Check for connectivity
+      const constatus = await checkConnectivity();
+      if( constatus === 'ERROR'){
+        event.sender.send('login-response', { success: false, error: 'Connectvity error!' });
+      }
+      // Get base URL from environment variables
+      const baseUrl = `${process.env.APP_PROTOCOL}://${process.env.APP_HOST}:${process.env.APP_PORT}`;
+  
+      // Request for token
+      const response = await axios.get(`${baseUrl}/m/mdbex/getaccesstoken`, {
+        headers: {
+          Authorization: `Basic ${Buffer.from(`${username}:${password}`).toString('base64')}`,
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      // Assuming the server responds with a JWT token in the 'token' field
+      const token = response.data.token;
 
-      event.reply('login-response', response.data);
+      async function callSquery(base64EncodedSqlScript, baseUrl, token) {
+          try {
+              const url = `${baseUrl}/m/mdbex/squery?sqlscript=${base64EncodedSqlScript}`;
+              const headers = {
+                  'Authorization': `Bearer ${token}`,
+                  'Content-Type': 'application/json'
+              };
+
+              const response = await axios.get(url, { headers });
+
+              // Assuming the response is JSON, you can access the data like this:
+              console.log('Response:', response.data);
+
+              return response.data;
+
+          } catch (error) {
+              console.error('Error making API call:', error);
+              throw error; // You can handle the error as needed
+          }
+      }
+
+
+      const base64EncodedSqlScript = "c2VsZWN0ICogZnJvbSB0Ymx1c2Vy";
+      //const baseUrl = "https://your-api-base-url";
+      //const token = "your-access-token";
+
+      callSquery(base64EncodedSqlScript, baseUrl, token);
+  
+      // Send the token back to content.html
+      //event.sender.send('login-response', { success: true, token });
+
     } catch (error) {
-      console.error('Error:', error.message);
-      event.reply('login-response', { error: 'Failed to connect to the server' });
+      console.error('Login failed:', error.message);
+      // Handle login failure here (e.g., show an error message)
+      event.sender.send('login-response', { success: false, error: error.message });
     }
   });
 

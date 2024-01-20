@@ -28,7 +28,7 @@ require('dotenv').config();
 const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const path = require('path');
 
-function createAboutWindow( mainWindow ) {
+function createAboutWindow( mainWindow, glovars ) {
   const newWindow = new BrowserWindow({
     width: 500,
     height: 430,

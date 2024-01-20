@@ -30,7 +30,7 @@ const path = require('path');
 const { SerialPort } = require('serialport');
 
 
-function createSerialWindow( mainWindow ) {
+function createSerialWindow( mainWindow, glovars ) {
   const newWindow = new BrowserWindow({
     width: 500,
     height: 400,

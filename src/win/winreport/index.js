@@ -30,7 +30,7 @@ const path  = require('path');
 const fs    = require('fs');
 const pdf   = require('html-pdf');
 
-function createReportWindow( mainWindow ) {
+function createReportWindow( mainWindow, glovars ) {
   const newWindow = new BrowserWindow({
     width: 500,
     height: 430,
@@ -136,6 +136,10 @@ function createReportWindow( mainWindow ) {
           footer {
             background-color: #f1f1f1;
             padding: 10px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
           }
         </style>
       </head>
@@ -159,6 +163,12 @@ function createReportWindow( mainWindow ) {
       // Open the generated PDF file
       const pdfWindow = new BrowserWindow({ width: 800, height: 600 });
       pdfWindow.loadFile(res.filename);
+
+      // Set the zoom factor to 100%
+      pdfWindow.webContents.on('did-finish-load', () => {
+        pdfWindow.webContents.setZoomFactor(1);
+      });
+
     });
   }
 

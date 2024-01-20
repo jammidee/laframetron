@@ -27,14 +27,22 @@ require('dotenv').config();
 
 //Declare other important libraries here
 const { app, BrowserWindow, nativeImage, ipcMain, Menu, ipcRenderer, dialog, Tray } = require('electron');
-const path = require('path');
-const machineId = require('node-machine-id');
-const { exec } = require('child_process');
 
-const os = require('os');
-const osUtils = require('node-os-utils');
-const driveInfo = osUtils.drive;
-const osInfo = osUtils.os;
+const path        = require('path');
+const fs          = require('fs');
+
+const machineId   = require('node-machine-id');
+const { exec }    = require('child_process');
+
+const os          = require('os');
+const osUtils     = require('node-os-utils');
+const driveInfo   = osUtils.drive;
+const osInfo      = osUtils.os;
+const getmac      = require('getmac');
+
+//Custom library
+const libt = require('./libs/lalibtools');
+const { checkForUpdates } = require('./libs/update-checker');
 
 //Use for the login window
 const { createLoginWindow } = require('./winlogin/index');
@@ -43,6 +51,60 @@ const { createLoginWindow } = require('./winlogin/index');
 if (require('electron-squirrel-startup')) {
   app.quit();
 }
+
+//==================
+// Global variables
+//==================
+var glovars = {
+  token: "",
+  macaddress: "",
+  deviceid: "",
+  driveserial: "",
+
+}
+
+//=============================================================
+// Added by Jammi Dee 01/19/2024
+// Function to copy the example .env file if it doesn't exist
+//=============================================================
+const initializeEnvFile = () => {
+  const envFilePath = path.join(__dirname, './.env');
+  const exampleEnvFilePath = path.join(__dirname, 'assets', 'env.sample');
+
+  if (!fs.existsSync(envFilePath)) {
+    const exampleEnvContent = fs.readFileSync(exampleEnvFilePath, 'utf-8');
+    fs.writeFileSync(envFilePath, exampleEnvContent);
+  }
+};
+
+//==================================
+// Added by Jammi Dee 01/19/2024
+// Function to get the MAC address
+//==================================
+const macAddress = libt.getMacAddress();
+
+if (macAddress) {
+
+  glovars.macaddress = macAddress
+  console.log('MAC Address:', macAddress);
+
+} else {
+  console.log('MAC Address not found.');
+}
+
+
+//========================================
+// Updates detection section
+// Get the app version from package.json
+//========================================
+const packageJsonPath     = path.join(__dirname, '../package.json');
+const packageJsonContent  = fs.readFileSync(packageJsonPath, 'utf-8');
+const appVersion          = JSON.parse(packageJsonContent).version;
+
+// Define your update URL
+// Used by checkForUpdates(appVersion, updateUrl);
+const updateUrl           = process.env.APP_UPDATE_URL || 'https://example.com/version.txt';
+
 
 //==============================
 // Declare the main window here
@@ -80,7 +142,7 @@ const createWindow = () => {
 
   //Create the customized menu here
   const createMainMenu = require('./modmenu');
-  createMainMenu(app, mainWindow);
+  createMainMenu(app, mainWindow, glovars);
 
   // Maximize the window
   mainWindow.maximize();
@@ -107,10 +169,26 @@ const createWindow = () => {
     }
 
     const deviceID = stdout.trim();
+    glovars.deviceid = deviceID;
+
     console.log('Device ID:', deviceID);
 
     // Pass the device ID to the renderer process if needed
     mainWindow.webContents.send('machine-id', deviceID);
+
+  });
+
+  // Execute the VBScript JMD 01/19/2024
+  // wintoolPath = path.join(__dirname, './tools/winscripts');
+  exec(`cscript.exe //nologo ${wintoolPath}/getMacAddress.vbs`, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`Error executing VBScript: ${error.message}`);
+      return;
+    }
+
+    const deviceID = stdout.trim();
+    console.log('Mac Address:', deviceID);
+
   });
 
   //===========================================
@@ -136,6 +214,7 @@ const createWindow = () => {
     }
 
     const driveCSerial = stdout.trim();
+    glovars.driveserial = driveCSerial;
     console.log('Drive C: serial number', driveCSerial);
 
   });
@@ -167,6 +246,7 @@ const createWindow = () => {
   //============================
   // Require login for the user
   //============================
+  //console.log(`Allow_login ${process.env.ALLOW_LOGIN}`);
   if( (process.env.ALLOW_LOGIN || 'NO') === 'YES'){
     createLoginWindow( mainWindow );
   }
@@ -190,6 +270,13 @@ const createWindow = () => {
     .catch(err => {
       console.error(err);
     });
+  });
+
+  // Add this part to handle the "Open File" functionality
+  ipcMain.on('login-response', function (event, { success, token }) {
+
+    console.log( `The token is ${token}` );
+
   });
 
 };
@@ -230,6 +317,13 @@ function createTray() {
 // Some APIs can only be used after this event occurs.
 //app.on('ready', createWindow);
 app.whenReady().then(() => {
+
+  // Perform your initialization before reading the .env file
+  initializeEnvFile();
+
+  //Check if there is a latest version
+  //checkForUpdates(appVersion, updateUrl);
+
   createWindow();
 
   app.on('activate', function () {
@@ -239,6 +333,7 @@ app.whenReady().then(() => {
   });
 
   createTray();
+
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common

@@ -10,6 +10,22 @@ Framework Design: 			Jammi Dee
 Developed / Programmed by : Joel Margate Damaso aka Jammi Dee
 Tested / QA by:				Jammi Dee
 
+01/20/2024  - Added a global variable glovars to handle global data.
+            - Added passing of token to the main process.
+            - Fixed the issue of loading the .env
+            - Updated all windows passing glovars
+            - Updated menu to accept glovars
+            - 
+
+01/19/2024  - added an initialization to copy the .env sample from assets
+            - Added vbscript to detect mac address.
+            - Added npm getmac
+            - Added detection of mac address via vbscript.
+            - Successfully tested getting mac Adress via vbscript calling from ElectronJS
+            - Added a custom library for getting mac address
+            - create a custom library folder
+            - Added a section to detect if there is a latest version of the app.
+
 01/16/2024  - completed the login code behinds
             - successfully tested the getaccesscode call to the server
             - organized env file

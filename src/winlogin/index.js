@@ -115,10 +115,13 @@ function createLoginWindow( mainWindow ) {
   
       // Send the token back to content.html
       event.sender.send('login-response', { success: true, token });
+
     } catch (error) {
+
       console.error('Login failed:', error.message);
       // Handle login failure here (e.g., show an error message)
       event.sender.send('login-response', { success: false, error: error.message });
+
     }
   });
 

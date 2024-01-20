@@ -29,7 +29,7 @@ const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const path = require('path');
 const fs = require('fs');
 
-function createConfigWindow( mainWindow ) {
+function createConfigWindow( mainWindow, glovars ) {
   const newWindow = new BrowserWindow({
     width: 600,
     height: 550,

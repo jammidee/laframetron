@@ -70,10 +70,10 @@
       <div id="welcome">Welcome to the API Window</div>
       <div id="mainform">
         <form id="apiForm">
-          <label for="username">Username:</label>
-          <input type="text" id="username" name="username" required>
-          <label for="password">Password:</label>
-          <input type="password" id="password" name="password" required>
+          <label for="keyid">Key ID:</label>
+          <input type="text" id="keyid" name="keyid" required>
+          <!-- <label for="password">Password:</label>
+          <input type="password" id="password" name="password" required> -->
           <button type="button" id="apiCallButton">Make API Call</button>
         </form>
       </div>
@@ -108,16 +108,28 @@
       // Custom page events and functions
       //==================================
 
-      // document.getElementById('evtClose').addEventListener('click', async () => {
-      //   try {
+      document.getElementById('apiCallButton').addEventListener('click', async () => {
+        try {
 
-      //     ipcRenderer.send('close-to-api');
+          const keyid = document.getElementById('keyid').value;
+          ipcRenderer.send('request-to-call', { keyid } );
 
-      //   } catch (error) {
-      //     console.log(`Error while closing window ${document.title}:`, error);
-      //   }
+        } catch (error) {
+          console.log(`Error while sending IPC call for ${document.title}:`, error);
+        }
 
-      // });
+      });
+
+      document.getElementById('evtClose').addEventListener('click', async () => {
+        try {
+
+          ipcRenderer.send('close-to-api');
+
+        } catch (error) {
+          console.log(`Error while closing window ${document.title}:`, error);
+        }
+
+      });
 
     </script>
 

@@ -29,7 +29,7 @@ const { app, BrowserWindow, Menu, ipcMain, screen  } = require('electron');
 const path = require('path');
 const { postDataToEncrypt, } = require('./modfunc');
 
-function createFormWindow( mainWindow ) {
+function createFormWindow( mainWindow, glovars ) {
 
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
 
