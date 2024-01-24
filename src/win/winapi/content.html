@@ -71,7 +71,7 @@
       <div id="mainform">
         <form id="apiForm">
           <label for="keyid">Key ID:</label>
-          <input type="text" id="keyid" name="keyid" required>
+          <input type="text" id="keyid" name="keyid" value="CIVIL-STATUS" required>
           <!-- <label for="password">Password:</label>
           <input type="password" id="password" name="password" required> -->
           <button type="button" id="apiCallButton">Make API Call</button>
@@ -79,7 +79,7 @@
       </div>
       <div id="apiResult"></div>
     </div>
-    <script src="renderer.js"></script>
+    <!-- <script src="renderer.js"></script> -->
 
     <!-- Include your external script file -->
     <script>
@@ -89,6 +89,8 @@
       //Declare library for IPC here
       const { ipcRenderer } = require('electron');
       window.ipcRenderer = ipcRenderer;
+
+      const Swal = require('sweetalert2');
 
       //=================
       // Initialize page
@@ -130,6 +132,23 @@
         }
 
       });
+
+    ipcRenderer.on('apicall-response', (event, data) => {
+      
+      alert( JSON.stringify(data) );
+      
+      const apiResultDiv = document.getElementById('apiResult');
+      if (data.error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: data.error,
+        });
+      } else {
+        apiResultDiv.textContent = `API Response: ${JSON.stringify(data)}`;
+      }
+      
+    });
 
     </script>
 

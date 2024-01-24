@@ -111,10 +111,15 @@ function createLoginWindow( mainWindow ) {
       });
   
       // Assuming the server responds with a JWT token in the 'token' field
-      const token = response.data.token;
+      const token     = response.data.token;
+      const userData  = response.data.userData;
   
+      //Update global token
+      //event.sender.send('global-update-token', {token: token });
+
       // Send the token back to content.html
-      event.sender.send('login-response', { success: true, token });
+      //console.log(`Token: ${token}`);
+      event.sender.send('login-response', { success: true, token, userData });
 
     } catch (error) {
 

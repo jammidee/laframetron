@@ -90,31 +90,32 @@ function createApiWindow( mainWindow, glovars ) {
 
   });
 
-  ipcMain.on('request-to-call', async (event, { username, password }) => {
+  ipcMain.on('request-to-call', async (event, { keyid }) => {
     try {
 
+      console.log(`Checking connectivity...`);
       //Check for connectivity
       const constatus = await checkConnectivity();
       if( constatus === 'ERROR'){
-        event.sender.send('login-response', { success: false, error: 'Connectvity error!' });
+        event.sender.send('apicall-response', { success: false, error: 'Connectvity error!' });
       }
       // Get base URL from environment variables
       const baseUrl = `${process.env.APP_PROTOCOL}://${process.env.APP_HOST}:${process.env.APP_PORT}`;
   
-      // Request for token
-      const response = await axios.get(`${baseUrl}/m/mdbex/getaccesstoken`, {
-        headers: {
-          Authorization: `Basic ${Buffer.from(`${username}:${password}`).toString('base64')}`,
-          'Content-Type': 'application/json',
-        },
-      });
+      // // Request for token
+      // const response = await axios.get(`${baseUrl}/m/mdbex/getaccesstoken`, {
+      //   headers: {
+      //     Authorization: `Basic ${Buffer.from(`${username}:${password}`).toString('base64')}`,
+      //     'Content-Type': 'application/json',
+      //   },
+      // });
   
-      // Assuming the server responds with a JWT token in the 'token' field
-      const token = response.data.token;
+      // // Assuming the server responds with a JWT token in the 'token' field
+      // const token = response.data.token;
 
-      async function callSquery(base64EncodedSqlScript, baseUrl, token) {
+      async function callSquery(base64SqlScript, baseUrl, token) {
           try {
-              const url = `${baseUrl}/m/mdbex/squery?sqlscript=${base64EncodedSqlScript}`;
+              const url = `${baseUrl}/m/mdbex/squery?sqlscript=${base64SqlScript}`;
               const headers = {
                   'Authorization': `Bearer ${token}`,
                   'Content-Type': 'application/json'
@@ -123,7 +124,7 @@ function createApiWindow( mainWindow, glovars ) {
               const response = await axios.get(url, { headers });
 
               // Assuming the response is JSON, you can access the data like this:
-              console.log('Response:', response.data);
+              //console.log('Response:', response.data);
 
               return response.data;
 
@@ -133,26 +134,26 @@ function createApiWindow( mainWindow, glovars ) {
           }
       }
 
+      const sqlScript = `SELECT itemid, description FROM tbllookup t where entityid='${process.env.DB_ENTITY}' and keyid='${keyid}';`;
+      const base64SqlScript = Buffer.from(`${sqlScript}`).toString('base64');
 
-      const base64EncodedSqlScript = "c2VsZWN0ICogZnJvbSB0Ymx1c2Vy";
-      //const baseUrl = "https://your-api-base-url";
-      //const token = "your-access-token";
+      //console.log(`Calling callSquery with token: ${glovars.token}`);
+      const respData = await callSquery(base64SqlScript, baseUrl, glovars.token);
+      console.log(`The data is: ${JSON.stringify(respData)}`);
 
-      callSquery(base64EncodedSqlScript, baseUrl, token);
-  
       // Send the token back to content.html
-      //event.sender.send('login-response', { success: true, token });
+      event.sender.send('apicall-response', { success: true, data: respData });
 
     } catch (error) {
       console.error('Login failed:', error.message);
       // Handle login failure here (e.g., show an error message)
-      event.sender.send('login-response', { success: false, error: error.message });
+      event.sender.send('apicall-response', { success: false, error: error.message });
     }
   });
 
   async function checkConnectivity() {
     try {
-      await axios.get(`${process.env.APP_PROTOCOL}://${process.env.APP_HOST}:${process.env.APP_PORT}/m/index/`);
+      await axios.get(`${process.env.APP_PROTOCOL}://${process.env.APP_HOST}:${process.env.APP_PORT}/m/mdbex/`);
     } catch (error) {
       //throw new Error('No connectivity');
       return 'OK';

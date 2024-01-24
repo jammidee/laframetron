@@ -38,7 +38,7 @@ const os          = require('os');
 const osUtils     = require('node-os-utils');
 const driveInfo   = osUtils.drive;
 const osInfo      = osUtils.os;
-const getmac      = require('getmac');
+//const getmac      = require('getmac');
 
 //Custom library
 const libt = require('./libs/lalibtools');
@@ -60,6 +60,12 @@ var glovars = {
   macaddress: "",
   deviceid: "",
   driveserial: "",
+
+  username: "sadmin",
+  entityid: "LALULLA",
+  roleid: "USER",
+  locked: "YES",
+  allowlogon: "NO"
 
 }
 
@@ -371,6 +377,51 @@ ipcMain.on('form-submission', (event, formData) => {
 // Handle the request to Quit the application
 ipcMain.on('quit-to-index', (event, formData) => {
   app.quit();
+});
+
+//=======================
+// Global Token Updates
+//=======================
+
+ipcMain.on('global-update-token', function (event, { token, userData }) {
+
+  const jwt = require('jsonwebtoken');
+
+  function decodeJwtAndGetUserData(token) {
+    try {
+      // Decode the JWT without verifying the signature
+      const decoded = jwt.decode(token, { complete: true });
+  
+      // Extract the payload from the decoded JWT
+      const payload = decoded.payload;
+  
+      // Check if the payload contains the 'username' field
+      if (payload && payload.username) {
+        // Return the user data as a JSON object
+        return payload.username;
+      } else {
+        // If 'username' field is not present, return null or handle as needed
+        return null;
+      }
+    } catch (error) {
+      // Handle decoding errors, such as invalid tokens
+      console.error('Error decoding JWT:', error);
+      return null;
+    }
+  }
+
+  const jwtData = decodeJwtAndGetUserData(userData);
+  
+  glovars.token = token;
+  glovars.username    = jwtData.username;
+  glovars.entityid    = jwtData.entityid;
+  glovars.roleid      = jwtData.roleid;
+  glovars.locked      = jwtData.locked;
+  glovars.allowlogon  = jwtData.allowlogon;
+
+  //console.log(`The token is: ${token}`);
+  //console.log(`The user data is: ${JSON.stringify(decodeJwtAndGetUserData(userData))}`);
+
 });
 
 

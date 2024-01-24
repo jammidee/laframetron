@@ -72,17 +72,19 @@
         const password = document.getElementById('password').value;
 
         ipcRenderer.send('login-request', { username, password });
+
       });
 
       ipcRenderer.on('login-response', (event, response) => {
         if (response.success) {
-          // Handle successful login
-          const token = response.token;
-          console.log('Successful login. Token:', token);
-          // Optionally, perform other actions with the token
+          // Handle successful login, send token globally
+          const token     = response.token;
+          const userData  = response.token;
+          ipcRenderer.send('global-update-token', { token, userData } );
 
           // Close the login window
           ipcRenderer.send('login-modal-closed');
+
         } else {
           // Handle login failure
           console.error('Login failed:', response.error);

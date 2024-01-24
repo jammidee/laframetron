@@ -59,6 +59,9 @@ npm install node-machine-id --save 01/11/2024
 npm install node-os-utils --save 01/11/2024
 
 npm install bootstrap --save 01/11/2024
+npm install jsonwebtoken --save 01/20/2024
+
+npm install admin-lte@^3.2 --save 01/25/2024
 
 GIT - G1thUUb@!!M3
 ---
