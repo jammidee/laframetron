@@ -27,7 +27,16 @@ PACKAGING Electron
 
    npm run make
 
-2. 
+2. Copy node_modules and src modules inside /src/resources/app/node_modules and
+   /src/resources/app/src respectively. These folders are created after compilation
+   so we simulate it during development.
+   * after compile always update these folders.
+   * usually these are used by references inside html and operations
+     that involves OS operations.
+
+
+3. 
+
 
 
 EXTENSIONS
@@ -85,3 +94,7 @@ git rm -r --cached logs
 git status
 git log
 git log --all --graph
+
+TODO:
+- Add PC info extraction page
+- Report using PDF maker

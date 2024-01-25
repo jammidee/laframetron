@@ -38,6 +38,7 @@ const { createQrcodeWindow }  = require('./win/winqrcode/index');
 const { createMdbWindow }     = require('./win/winmdb/index');
 const { createApiWindow }     = require('./win/winapi/index');
 const { createReportWindow }  = require('./win/winreport/index');
+const { createLteWindow }     = require('./win/winlte/index');
 
 const iconSize = { width: 16, height: 16 };
 
@@ -142,6 +143,17 @@ function createMainMenu(app, mainWindow, gvars) {
               click: async () => {
 
                 createReportWindow( mainWindow, gvars );
+
+              },
+              icon: nativeImage
+              .createFromPath(path.join(__dirname, 'icons/std/mdpi/5_content_paste.png')).resize({ width: 24, height: 24 })
+            },
+            {
+              label: 'AdminLTE',
+              accelerator: 'CmdOrCtrl+L',
+              click: async () => {
+
+                createLteWindow( mainWindow, gvars );
 
               },
               icon: nativeImage

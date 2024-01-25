@@ -75,7 +75,7 @@ var glovars = {
 //=============================================================
 const initializeEnvFile = () => {
   const envFilePath = path.join(__dirname, './.env');
-  const exampleEnvFilePath = path.join(__dirname, 'assets', 'env.sample');
+  const exampleEnvFilePath = path.join(__dirname, 'resources', 'app', 'src',  'assets', 'env.sample');
 
   if (!fs.existsSync(envFilePath)) {
     const exampleEnvContent = fs.readFileSync(exampleEnvFilePath, 'utf-8');

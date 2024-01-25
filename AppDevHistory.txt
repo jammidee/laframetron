@@ -10,9 +10,14 @@ Framework Design: 			Jammi Dee
 Developed / Programmed by : Joel Margate Damaso aka Jammi Dee
 Tested / QA by:				Jammi Dee
 
-01/25/2024  - adde latest admin-lte in the framework.
+01/25/2024  - Added latest admin-lte in the framework.
+            - Added Admin-LTE template window.
+            - Copied resources from the out folder to simulate resources even during development
+            - Added windowLte to main menu.
+            - Successfully incorporated AdminLTE in the form.
+            - Improdve the AdminLTE page.
             - 
-            
+
 01/20/2024  - Added a global variable glovars to handle global data.
             - Added passing of token to the main process.
             - Fixed the issue of loading the .env

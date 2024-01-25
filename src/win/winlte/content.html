@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>AdminLTE</title>
+    <!-- <link rel="stylesheet" href="../index.css" />
+    <link rel="stylesheet" href="../node_modules/@fortawesome/fontawesome-free/css/all.min.css"> -->
+    <link rel="stylesheet" href="./styles.css">
+    <!-- Include AdminLTE CSS -->
+    <link rel="stylesheet" href="../../resources/app/node_modules/admin-lte/dist/css/adminlte.min.css">
+
+  </head>
+  <body class="hold-transition sidebar-collapse sidebar-closed">
+    <div class="wrapper">
+      <div class="content-wrapper">
+        <section class="content-header"> 
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1>🔥Lalulla Laframetron</h1>
+            </div>
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item"><a href="#">Layout</a></li>
+                <li class="breadcrumb-item active">Collapsed Sidebar</li>
+              </ol>
+            </div>
+          </div>
+        </section>
+        <section class="content">
+
+          <!-- Fluid Container -->
+          <div class="container-fluid">
+
+            <!-- Main Row -->
+            <div class="row">
+
+              <!-- Card Body -->
+              <div class="card">
+                <div class="card-header">
+
+                </div>
+                <div class="card-body">
+                  <div class="lte-container">
+                    <h1>🔥Lalulla Laframetron</h1>
+                    <p>
+                      Welcome to Lalulla Laframetron, a robust and user-friendly boilerplate for ElectronJS. 
+                      This application is crafted to assist you in developing Electron-based applications by 
+                      providing pre-coded essentials required for such applications.
+                    </p>
+                    <p id="txtversion">Version: 1.0.0</p>
+                    <p id="txtauthor">Author: Your Name</p>
+                    <button id="evtClose">Close</button>
+                  </div>
+                </div>
+                <div class="card-footer">
+
+                </div>
+              </div>
+              <!-- Card Body -->
+
+            </div>
+            <!-- Main Row -->
+
+          </div>
+          <!-- Fluid Container -->
+
+        </section>
+        <!-- <section class="footer">
+
+        </section> -->
+        <footer class="main-footer">
+          <h5>Hello to Lakubotron</h5>
+          <div class="float-right d-none d-sm-block">
+            <b>Version</b> 3.2.0
+          </div>
+          <strong>Copyright &copy; 2014-2024 <a href="https://lalulla.com">Lalulla</a>.</strong> All rights reserved.
+        </footer>
+
+      </div>
+
+    </div>
+
+    <!-- Include AdminLTE JS and dependencies -->
+    <script src="../../resources/app/node_modules/admin-lte/plugins/jquery/jquery.min.js"></script>
+    <script src="../../resources/app/node_modules/admin-lte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../../resources/app/node_modules/admin-lte/dist/js/adminlte.min.js"></script>
+
+    <!-- Include your external script file -->
+    <script>
+
+      const { remote } = require('electron');
+
+      //Declare library for IPC here
+      const { ipcRenderer } = require('electron');
+      window.ipcRenderer = ipcRenderer;
+
+      //=================
+      // Initialize page
+      //=================
+      ipcRenderer.on('data-to-lte', (event, data) => {
+        const { title, ...otherdata } = data;
+        document.title = title;
+      });
+
+      ipcRenderer.on('version-to-lte', (event, appinfo) => {
+        // Update the version in the placeholder element
+        document.getElementById('txtauthor').innerText = `Name: ${appinfo.name}`;
+        document.getElementById('txtversion').innerText = `Version: ${appinfo.version}`;
+      })
+
+      //==================================
+      // Custom page events and functions
+      //==================================
+
+      document.getElementById('evtClose').addEventListener('click', async () => {
+        try {
+
+          ipcRenderer.send('close-to-lte');
+
+        } catch (error) {
+          console.log(`Error while closing window ${document.title}:`, error);
+        }
+
+      });
+
+    </script>
+
+  </body>
+
+</html>
+

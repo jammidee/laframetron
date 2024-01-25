@@ -94,3 +94,6 @@ out/
 # Tools
 src/tools/mdbtools-win
 
+# Resources from compilation
+src/resources
+
