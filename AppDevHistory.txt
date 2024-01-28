@@ -10,12 +10,16 @@ Framework Design: 			Jammi Dee
 Developed / Programmed by : Joel Margate Damaso aka Jammi Dee
 Tested / QA by:				Jammi Dee
 
+01/28/2024  - re-arrange .env page custom window section
+            - Added window for pdfmaker template
+            - Added pdfmake library
+
 01/25/2024  - Added latest admin-lte in the framework.
             - Added Admin-LTE template window.
             - Copied resources from the out folder to simulate resources even during development
             - Added windowLte to main menu.
             - Successfully incorporated AdminLTE in the form.
-            - Improdve the AdminLTE page.
+            - Improve the AdminLTE page.
             - 
 
 01/20/2024  - Added a global variable glovars to handle global data.
