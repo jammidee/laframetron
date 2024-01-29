@@ -9,8 +9,14 @@
   <body>
     <button id="generatePdfBtn">Generate PDF Report</button>
 
+    <!-- //<script src="./renderer.js"></script> -->
     <!-- Include your external script file -->
     <script>
+
+      const pdfMake = require('pdfmake/build/pdfmake');
+      const pdfFonts = require('pdfmake/build/vfs_fonts');
+
+      pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
       const { remote } = require('electron');
 
@@ -36,21 +42,144 @@
       // Custom page events and functions
       //==================================
 
-      const generatePdfBtn = document.getElementById('generatePdfBtn');
-      generatePdfBtn.addEventListener('click', () => {
-        require('electron').ipcRenderer.send('generate-pdfmake');
+      document.getElementById('generatePdfBtn').addEventListener('click', () => {
+          generatePdf();
       });
 
-      document.getElementById('evtClose').addEventListener('click', async () => {
-        try {
+      // const generatePdfBtn = document.getElementById('generatePdfBtn');
+      // generatePdfBtn.addEventListener('click', () => {
+      //   require('electron').ipcRenderer.send('generate-pdfmake');
+      // });
 
-          ipcRenderer.send('close-to-pdfmake');
+      // document.getElementById('evtClose').addEventListener('click', async () => {
+      //   try {
 
-        } catch (error) {
-          console.log(`Error while closing window ${document.title}:`, error);
-        }
+      //     ipcRenderer.send('close-to-pdfmake');
 
-      });
+      //   } catch (error) {
+      //     console.log(`Error while closing window ${document.title}:`, error);
+      //   }
+
+      // });
+
+      function generatePdf() {
+
+        // pdfMake.fonts = {
+        //     Arial: {
+        //         normal: '.arial.ttf',
+        //         bold: 'Arial-Bold.ttf',
+        //     },
+        //     // download default Roboto font from cdnjs.com
+        //     Impact: {
+        //         normal: 'impact.ttf',
+        //         bold: 'Impacted.ttf',
+        //     },
+        //     'Roboto' : {
+        //         normal: `Roboto-Regular.ttf`,
+        //         bold: `Roboto-Medium.ttf`,
+        //         italics: `Roboto-Italic.ttf`,
+        //         bolditalics: `Roboto-BoldItalic.ttf`
+        //     },
+        // }
+        
+        //Recreate content
+        var contentarr = [];
+
+        // Add the SI REPORT header
+        contentarr.push({ text: [{ text: 'SI', style: 'reporthead'}] });
+        contentarr.push('This is a sample report generated using pdfmake in ElectronJS.\r\n');
+        contentarr.push('You can customize it further as per your requirements.\r\n');
+
+        const resheader = 'Welcome to PDF Maker';
+        const resfooter = 'Lalulla Template';
+
+        const docDefinition = {
+            content: contentarr,
+            // styles: {
+            //     header: {
+            //         fontSize: 18,
+            //         bold: true,
+            //         alignment: 'center',
+            //         margin: [0, 0, 0, 20]
+            //     }
+            // },
+            //Lalulla Standard Style - Do not touch!!!
+            pageSize: 'LETTER',
+            pageOrientation: 'portrait',
+            pageMargins: [ 50, 30, 50, 30 ],
+            footer: {
+                columns: [
+                    //{ text: resfooter , alignment: 'center', style: 'small',font:'Arial' }
+                    { text: resfooter , alignment: 'center', style: 'small' }
+                ]
+            },
+            header: {
+                columns: [
+                    //{ text: resheader , alignment: 'center', style: 'small',font:'Arial' }
+                    { text: resheader , alignment: 'center', style: 'header' }
+                ]
+            },
+            styles: {
+                header: {
+                    fontSize: 18,
+                    bold: true,
+                    alignment: 'center',
+                },
+                quotes: {
+                    fontSize: 10,
+                    alignment: 'left',
+                    margin: [123, 1, 0, 0],
+
+                },
+                small: {
+                    bold: false,
+                    fontSize: 10,
+                    columnGap: 10,
+                    defaultBorder:true,
+                    margin: [0, 5, 0, 5],
+                },
+                tablemargin: {
+                    margin: [0, 5, 0, 5],
+                    fontSize: 9,
+                },
+                table1: {
+                    fontSize: 8,
+                    margin: [0, 5, 0, 0],
+                },
+                lalullaRecord: {
+                    fontSize: 14,
+                    alignment: 'center',
+                    bold: true,
+                    margin: [0, 20, 0, 2]
+                },
+                normal: {
+                    font: 'Arial',
+                    fontSize: 14,
+                },
+                title: {
+                    fontSize: 14,
+                    bold: true,
+                    decoration:'underline',
+                },
+                label: {
+                    fontSize: 12,
+                    bold: true,
+                },
+                reporthead: {
+                    fontSize: 50,
+                    bold: true,
+                    alignment:'center',
+                },
+            },
+        };
+
+        const pdfDoc = pdfMake.createPdf(docDefinition);
+
+        pdfDoc.getBase64((data) => {
+            ipcRenderer.send('generate-pdfmake', data);
+        });
+      }
+
 
     </script>
 

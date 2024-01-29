@@ -28,7 +28,7 @@ require('dotenv').config();
 const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const path  = require('path');
 const fs    = require('fs');
-const pdf   = require('html-pdf');
+//const pdf   = require('html-pdf');
 
 function createPdfWindow( mainWindow, glovars ) {
   const newWindow = new BrowserWindow({
@@ -50,14 +50,16 @@ function createPdfWindow( mainWindow, glovars ) {
   const menu = Menu.buildFromTemplate([]);
   newWindow.setMenu(menu);
 
-  const pagedata = { title: process.env.PAGE_REPORT_TITLE || 'Report' };
+  const pagedata = { title: process.env.PAGE_PDFMAKE_TITLE || 'PDF Make' };
 
   newWindow.webContents.on('dom-ready', () => {
-    newWindow.webContents.send('data-to-report', pagedata );
+    newWindow.webContents.send('data-to-pdfmake', pagedata );
   });
 
+  newWindow.webContents.openDevTools();
+
   //Close the current window
-  ipcMain.on('close-to-report', () => {
+  ipcMain.on('close-to-pdfmake', () => {
 
     const currentWindow = BrowserWindow.getFocusedWindow();
     if (currentWindow) {
@@ -75,7 +77,7 @@ function createPdfWindow( mainWindow, glovars ) {
       name: app.getName(),
       version: app.getVersion(),
     };
-    newWindow.webContents.send('version-to-report', appInfo);
+    newWindow.webContents.send('version-to-pdfmake', appInfo);
 
     // newWindow.webContents.executeJavaScript(`
     //   const generatePdfBtn = document.getElementById('generatePdfBtn');
@@ -90,7 +92,7 @@ function createPdfWindow( mainWindow, glovars ) {
 
     // Perform any cleanup or additional actions before the window is closed
     // You can use `event.preventDefault()` to prevent the window from closing
-    console.log('Report Window is closing');
+    console.log('PDF Make Window is closing');
 
     // In this example, we prevent the window from closing
     // You might want to prompt the user or save data before closing
@@ -98,87 +100,53 @@ function createPdfWindow( mainWindow, glovars ) {
 
   });
 
-  const customHeader = '<header><h1>Custom Header</h1></header>';
-  const customFooter = '<footer><p>Custom Footer</p></footer>';
 
-  // Generate PDF function
-  function generatePdf(headerContent, footerContent) {
-    // Main content for the PDF
-    const mainContent = `
-      <div class="main-content">
-        <h1>Generated PDF Report</h1>
-        <p>This PDF report is generated from an Electron app.</p>
-      </div>
-    `;
+  //Execute generation of PDF JMD 01/29/2024
+  // ipcMain.on('generate-pdfmake', (event, data) => {
 
-      // Complete HTML content with header, main content, and footer
-      const content = `
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <title>Generated PDF Report</title>
-        <style>
-          body {
-            margin: 20px; /* Add margin to the entire page */
-          }
+  //   console.log('Making PDF?');
 
-          .page-container {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-          }
+  //   const pdfData = Buffer.from(data, 'base64');
+  //   const filePath = dialog.showSaveDialogSync(mainWindow, {
+  //       title: 'Save PDF',
+  //       defaultPath: path.join(app.getPath('documents'), 'pdfmake.pdf'),
+  //       filters: [{ name: 'PDF Files', extensions: ['pdf'] }],
+  //   });
 
-          .main-content {
-            flex: 1;
-            padding: 20px;
-          }
+  //   if (filePath) {
+  //       fs.writeFileSync(filePath, pdfData);
+  //   }
+  // });
 
-          footer {
-            background-color: #f1f1f1;
-            padding: 10px;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-          }
-        </style>
-      </head>
-      <body>
-        <div class="page-container">
-          ${headerContent}
-          ${mainContent}
-        </div>
-        ${footerContent}
-      </body>
-      </html>
-    `;
+  //Execute generation of PDF JMD 01/29/2024
+  ipcMain.on('generate-pdfmake', (event, data) => {
+    const pdfData = Buffer.from(data, 'base64');
+    const defaultFilePath = path.join(app.getPath('documents'), 'pdfmake.pdf');
 
+    try {
+        fs.writeFileSync(defaultFilePath, pdfData);
+        console.log('PDF saved successfully at:', defaultFilePath);
 
-    const pdfOptions = { format: 'Letter' };
+        // Send a confirmation to renderer process if needed
+        event.sender.send('pdf-saved', defaultFilePath); 
 
-    pdf.create(content, pdfOptions).toFile('./generated-pdfreport.pdf', function (err, res) {
-      if (err) return console.log(err);
-      console.log(res);
+        // Open the generated PDF file
+        const pdfWindow = new BrowserWindow({ width: 800, height: 600 });
+        pdfWindow.loadFile(defaultFilePath);
 
-      // Open the generated PDF file
-      const pdfWindow = new BrowserWindow({ width: 800, height: 600 });
-      pdfWindow.loadFile(res.filename);
+        // Set the zoom factor to 100%
+        pdfWindow.webContents.on('did-finish-load', () => {
+          pdfWindow.webContents.setZoomFactor(1);
+        });
 
-      // Set the zoom factor to 100%
-      pdfWindow.webContents.on('did-finish-load', () => {
-        pdfWindow.webContents.setZoomFactor(1);
-      });
+    } catch (error) {
+        console.error('Error saving PDF:', error);
 
-    });
-  }
+        // Send an error message to renderer process if needed
+        event.sender.send('pdf-save-error', error.message);
 
-
-  //Execute generation of PDF JMD 01/16/2024
-  ipcMain.on('generate-pdfmake', () => {
-
-    generatePdf(customHeader, customFooter);
-
-  });
+    }
+});
 
 
 }

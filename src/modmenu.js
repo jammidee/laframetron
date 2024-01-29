@@ -158,7 +158,7 @@ function createMainMenu(app, mainWindow, gvars) {
 
               },
               icon: nativeImage
-              .createFromPath(path.join(__dirname, 'icons/std/mdpi/5_content_paste.png')).resize({ width: 24, height: 24 })
+              .createFromPath(path.join(__dirname, 'icons/std/mdpi/4_collections_view_as_list.png')).resize({ width: 24, height: 24 })
             },
             {
               label: 'AdminLTE',

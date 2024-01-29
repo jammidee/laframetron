@@ -10,6 +10,10 @@ Framework Design: 			Jammi Dee
 Developed / Programmed by : Joel Margate Damaso aka Jammi Dee
 Tested / QA by:				Jammi Dee
 
+01/29/2024  - Added scripts on the PDFMake window.
+            - Completed the PDFmaker PDF script
+            - 
+
 01/28/2024  - re-arrange .env page custom window section
             - Added window for pdfmaker template
             - Added pdfmake library
