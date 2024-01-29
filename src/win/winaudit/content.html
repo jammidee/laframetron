@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Windows Audit</title>
+    <!-- <link rel="stylesheet" href="../index.css" />
+    <link rel="stylesheet" href="../node_modules/@fortawesome/fontawesome-free/css/all.min.css"> -->
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <div class="audit-container">
+      <h1>🔥Lalulla Laframetron</h1>
+      <p id="audit-response">Version: 1.0.0</p>
+      <button id="evtClose">Close</button>
+    </div>
+
+    <!-- Include your external script file -->
+    <script>
+
+      const { remote } = require('electron');
+
+      //Declare library for IPC here
+      const { ipcRenderer } = require('electron');
+      window.ipcRenderer = ipcRenderer;
+
+      //=================
+      // Initialize page
+      //=================
+      ipcRenderer.on('data-to-audit', (event, data) => {
+        const { title, ...otherdata } = data;
+        document.title = title;
+      });
+
+      //ipcRenderer.send('get-mdbtools-version');
+      ipcRenderer.on('resp-audit-version', (event, data) => {
+
+        document.getElementById('audit-response').innerText = `${data}`;
+
+      });
+
+      //ipcRenderer.send('get-mdb-version');
+      ipcRenderer.on('resp-audit-version', (event, data) => {
+
+        document.getElementById('audit-response').innerText = `${data}`;
+
+      });
+
+      //ipcRenderer.send('get-mdb-tablelist');
+      ipcRenderer.on('resp-audit-tablelist', (event, data) => {
+
+        document.getElementById('audit-response').innerText = `${data}`;
+
+      });
+
+      //ipcRenderer.send('get-audit-records');
+      ipcRenderer.on('resp-audit-records', (event, data) => {
+
+        document.getElementById('audit-response').innerText = `${data}`;
+
+      });
+
+      ipcRenderer.send('get-audit-lastrecord');
+      ipcRenderer.on('resp-audit-lastrecord', (event, data) => {
+
+        document.getElementById('audit-response').innerText = `${data}`;
+
+      });
+
+      // ipcRenderer.on('version-to-audit', (event, appinfo) => {
+      //   // Update the version in the placeholder element
+      //   document.getElementById('txtauthor').innerText = `Name: ${appinfo.name}`;
+      //   document.getElementById('txtversion').innerText = `Version: ${appinfo.version}`;
+      // })
+
+      //==================================
+      // Custom page events and functions
+      //==================================
+
+      document.getElementById('evtClose').addEventListener('click', async () => {
+        try {
+
+          ipcRenderer.send('close-to-mdb');
+
+        } catch (error) {
+          console.log(`Error while closing window ${document.title}:`, error);
+        }
+
+      });
+
+    </script>
+
+  </body>
+</html>

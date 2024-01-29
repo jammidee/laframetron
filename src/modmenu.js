@@ -40,6 +40,7 @@ const { createApiWindow }     = require('./win/winapi/index');
 const { createReportWindow }  = require('./win/winreport/index');
 const { createLteWindow }     = require('./win/winlte/index');
 const { createPdfWindow }     = require('./win/winpdf/index');
+const { createAuditWindow }   = require('./win/winaudit/index');
 
 const iconSize = { width: 16, height: 16 };
 
@@ -170,6 +171,17 @@ function createMainMenu(app, mainWindow, gvars) {
               },
               icon: nativeImage
               .createFromPath(path.join(__dirname, 'icons/std/mdpi/5_content_paste.png')).resize({ width: 24, height: 24 })
+            },
+            {
+              label: 'Open Audit',
+              accelerator: 'CmdOrAtl+O',
+              click: async () => {
+
+                createAuditWindow( mainWindow, gvars );
+
+              },
+              icon: nativeImage
+              .createFromPath(path.join(__dirname, 'icons/std/mdpi/10_device_access_sd_storage.png')).resize({ width: 24, height: 24 })
             },
             {
               label: 'Configure',

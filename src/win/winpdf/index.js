@@ -56,7 +56,7 @@ function createPdfWindow( mainWindow, glovars ) {
     newWindow.webContents.send('data-to-pdfmake', pagedata );
   });
 
-  newWindow.webContents.openDevTools();
+  //newWindow.webContents.openDevTools();
 
   //Close the current window
   ipcMain.on('close-to-pdfmake', () => {

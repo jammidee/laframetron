@@ -1,7 +1,7 @@
 {
   "name": "lakubotron",
   "productName": "lakubotron",
-  "version": "1.2.37",
+  "version": "1.3.41",
   "description": "Lalulla ElecronJS Boilerplate",
   "main": "src/index.js",
   "scripts": {

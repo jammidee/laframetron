@@ -12,6 +12,7 @@ Tested / QA by:				Jammi Dee
 
 01/29/2024  - Added scripts on the PDFMake window.
             - Completed the PDFmaker PDF script
+            - Added Audit Window page
             - 
 
 01/28/2024  - re-arrange .env page custom window section
