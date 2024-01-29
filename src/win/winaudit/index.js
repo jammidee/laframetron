@@ -29,6 +29,7 @@ const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const path = require('path');
 const { versionMdbTools, version, sql } = require('@el3um4s/mdbtools');
 const { exec } = require('child_process');
+const Swal = require('sweetalert2');
 
 function createAuditWindow( mainWindow, glovars ) {
   const newWindow = new BrowserWindow({
@@ -50,14 +51,14 @@ function createAuditWindow( mainWindow, glovars ) {
   const menu = Menu.buildFromTemplate([]);
   newWindow.setMenu(menu);
 
-  const pagedata = { title: process.env.PAGE_MDB_TITLE || 'Windows Audit' };
+  const pagedata = { title: process.env.PAGE_AUDIT_TITLE || 'Windows Audit' };
 
   newWindow.webContents.on('dom-ready', () => {
     newWindow.webContents.send('data-to-audit', pagedata );
   });
 
   //Close the current window
-  ipcMain.on('close-to-about', () => {
+  ipcMain.on('close-to-audit', () => {
 
     const currentWindow = BrowserWindow.getFocusedWindow();
     if (currentWindow) {
@@ -68,99 +69,26 @@ function createAuditWindow( mainWindow, glovars ) {
 
   });
 
-  ipcMain.on('get-audit-version', async (event, query) => {
-    
-    const windowsPath = path.join(__dirname, '../../tools/mdbtools-win');
-    const versionW = await versionMdbTools(windowsPath);
-    newWindow.webContents.send('resp-audit-version', versionW);
 
-  });
+  ipcMain.on('get-audit-device', async (event, query) => {
 
-  ipcMain.on('get-mdb-version', async (event, query) => {
-    
-    const mdbtoolPath = path.join(__dirname, '../../tools/mdbtools-win');
-    const mdbPath = process.env.MDB_DBPATH;
-    
-    // Execute mdb-tools to query the MDB database
-    const command = `${mdbtoolPath}/mdb-ver ${mdbPath}`;
-    exec(command, (error, stdout, stderr) => {
+    console.error(`Executing VBScript...`);
+    // Execute the VBScript JMD 01/29/2024
+    const wintoolPath = path.join(__dirname, '../../tools/winscripts');
+    exec(`cscript.exe //nologo ${wintoolPath}/auditWindows.vbs create_file=y create_filename="D:\\auditdata.xml"`, (error, stdout, stderr) => {
+
+      console.error(`Executing VBScript done...`);
+
       if (error) {
-        console.error('Error executing mdbtools command:', error.message);
-        newWindow.webContents.send('version-error', error.message);
-      } else {
-        newWindow.webContents.send('resp-mdbtools-version', stdout);
+        console.error(`Error executing VBScript: ${error.message}`);
+        newWindow.webContents.send('resp-audit-device', "FAILED");
+        return;
       }
+
+      // // Pass the device ID to the renderer process if needed
+      newWindow.webContents.send('resp-audit-device', "OK");
+
     });
-  });
-
-  ipcMain.on('get-audit-tablelist', async (event, query) => {
-    
-    const mdbtoolPath = path.join(__dirname, '../../tools/mdbtools-win');
-    const mdbPath = process.env.MDB_DBPATH;
-    
-    // Execute mdb-tools to query the MDB database
-    const command = `${mdbtoolPath}/mdb-tables ${mdbPath}`;
-    exec(command, (error, stdout, stderr) => {
-      if (error) {
-        console.error('Error executing mdbtools command:', error.message);
-        newWindow.webContents.send('version-error', error.message);
-      } else {
-        newWindow.webContents.send('resp-audit-tablelist', stdout);
-      }
-    });
-
-  });
-
-  ipcMain.on('get-audit-records', async (event, query) => {
-    
-    const mdbtoolPath = path.join(__dirname, '../../tools/mdbtools-win');
-    const mdbPath = process.env.MDB_DBPATH;
-    
-    // Execute mdb-tools to query the MDB database
-    const command = `${mdbtoolPath}/mdb-json ${mdbPath} Reacord`;
-    exec(command, (error, stdout, stderr) => {
-      if (error) {
-        console.error('Error executing mdbtools command:', error.message);
-        newWindow.webContents.send('version-error', error.message);
-      } else {
-        newWindow.webContents.send('resp-mdb-tablelist', stdout);
-      }
-    });
-
-  });
-
-  ipcMain.on('get-audit-lastrecord', async (event, query) => {
-
-    const mdbtoolPath = path.join(__dirname, '../../tools/mdbtools-win');
-    const mdbPath = process.env.MDB_DBPATH;
-    // const s = "SELECT * FROM Reacord order by ID desc limit 1;";
-    // const result = await sql({ mdbPath, mdbtoolPath, sql: s });
-
-    // Execute mdb-tools to query the MDB database
-    const command = `${mdbtoolPath}/mdb-json ${mdbPath} Reacord`;
-    exec(command, (error, stdout, stderr) => {
-      if (error) {
-        console.error('Error executing mdbtools command:', error.message);
-        newWindow.webContents.send('version-error', error.message);
-      } else {
-        try {
-          // Parse the JSON string into an array of objects
-          const records = JSON.parse(`[${stdout.trim().replace(/\}\s*\{/g, '},{')}]`);
-    
-          // Find the record with the highest ID value
-          const lastRecord = records.reduce((maxRecord, currentRecord) => {
-            return currentRecord.ID > maxRecord.ID ? currentRecord : maxRecord;
-          });
-    
-          // Send the last record to the renderer process
-          newWindow.webContents.send('resp-audit-lastrecord', JSON.stringify(lastRecord) );
-        } catch (parseError) {
-          console.error('Error parsing JSON:', parseError.message);
-          newWindow.webContents.send('version-error', parseError.message);
-        }
-      }
-    });
-
 
   });
 

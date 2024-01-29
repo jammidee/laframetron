@@ -32,6 +32,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const saveButton            = document.getElementById('saveButton');
     const timestampOption       = document.getElementById('timestampOption');
     const timestampCheckbox     = document.getElementById('timestampCheckbox');
+
+    // Load logo image
+    const logoImage = new Image();
+    logoImage.src = '../../assets/captured-image-logo.png';
+    logoImage.onload = function() {
+        console.log('Logo loaded');
+    };
   
     let currentStream;
   
@@ -134,6 +141,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   
     function addTimestamp(dataUrl) {
+
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
   
@@ -156,6 +164,9 @@ document.addEventListener('DOMContentLoaded', function () {
         ctx.fillText(timestamp, 10, canvas.height - 10);
       }
   
+      // Add logo, adjust position and size of the logo
+      ctx.drawImage(logoImage, canvas.width - 100, 0, 100, 100);
+
       return canvas.toDataURL('image/png');
     }
   

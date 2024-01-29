@@ -57,7 +57,7 @@ function createMdbWindow( mainWindow, glovars ) {
   });
 
   //Close the current window
-  ipcMain.on('close-to-about', () => {
+  ipcMain.on('close-to-mdb', () => {
 
     const currentWindow = BrowserWindow.getFocusedWindow();
     if (currentWindow) {

@@ -16,7 +16,8 @@
     <!-- Include your external script file -->
     <script>
 
-      const { remote } = require('electron');
+      const Swal        = require('sweetalert2');
+      const { remote }  = require('electron');
 
       //Declare library for IPC here
       const { ipcRenderer } = require('electron');
@@ -30,46 +31,43 @@
         document.title = title;
       });
 
-      //ipcRenderer.send('get-mdbtools-version');
-      ipcRenderer.on('resp-audit-version', (event, data) => {
-
-        document.getElementById('audit-response').innerText = `${data}`;
-
+      // Display loading pop-up
+      Swal.fire({
+          title: 'Please wait...',
+          html: 'Executing the audit process...',
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          onBeforeOpen: () => {
+              Swal.showLoading();
+          }
       });
 
-      //ipcRenderer.send('get-mdb-version');
-      ipcRenderer.on('resp-audit-version', (event, data) => {
+      //Execute the audit process
+      ipcRenderer.send('get-audit-device');
 
-        document.getElementById('audit-response').innerText = `${data}`;
+      ipcRenderer.on('resp-audit-device', (event, data) => {
+
+        if(data==='OK'){
+
+          Swal.close(); // Close the loading pop-up
+          Swal.fire({
+              icon: 'success',
+              title: 'Audit Successful',
+              text: `Device ID: ${data.deviceID}`
+          });
+
+        } else {
+
+          Swal.close(); // Close the loading pop-up
+          Swal.fire({
+              icon: 'error',
+              title: 'Audit Error',
+              text: data.message
+          });
+
+        }
 
       });
-
-      //ipcRenderer.send('get-mdb-tablelist');
-      ipcRenderer.on('resp-audit-tablelist', (event, data) => {
-
-        document.getElementById('audit-response').innerText = `${data}`;
-
-      });
-
-      //ipcRenderer.send('get-audit-records');
-      ipcRenderer.on('resp-audit-records', (event, data) => {
-
-        document.getElementById('audit-response').innerText = `${data}`;
-
-      });
-
-      ipcRenderer.send('get-audit-lastrecord');
-      ipcRenderer.on('resp-audit-lastrecord', (event, data) => {
-
-        document.getElementById('audit-response').innerText = `${data}`;
-
-      });
-
-      // ipcRenderer.on('version-to-audit', (event, appinfo) => {
-      //   // Update the version in the placeholder element
-      //   document.getElementById('txtauthor').innerText = `Name: ${appinfo.name}`;
-      //   document.getElementById('txtversion').innerText = `Version: ${appinfo.version}`;
-      // })
 
       //==================================
       // Custom page events and functions
@@ -78,7 +76,7 @@
       document.getElementById('evtClose').addEventListener('click', async () => {
         try {
 
-          ipcRenderer.send('close-to-mdb');
+          ipcRenderer.send('close-to-audit');
 
         } catch (error) {
           console.log(`Error while closing window ${document.title}:`, error);

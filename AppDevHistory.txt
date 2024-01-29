@@ -13,7 +13,11 @@ Tested / QA by:				Jammi Dee
 01/29/2024  - Added scripts on the PDFMake window.
             - Completed the PDFmaker PDF script
             - Added Audit Window page
-            - 
+            - Added a logo on the captured image.
+            - Cleanup of Audit Window because it was copied from window mdb
+            - Added auditWindows.vbs in the tools
+            - Completed the Window Audit supporting code.
+            - Test the audit window
 
 01/28/2024  - re-arrange .env page custom window section
             - Added window for pdfmaker template
