@@ -12,7 +12,9 @@ Tested / QA by:				Jammi Dee
 
 01/30/2024  - replace all closing ipcRenderer.send('close-to-???') to window.close();
             rather that closing via IPC.
-            -
+            - Added sqlite3 library
+            - Added libs/ladatabase.js
+            - 
 
 01/29/2024  - Added scripts on the PDFMake window.
             - Completed the PDFmaker PDF script

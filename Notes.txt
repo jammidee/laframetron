@@ -74,6 +74,8 @@ npm install admin-lte@^3.2 --save 01/25/2024
 
 npm install pdfmake --save 01/28/2024
 
+npm install sqlite3 --save   01/30/2024
+
 
 GIT - G1thUUb@!!M3
 ---
