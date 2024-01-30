@@ -31,7 +31,7 @@ const path = require('path');
 function createQrcodeWindow( mainWindow, glovars ) {
   const newWindow = new BrowserWindow({
     width: 500,
-    height: 400,
+    height: 450,
     parent: mainWindow, //make modal
     //modal: true, //make modal
     resizable: false,

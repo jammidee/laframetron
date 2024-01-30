@@ -11,6 +11,7 @@
   </head>
   <body>
     <video id="scanner" playsinline></video>
+    <div id="scanres"></div>
 
     <!-- Include your external script file -->
     <script>
@@ -28,6 +29,8 @@
         const { title, ...otherdata } = data;
         document.title = title;
       });
+
+      let lastvalue = '';
 
       //==================================
       // Custom page events and functions
@@ -61,9 +64,15 @@
             const imageData = canvasContext.getImageData(0, 0, canvasElement.width, canvasElement.height);
             const code = jsQR(imageData.data, imageData.width, imageData.height);
             //console.log('Decoded QR code:', code);
-      
+
             if (code) {
-              ipcRenderer.send('display-result', code.data);
+              if( lastvalue !== code.data){
+
+                ipcRenderer.send('display-result', code.data);
+                const scanResult = document.getElementById('scanres');
+                scanResult.innerText = `Data: ${code.data}`;
+
+              }
             }
           });
         })

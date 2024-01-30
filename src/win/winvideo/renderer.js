@@ -32,6 +32,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const saveButton            = document.getElementById('saveButton');
     const timestampOption       = document.getElementById('timestampOption');
     const timestampCheckbox     = document.getElementById('timestampCheckbox');
+    const capturedImage800600   = document.getElementById('capturedImage800600');
+    const capturedImage320240   = document.getElementById('capturedImage320240');
 
     // Load logo image
     const logoImage = new Image();
@@ -112,8 +114,30 @@ document.addEventListener('DOMContentLoaded', function () {
       ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
   
       // Display the captured image
+      //console.log(`datUrl: ${canvas.toDataURL('image/png')}`);
       capturedImageElement.src = addTimestamp(canvas.toDataURL('image/png'));
+
       showCapturedImage();
+
+      // const canvas1 = document.createElement('canvas');
+      // const targetWidth1   = 800;
+      // const targetHeight1  = 600; 
+      // canvas1.width        = targetWidth1;
+      // canvas1.height       = targetHeight1;
+      // const ctx1 = canvas1.getContext('2d');
+      // ctx1.drawImage(videoElement, 0, 0, canvas1.width, canvas1.height);
+      capturedImage800600.src = addTimestampV2('800', canvas.toDataURL('image/png'));
+
+      // const canvas2 = document.createElement('canvas');
+      // const targetWidth2   = 320;
+      // const targetHeight2  = 240; 
+      // canvas2.width        = targetWidth2;
+      // canvas2.height       = targetHeight2;
+      // const ctx2 = canvas2.getContext('2d');
+      // ctx2.drawImage(videoElement, 0, 0, canvas2.width, canvas2.height);
+      capturedImage320240.src = addTimestampV2('320', canvas.toDataURL('image/png'));
+
+
     }
   
     function resetCamera() {
@@ -126,11 +150,12 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
       }
   
+
       const canvas  = document.createElement('canvas');
       canvas.width  = videoElement.videoWidth;
       canvas.height = videoElement.videoHeight;
 
-      //Override - remove this if you want the original
+      // //Override - remove this if you want the original
       const targetWidth   = 800;
       const targetHeight  = 600; 
       canvas.width        = targetWidth;
@@ -140,7 +165,7 @@ document.addEventListener('DOMContentLoaded', function () {
       ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
   
       // Convert the canvas content to a data URL
-      const dataUrl = addTimestamp(canvas.toDataURL('image/png'));
+      const dataUrl = addTimestampV2( '800', videoElement );
   
       // Create a link element and trigger a click to download the image
       const link = document.createElement('a');
@@ -152,7 +177,7 @@ document.addEventListener('DOMContentLoaded', function () {
       showCamera();
     }
   
-    function addTimestamp(dataUrl) {
+    function addTimestamp( dataUrl ) {
 
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
@@ -160,13 +185,13 @@ document.addEventListener('DOMContentLoaded', function () {
       // Set canvas dimensions to match the video or captured image
       canvas.width = videoElement.videoWidth || capturedImageElement.width;
       canvas.height = videoElement.videoHeight || capturedImageElement.height;
-
+  
       //Override - remove this if you want the original
       const targetWidth   = 800;
       const targetHeight  = 600; 
       canvas.width        = targetWidth;
       canvas.height       = targetHeight;
-  
+
       // Draw the image onto the canvas
       if (videoElement.style.display === 'block') {
         ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
@@ -188,6 +213,43 @@ document.addEventListener('DOMContentLoaded', function () {
       return canvas.toDataURL('image/png');
     }
   
+    function addTimestampV2(csize, videoElement) {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+  
+      let targetWidth = 800;
+      let targetHeight = 600;
+      if (csize === '1024') {
+          targetWidth = 1024;
+          targetHeight = 800;
+      } else if (csize === '800') {
+          targetWidth = 800;
+          targetHeight = 600;
+      } else if (csize === '320') {
+          targetWidth = 320;
+          targetHeight = 240;
+      }
+  
+      canvas.width = targetWidth;
+      canvas.height = targetHeight;
+  
+      // Draw the main content (video frame) onto the canvas
+      ctx.drawImage(videoElement, 0, 0, targetWidth, targetHeight);
+  
+      // Add timestamp
+      if (timestampCheckbox.checked) {
+          const timestamp = new Date().toLocaleString();
+          ctx.fillStyle = 'white';
+          ctx.font = '14px Arial';
+          ctx.fillText(timestamp, 10, canvas.height - 10);
+      }
+  
+      // Add logo, adjust position and size of the logo
+      ctx.drawImage(logoImage, canvas.width - 120, 20, 100, 100);
+  
+      return canvas.toDataURL('image/png');
+    }
+    
     function toggleTimestamp() {
       if (timestampCheckbox.checked) {
         timestampOption.style.color = 'white';
