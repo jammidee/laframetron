@@ -22,10 +22,12 @@
  *
 */
 
-const sqlite3   = require('sqlite3').verbose();
-const path      = require('path');
-const dbPath    = path.resolve(__dirname, 'lalulla.db');
+const sqlite3 = require('sqlite3').verbose();
+const path = require('path');
 
+const dbPath = path.resolve(__dirname, 'lalulla.db');
+
+// Create a new database connection
 const db = new sqlite3.Database(dbPath, (err) => {
     if (err) {
         console.error(err.message);
@@ -34,6 +36,18 @@ const db = new sqlite3.Database(dbPath, (err) => {
     console.log('Connected to the expenses database.');
 });
 
-db.run(`CREATE TABLE IF NOT EXISTS expenses (id INTEGER PRIMARY KEY AUTOINCREMENT, amount REAL)`);
+// Ensure that the database file is created if it doesn't exist
+db.serialize(() => {
+    db.run(`CREATE TABLE IF NOT EXISTS expenses ( id INTEGER PRIMARY KEY AUTOINCREMENT, amount REAL )`, (err) => {
+        if (err) {
+            console.error('Error creating expenses table:', err.message);
+        } else {
+            console.log('Expenses table created successfully.');
+        }
+    });
+});
+
+module.exports = db;
+
 
 module.exports = db;

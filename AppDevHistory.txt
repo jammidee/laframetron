@@ -14,7 +14,8 @@ Tested / QA by:				Jammi Dee
             rather that closing via IPC.
             - Added sqlite3 library
             - Added libs/ladatabase.js
-            - 
+            - Adjust .env
+            - Added script to initialize the database library.
 
 01/29/2024  - Added scripts on the PDFMake window.
             - Completed the PDFmaker PDF script
