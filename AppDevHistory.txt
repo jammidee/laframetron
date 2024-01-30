@@ -10,6 +10,10 @@ Framework Design: 			Jammi Dee
 Developed / Programmed by : Joel Margate Damaso aka Jammi Dee
 Tested / QA by:				Jammi Dee
 
+01/30/2024  - replace all closing ipcRenderer.send('close-to-???') to window.close();
+            rather that closing via IPC.
+            -
+
 01/29/2024  - Added scripts on the PDFMake window.
             - Completed the PDFmaker PDF script
             - Added Audit Window page
