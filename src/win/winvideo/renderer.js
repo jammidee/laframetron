@@ -101,6 +101,12 @@ document.addEventListener('DOMContentLoaded', function () {
       const canvas = document.createElement('canvas');
       canvas.width = videoElement.videoWidth;
       canvas.height = videoElement.videoHeight;
+
+      //Override - remove this if you want the original
+      const targetWidth   = 800;
+      const targetHeight  = 600; 
+      canvas.width        = targetWidth;
+      canvas.height       = targetHeight;
   
       const ctx = canvas.getContext('2d');
       ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
@@ -123,6 +129,12 @@ document.addEventListener('DOMContentLoaded', function () {
       const canvas  = document.createElement('canvas');
       canvas.width  = videoElement.videoWidth;
       canvas.height = videoElement.videoHeight;
+
+      //Override - remove this if you want the original
+      const targetWidth   = 800;
+      const targetHeight  = 600; 
+      canvas.width        = targetWidth;
+      canvas.height       = targetHeight;
   
       const ctx = canvas.getContext('2d');
       ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
@@ -148,6 +160,12 @@ document.addEventListener('DOMContentLoaded', function () {
       // Set canvas dimensions to match the video or captured image
       canvas.width = videoElement.videoWidth || capturedImageElement.width;
       canvas.height = videoElement.videoHeight || capturedImageElement.height;
+
+      //Override - remove this if you want the original
+      const targetWidth   = 800;
+      const targetHeight  = 600; 
+      canvas.width        = targetWidth;
+      canvas.height       = targetHeight;
   
       // Draw the image onto the canvas
       if (videoElement.style.display === 'block') {
@@ -165,7 +183,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
   
       // Add logo, adjust position and size of the logo
-      ctx.drawImage(logoImage, canvas.width - 100, 0, 100, 100);
+      ctx.drawImage(logoImage, canvas.width - 120, 20, 100, 100);
 
       return canvas.toDataURL('image/png');
     }

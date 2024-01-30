@@ -16,6 +16,8 @@ Tested / QA by:				Jammi Dee
             - Added libs/ladatabase.js
             - Adjust .env
             - Added script to initialize the database library.
+            - added script to adjust the logo location during the video capture in winvideo
+            - 
 
 01/29/2024  - Added scripts on the PDFMake window.
             - Completed the PDFmaker PDF script

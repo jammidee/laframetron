@@ -30,8 +30,8 @@ const path = require('path');
 
 function createVideoWindow( mainWindow, glovars ) {
   const newWindow = new BrowserWindow({
-    width: 700,
-    height: 600,
+    width: 880,
+    height: 720,
     parent: mainWindow, //make modal
     modal: true, //make modal
     //resizable: false,
