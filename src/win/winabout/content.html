@@ -32,9 +32,11 @@
       // Initialize page
       //=================
       ipcRenderer.on('data-to-about', (event, data) => {
-        const { title, ...otherdata } = data;
+        const { title, pvars, ...otherdata } = data;
         document.title = title;
       });
+
+      let glovars = pvars;
 
       ipcRenderer.on('version-to-about', (event, appinfo) => {
         // Update the version in the placeholder element

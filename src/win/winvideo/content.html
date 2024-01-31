@@ -100,10 +100,12 @@
       // Initialize page
       //=================
       ipcRenderer.on('data-to-video', (event, data) => {
-        const { title, ...otherdata } = data;
+        const { title, pvars, ...otherdata } = data;
         document.title = title;
       });
 
+      let glovars = pvars;
+      
       // ipcRenderer.on('version-to-video', (event, appinfo) => {
       //   // Update the version in the placeholder element
       //   document.getElementById('txtauthor').innerText = `Name: ${appinfo.name}`;

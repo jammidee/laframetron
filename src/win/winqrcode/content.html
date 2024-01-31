@@ -26,10 +26,12 @@
       // Initialize page
       //=================
       ipcRenderer.on('data-to-qrcode', (event, data) => {
-        const { title, ...otherdata } = data;
+        const { title, pvars, ...otherdata } = data;
         document.title = title;
       });
 
+      let glovars = pvars;
+      
       let lastvalue = '';
 
       //==================================

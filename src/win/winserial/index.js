@@ -50,7 +50,7 @@ function createSerialWindow( mainWindow, glovars ) {
   const menu = Menu.buildFromTemplate([]);
   newWindow.setMenu(menu);
 
-  const pagedata = { title: process.env.PAGE_SERIAL_TITLE || 'Serial' };
+  const pagedata = { title: process.env.PAGE_SERIAL_TITLE || 'Serial', pvars: glovars };
 
 
   newWindow.webContents.on('dom-ready', () => {

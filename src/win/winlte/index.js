@@ -48,7 +48,7 @@ function createLteWindow( mainWindow, glovars ) {
   const menu = Menu.buildFromTemplate([]);
   newWindow.setMenu(menu);
 
-  const pagedata = { title: process.env.PAGE_LTE_TITLE || 'AdminLTE' };
+  const pagedata = { title: process.env.PAGE_LTE_TITLE || 'AdminLTE', pvars: glovars };
 
   newWindow.webContents.on('dom-ready', () => {
     newWindow.webContents.send('data-to-lte', pagedata );

@@ -48,7 +48,7 @@ function createAboutWindow( mainWindow, glovars ) {
   const menu = Menu.buildFromTemplate([]);
   newWindow.setMenu(menu);
 
-  const pagedata = { title: process.env.PAGE_ABOUT_TITLE || 'About' };
+  const pagedata = { title: process.env.PAGE_ABOUT_TITLE || 'About', pvars: glovars };
 
   newWindow.webContents.on('dom-ready', () => {
     newWindow.webContents.send('data-to-about', pagedata );

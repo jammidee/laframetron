@@ -50,7 +50,7 @@ function createPdfWindow( mainWindow, glovars ) {
   const menu = Menu.buildFromTemplate([]);
   newWindow.setMenu(menu);
 
-  const pagedata = { title: process.env.PAGE_PDFMAKE_TITLE || 'PDF Make' };
+  const pagedata = { title: process.env.PAGE_PDFMAKE_TITLE || 'PDF Make', pvars: glovars };
 
   newWindow.webContents.on('dom-ready', () => {
     newWindow.webContents.send('data-to-pdfmake', pagedata );

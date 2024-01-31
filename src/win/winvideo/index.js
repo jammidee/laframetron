@@ -48,7 +48,7 @@ function createVideoWindow( mainWindow, glovars ) {
   const menu = Menu.buildFromTemplate([]);
   newWindow.setMenu(menu);
 
-  const pagedata = { title: process.env.PAGE_VIDEO_TITLE || 'Video' };
+  const pagedata = { title: process.env.PAGE_VIDEO_TITLE || 'Video', pvars: glovars };
 
 
   newWindow.webContents.on('dom-ready', () => {

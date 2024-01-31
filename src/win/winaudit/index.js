@@ -51,7 +51,7 @@ function createAuditWindow( mainWindow, glovars ) {
   const menu = Menu.buildFromTemplate([]);
   newWindow.setMenu(menu);
 
-  const pagedata = { title: process.env.PAGE_AUDIT_TITLE || 'Windows Audit' };
+  const pagedata = { title: process.env.PAGE_AUDIT_TITLE || 'Windows Audit', pvars: glovars };
 
   newWindow.webContents.on('dom-ready', () => {
     newWindow.webContents.send('data-to-audit', pagedata );

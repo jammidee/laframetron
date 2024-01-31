@@ -50,7 +50,7 @@ function createReportWindow( mainWindow, glovars ) {
   const menu = Menu.buildFromTemplate([]);
   newWindow.setMenu(menu);
 
-  const pagedata = { title: process.env.PAGE_REPORT_TITLE || 'Report' };
+  const pagedata = { title: process.env.PAGE_REPORT_TITLE || 'Report', pvars: glovars };
 
   newWindow.webContents.on('dom-ready', () => {
     newWindow.webContents.send('data-to-report', pagedata );

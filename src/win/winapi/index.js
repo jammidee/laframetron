@@ -49,7 +49,7 @@ function createApiWindow( mainWindow, glovars ) {
   const menu = Menu.buildFromTemplate([]);
   newWindow.setMenu(menu);
 
-  const pagedata = { title: process.env.PAGE_API_TITLE || 'API' };
+  const pagedata = { title: process.env.PAGE_API_TITLE || 'API', pvars: glovars };
 
   newWindow.webContents.on('dom-ready', () => {
     newWindow.webContents.send('data-to-api', pagedata );

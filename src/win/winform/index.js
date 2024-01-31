@@ -52,7 +52,7 @@ function createFormWindow( mainWindow, glovars ) {
   const menu = Menu.buildFromTemplate([]);
   newWindow.setMenu(menu);
 
-  const pagedata = { title: process.env.PAGE_FORM_TITLE || 'Form' };
+  const pagedata = { title: process.env.PAGE_FORM_TITLE || 'Form', pvars: glovars };
 
 
   newWindow.webContents.on('dom-ready', () => {

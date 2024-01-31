@@ -27,10 +27,12 @@
       // Initialize page
       //=================
       ipcRenderer.on('data-to-audit', (event, data) => {
-        const { title, ...otherdata } = data;
+        const { title, pvars, ...otherdata } = data;
         document.title = title;
       });
 
+      let glovars = pvars;
+      
       // Display loading pop-up
       Swal.fire({
           title: 'Please wait...',

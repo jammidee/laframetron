@@ -48,7 +48,7 @@ function createQrcodeWindow( mainWindow, glovars ) {
   const menu = Menu.buildFromTemplate([]);
   newWindow.setMenu(menu);
 
-  const pagedata = { title: process.env.PAGE_QRCODE_TITLE || 'QR Code' };
+  const pagedata = { title: process.env.PAGE_QRCODE_TITLE || 'QR Code', pvars: glovars };
 
 
   newWindow.webContents.on('dom-ready', () => {

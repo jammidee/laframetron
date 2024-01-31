@@ -26,10 +26,12 @@
       // Initialize page
       //=================
       ipcRenderer.on('data-to-mdb', (event, data) => {
-        const { title, ...otherdata } = data;
+        const { title, pvars, ...otherdata } = data;
         document.title = title;
       });
 
+      let glovars = pvars;
+      
       //ipcRenderer.send('get-mdbtools-version');
       ipcRenderer.on('resp-mdbtools-version', (event, data) => {
 

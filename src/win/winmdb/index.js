@@ -50,7 +50,7 @@ function createMdbWindow( mainWindow, glovars ) {
   const menu = Menu.buildFromTemplate([]);
   newWindow.setMenu(menu);
 
-  const pagedata = { title: process.env.PAGE_MDB_TITLE || 'MDB Database' };
+  const pagedata = { title: process.env.PAGE_MDB_TITLE || 'MDB Database', pvars: glovars };
 
   newWindow.webContents.on('dom-ready', () => {
     newWindow.webContents.send('data-to-mdb', pagedata );

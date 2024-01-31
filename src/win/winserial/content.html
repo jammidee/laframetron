@@ -47,10 +47,12 @@
       // Initialize page
       //=================
       ipcRenderer.on('data-to-serial', (event, data) => {
-        const { title, ...otherdata } = data;
+        const { title, pvars, ...otherdata } = data;
         document.title = title;
       });
 
+      let glovars = pvars;
+      
       // ipcRenderer.on('version-to-serial', (event, appinfo) => {
       //   // Update the version in the placeholder element
       //   document.getElementById('txtauthor').innerText = `Name: ${appinfo.name}`;

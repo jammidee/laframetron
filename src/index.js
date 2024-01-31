@@ -56,16 +56,17 @@ if (require('electron-squirrel-startup')) {
 // Global variables
 //==================
 var glovars = {
-  token: "",
-  macaddress: "",
-  deviceid: "",
-  driveserial: "",
+  token:          "",
+  macaddress:     "",
+  deviceid:       "",
+  driveserial:    "",
 
-  username: "sadmin",
-  entityid: "LALULLA",
-  roleid: "USER",
-  locked: "YES",
-  allowlogon: "NO"
+  username:       "sadmin",
+  entityid:       "LALULLA",
+  appid:          "TRON",
+  roleid:         "USER",
+  locked:         "YES",
+  allowlogon:     "NO"
 
 }
 

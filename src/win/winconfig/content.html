@@ -71,10 +71,12 @@
       // Initialize page
       //=================
       ipcRenderer.on('data-to-config', (event, data) => {
-        const { title, ...otherdata } = data;
+        const { title, pvars, ...otherdata } = data;
         document.title = title;
       });
 
+      let glovars = pvars;
+      
       //==================================
       // Custom page events and functions
       //==================================

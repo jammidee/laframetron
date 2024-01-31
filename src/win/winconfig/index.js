@@ -49,7 +49,7 @@ function createConfigWindow( mainWindow, glovars ) {
   const menu = Menu.buildFromTemplate([]);
   newWindow.setMenu(menu);
 
-  const pagedata = { title: process.env.PAGE_CONFIG_TITLE || 'Configuration' };
+  const pagedata = { title: process.env.PAGE_CONFIG_TITLE || 'Configuration', pvars: glovars };
 
 
   newWindow.webContents.on('dom-ready', () => {
