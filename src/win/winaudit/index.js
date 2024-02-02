@@ -57,6 +57,8 @@ function createAuditWindow( mainWindow, glovars ) {
     newWindow.webContents.send('data-to-audit', pagedata );
   });
 
+  //newWindow.webContents.openDevTools();
+
   //Close the current window
   ipcMain.on('close-to-audit', () => {
 

@@ -27,12 +27,12 @@
       //=================
       // Initialize page
       //=================
+      var glovars;
       ipcRenderer.on('data-to-pdfmake', (event, data) => {
         const { title, pvars, ...otherdata } = data;
         document.title = title;
+        glovars = pvars;
       });
-
-      let glovars = pvars;
       
       // ipcRenderer.on('version-to-pdfmake', (event, appinfo) => {
       //   // Update the version in the placeholder element

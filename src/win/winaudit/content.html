@@ -26,12 +26,12 @@
       //=================
       // Initialize page
       //=================
+      var glovars;
       ipcRenderer.on('data-to-audit', (event, data) => {
         const { title, pvars, ...otherdata } = data;
         document.title = title;
+        glovars = pvars;
       });
-
-      let glovars = pvars;
       
       // Display loading pop-up
       Swal.fire({

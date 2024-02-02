@@ -97,12 +97,12 @@
       //=================
       // Initialize page
       //=================
+      var glovars;
       ipcRenderer.on('data-to-lte', (event, data) => {
         const { title, pvars, ...otherdata } = data;
         document.title = title;
+        glovars = pvars;
       });
-
-      let glovars = pvars;
       
       ipcRenderer.on('version-to-lte', (event, appinfo) => {
         // Update the version in the placeholder element

@@ -206,12 +206,12 @@
       //=================
       // Initialize page
       //=================
+      var glovars;
       ipcRenderer.on('data-to-form', (event, data) => {
         const { title, pvars, ...otherdata } = data;
         document.title = title;
+        glovars = pvars;
       });
-
-      let glovars = pvars;
       
       // ipcRenderer.on('version-to-about', (event, appinfo) => {
       //   // Update the version in the placeholder element

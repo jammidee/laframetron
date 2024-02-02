@@ -95,12 +95,12 @@
       //=================
       // Initialize page
       //=================
+      var glovars;
       ipcRenderer.on('data-to-api', (event, data) => {
         const { title, pvars, ...otherdata } = data;
         document.title = title;
+        glovars = pvars;
       });
-
-      let glovars = pvars;
       
       // ipcRenderer.on('version-to-api', (event, appinfo) => {
       //   // Update the version in the placeholder element
