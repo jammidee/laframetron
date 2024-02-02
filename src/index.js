@@ -205,14 +205,6 @@ const createWindow = () => {
 
   //=============================================================
 
-  //============================
-  // Require login for the user
-  //============================
-  //console.log(`Allow_login ${process.env.ALLOW_LOGIN}`);
-  if( (process.env.ALLOW_LOGIN || 'NO') === 'YES'){
-    createLoginWindow( mainWindow );
-  }
-
   // Add this part to handle the "Open File" functionality
   ipcMain.on('main-open-file-dialog', function (event) {
     dialog.showOpenDialog(mainWindow, {
@@ -232,6 +224,19 @@ const createWindow = () => {
     .catch(err => {
       console.error(err);
     });
+  });
+
+  // Handle the login process after local initialization
+  ipcMain.on('request-to-login', function (event) {
+
+    //============================
+    // Require login for the user
+    //============================
+    //console.log(`Allow_login ${process.env.ALLOW_LOGIN}`);
+    if( (process.env.ALLOW_LOGIN || 'NO') === 'YES'){
+      createLoginWindow( mainWindow );
+    }    
+
   });
 
   // Add this part to handle the "Open File" functionality

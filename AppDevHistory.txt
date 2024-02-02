@@ -20,6 +20,8 @@ Tested / QA by:				Jammi Dee
             - Fixed the issue of Async environment on running vbscripts
             - Modified the alert on the main window.
             - Fixed the main UI to reflect gathered info.
+            - Added exit when desktop is not networked.
+            - Move login to request-to-login IPC
             - 
 
 01/31/2024  - Added appid in the glovars
