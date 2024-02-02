@@ -119,6 +119,16 @@
         </center>
       </div>
   
+      <!-- deviceID, driveCSerial, macAddress, macid -->
+      <div id="gathered-info" class="paper-area">
+        <div>
+          <p id="wsid"><i class="fas fa-atom"></i>DEVICE ID </p>
+          <p id="hddid"><i class="fas fa-atom"></i>STORAGE SN </p>
+          <p id="macaddr"><i class="fas fa-atom"></i>MAC ADDRESS </p>
+          <!-- <p id="machid"><i class="fas fa-atom"></i>MACH ID </p> -->
+        </div>
+      </div>
+      <br>
       <div id="hightlight" class="paper-area">
         <div>
           <h1>💖 Hello World!</h1>
@@ -180,12 +190,16 @@
       window.ipcRenderer = ipcRenderer;
       const { electron } = window;
 
-      //=================
-      // Initialize page
-      //=================
+      //================================================
+      // Initialize page, happens with the DOM is ready
+      //================================================
       ipcRenderer.on('data-to-index', (event, data) => {
         const { title, ...otherdata } = data;
         document.title = title;
+
+        // Run initialization scripts.
+        ipcRenderer.send('gather-env-info');
+
       });
 
       // const Swal = require('sweetalert2');
@@ -202,12 +216,42 @@
       });
 
       //Detected machine ID JMD 01/11/2024
-      ipcRenderer.on('machine-id', (event, machid) => {
+      // ipcRenderer.on('machine-id', (event, machid) => {
+      //   Swal.fire({
+      //       title: 'Device ID Detection',
+      //       text: 'Machine ID: ' + machid + '',
+      //       icon: 'info',
+      //   });
+      // });
+
+      //Detected Environment Information JMD 02/02/2024
+      ipcRenderer.on('receive-env-info', (event, info) => {
+
+        const { deviceID, driveCSerial, macAddress, macid } = info;
+
+        document.getElementById("wsid").innerHTML     = `💖</i>DEVICE ID: ${deviceID}`;
+        document.getElementById("hddid").innerHTML    = `🔥</i>STORAGE SN: ${driveCSerial}`;
+        document.getElementById("macaddr").innerHTML  = `<i class="fas fa-atom"></i>MAC ADDRESS: ${macAddress}`;
+        //document.getElementById("machid").innerHTML = `MACH ID: ${macid}`;
+
         Swal.fire({
-            title: 'Device ID Detection',
-            text: 'Machine ID: ' + machid + '',
+            title: 'Gathered Environment',
+            text: `Device ${deviceID}, Drive Serial ${driveCSerial}, MAC Addr ${macAddress}, Mach ID ${macid}`,
             icon: 'info',
         });
+
+        // Swal.fire({
+        //   title: 'Alert',
+        //   text: 'Click OK to run the function',
+        //   icon: 'info',
+        //   showCancelButton: false,
+        //   confirmButtonText: 'OK',
+        // }).then((result) => {
+        //   if (result.isConfirmed) {
+        //     // Call your function here
+        //   }
+        // });
+
       });
 
       //==================================
@@ -220,16 +264,16 @@
         const welcome = document.getElementById('welcome');
         welcome.style.display = 'block';
 
-        const iniForm = document.getElementById('mainform');
-        iniForm.style.display = 'block';
+        // const iniForm = document.getElementById('mainform');
+        // iniForm.style.display = 'block';
 
       } else {
 
         const welcome = document.getElementById('welcome');
         welcome.style.display = 'block';
 
-        const iniForm = document.getElementById('mainform');
-        iniForm.style.display = 'none';
+        // const iniForm = document.getElementById('mainform');
+        // iniForm.style.display = 'none';
 
       }
 

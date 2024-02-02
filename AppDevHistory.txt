@@ -11,10 +11,20 @@ Developed / Programmed by : Joel Margate Damaso aka Jammi Dee
 Tested / QA by:				Jammi Dee
 
 02/02/2024  - fixed the passing of global parameters
+            - After DOM is ready executed gather-env-information
+            - Move the machine ID detection to gather-env-info
+            - Move Device ID detection to gather-env-info
+            - Use execSync in executing external vbscripts.
+            - Move HDD Serial number detection to gather-end-info
+            - Move Mac Address Detection to gather-env-info
+            - Fixed the issue of Async environment on running vbscripts
+            - Modified the alert on the main window.
+            - Fixed the main UI to reflect gathered info.
+            - 
 
 01/31/2024  - Added appid in the glovars
             - Added passing of glovars to the renderer
-            - 
+
 
 01/30/2024  - replace all closing ipcRenderer.send('close-to-???') to window.close();
             rather that closing via IPC.

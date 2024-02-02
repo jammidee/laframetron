@@ -28,17 +28,17 @@ require('dotenv').config();
 //Declare other important libraries here
 const { app, BrowserWindow, nativeImage, ipcMain, Menu, ipcRenderer, dialog, Tray } = require('electron');
 
-const path        = require('path');
-const fs          = require('fs');
+const path                  = require('path');
+const fs                    = require('fs');
 
-const machineId   = require('node-machine-id');
-const { exec }    = require('child_process');
+const machineId             = require('node-machine-id');
+const { exec, execSync }    = require('child_process');
 
-const os          = require('os');
-const osUtils     = require('node-os-utils');
-const driveInfo   = osUtils.drive;
-const osInfo      = osUtils.os;
-//const getmac      = require('getmac');
+const os                    = require('os');
+const osUtils               = require('node-os-utils');
+const driveInfo             = osUtils.drive;
+const osInfo                = osUtils.os;
+//const getmac              = require('getmac');
 
 //Custom library
 const libt = require('./libs/lalibtools');
@@ -159,72 +159,27 @@ const createWindow = () => {
   //====================
   //mainWindow.webContents.openDevTools();
 
-  // Get the unique machine ID  JMD 01/11/2024
-  machineId.machineId().then(id => {
-    console.log('Machine ID:', id);
-
-    // Pass the machine ID to the renderer process if needed
-    //mainWindow.webContents.send('machine-id', id);
-  });
-
-  // Execute the VBScript JMD 01/11/2024
-  const wintoolPath = path.join(__dirname, './tools/winscripts');
-  exec(`cscript.exe //nologo ${wintoolPath}/getDeviceID.vbs`, (error, stdout, stderr) => {
-    if (error) {
-      console.error(`Error executing VBScript: ${error.message}`);
-      return;
-    }
-
-    const deviceID = stdout.trim();
-    glovars.deviceid = deviceID;
-
-    console.log('Device ID:', deviceID);
-
-    // Pass the device ID to the renderer process if needed
-    mainWindow.webContents.send('machine-id', deviceID);
-
-  });
-
-  // Execute the VBScript JMD 01/19/2024
-  // wintoolPath = path.join(__dirname, './tools/winscripts');
-  exec(`cscript.exe //nologo ${wintoolPath}/getMacAddress.vbs`, (error, stdout, stderr) => {
-    if (error) {
-      console.error(`Error executing VBScript: ${error.message}`);
-      return;
-    }
-
-    const deviceID = stdout.trim();
-    console.log('Mac Address:', deviceID);
-
-  });
+  //=========================================
+  // Other initialization can be placed here
+  //=========================================
+  // ...
+  // ...initialization that does not require
+  // ...fully loaded UI.
 
   //===========================================
   // Get the OS information using node-os-utils
   const osInformation = {
-    platform: os.platform(),
-    arch: os.arch(),
-    release: os.release(),
-    totalMemory: os.totalmem(),
-    freeMemory: os.freemem(),
-    cpuModel: os.cpus()[0].model,
-    cpuCores: os.cpus().length,
+    platform:       os.platform(),
+    arch:           os.arch(),
+    release:        os.release(),
+    totalMemory:    os.totalmem(),
+    freeMemory:     os.freemem(),
+    cpuModel:       os.cpus()[0].model,
+    cpuCores:       os.cpus().length,
   };
 
-  console.log('OS Information:', osInformation);
+  //console.log('OS Information:', osInformation);
   //============================================
-
-  // Execute the VBScript:Get drive C:\ Serial number JMD 01/11/2024
-  exec(`cscript.exe //nologo ${wintoolPath}/getDriveSerial.vbs`, (error, stdout, stderr) => {
-    if (error) {
-      console.error(`Error executing VBScript: ${error.message}`);
-      return;
-    }
-
-    const driveCSerial = stdout.trim();
-    glovars.driveserial = driveCSerial;
-    console.log('Drive C: serial number', driveCSerial);
-
-  });
 
   //=============================================================
   // Demo mode scripts. This will protect the app from executing 
@@ -379,6 +334,104 @@ ipcMain.on('form-submission', (event, formData) => {
 ipcMain.on('quit-to-index', (event, formData) => {
   app.quit();
 });
+
+//===================================================
+// Global Initialization goes here when DOM is ready
+// This means we have a nice UI already to be used.
+//===================================================
+ipcMain.on('gather-env-info', function (event) {
+
+    // Execute the VBScript JMD 01/19/2024
+
+  // (1) Execute the VBScript JMD 01/11/2024
+  const wintoolPath = path.join(__dirname, './tools/winscripts');
+  // exec(`cscript.exe //nologo ${wintoolPath}/getDeviceID.vbs`, (error, stdout, stderr) => {
+  //   if (error) {
+  //     console.error(`Error executing VBScript: ${error.message}`);
+  //     return;
+  //   }
+
+  //   const deviceID = stdout.trim();
+  //   glovars.deviceid = deviceID;
+
+  //   console.log('Device ID:', deviceID);
+
+  //   // Pass the device ID to the renderer process if needed
+  //   mainWindow.webContents.send('machine-id', deviceID);
+
+  // });
+  let deviceID          = "";
+  try {
+    const stdout        = execSync(`cscript.exe //nologo ${wintoolPath}/getDeviceID.vbs`);
+    deviceID            = stdout.toString().trim();
+    glovars.deviceid    = deviceID;
+    console.log('Device ID:', deviceID);
+    //mainWindow.webContents.send('machine-id', deviceID);
+  } catch (error) {
+      deviceID = "ERROR";
+      console.error(`Error executing VBScript: ${error.message}`);
+  }
+
+  // (2) Execute the VBScript:Get drive C:\ Serial number JMD 01/11/2024
+  // exec(`cscript.exe //nologo ${wintoolPath}/getDriveSerial.vbs`, (error, stdout, stderr) => {
+  //   if (error) {
+  //     console.error(`Error executing VBScript: ${error.message}`);
+  //     return;
+  //   }
+
+  //   const driveCSerial = stdout.trim();
+  //   glovars.driveserial = driveCSerial;
+  //   console.log('Drive C: serial number', driveCSerial);
+
+  // });
+  let driveCSerial        = "";
+  try {
+    const stdout          = execSync(`cscript.exe //nologo ${wintoolPath}/getDriveSerial.vbs`);
+    driveCSerial          = stdout.toString().trim();
+    glovars.driveserial   = driveCSerial;
+    console.log('Drive C: serial number', driveCSerial);
+  } catch (error) {
+      driveCSerial = "ERROR";
+      console.error(`Error executing VBScript: ${error.message}`);
+  }
+
+  // wintoolPath = path.join(__dirname, './tools/winscripts');
+  // exec(`cscript.exe //nologo ${wintoolPath}/getMacAddress.vbs`, (error, stdout, stderr) => {
+  //   if (error) {
+  //     console.error(`Error executing VBScript: ${error.message}`);
+  //     return;
+  //   }
+
+  //   const macAddress = stdout.trim();
+  //   console.log('Mac Address:', macAddress);
+
+  // });
+  let macAddress          = "";
+  try {
+    const stdout          = execSync(`cscript.exe //nologo ${wintoolPath}/getMacAddress.vbs`);
+    macAddress            = stdout.toString().trim();
+    glovars.macaddress    = macAddress;
+    console.log('Mac Address:', macAddress);
+    //mainWindow.webContents.send('machine-id', macaddress);
+  } catch (error) {
+      macAddress = "ERROR";
+      console.error(`Error executing VBScript: ${error.message}`);
+  }
+
+  let macid = "";
+  // Get the unique machine ID  JMD 01/11/2024
+  machineId.machineId().then(id => {
+    macid = id;
+    glovars.macid    = macid;
+    console.log('Machine ID:', id);
+
+    //Send the gathered info
+    mainWindow.webContents.send('receive-env-info', {deviceID, driveCSerial, macAddress, macid });
+
+  });
+
+});
+
 
 //=======================
 // Global Token Updates
