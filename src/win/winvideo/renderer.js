@@ -145,6 +145,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   
     function saveImage() {
+
       if (!currentStream) {
         console.error('No active stream');
         return;
@@ -175,6 +176,9 @@ document.addEventListener('DOMContentLoaded', function () {
   
       // Reset to the camera view after saving
       showCamera();
+
+      window.close();
+
     }
   
     function addTimestamp( dataUrl ) {
