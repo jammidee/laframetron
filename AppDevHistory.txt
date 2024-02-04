@@ -10,6 +10,8 @@ Framework Design: 			Jammi Dee
 Developed / Programmed by : Joel Margate Damaso aka Jammi Dee
 Tested / QA by:				Jammi Dee
 
+02/04/2024  - Added a timer event that updates the main using
+            
 02/02/2024  - fixed the passing of global parameters
             - After DOM is ready executed gather-env-information
             - Move the machine ID detection to gather-env-info

@@ -301,6 +301,42 @@ app.whenReady().then(() => {
 
   createTray();
 
+  // Set up an interval to send IPC messages every second
+  setInterval( async () => {
+
+    async function checkConnectivity() {
+      try {
+  
+        await axios.get(`${process.env.APP_PROTOCOL}://${process.env.APP_HOST}:${process.env.APP_PORT}/m/mdbex/`);
+        return 'OK';
+  
+      } catch (error) {
+  
+        //throw new Error('No connectivity');
+        return 'ERROR';
+  
+      }
+    }
+
+    // const constatus = await checkConnectivity();
+
+    // if( constatus === "ERROR"){
+
+    //   mainWindow.webContents.send('main-update-time', 'Cannot connect to the server <span style="color: red;"><b>(OFFLINE)</b></span>');
+
+    // } else {
+
+    //   const currentTime = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true });
+    //   mainWindow.webContents.send('main-update-time', `${currentTime} <span style="color: green;"><b>(ONLINE)</b></span>` );
+
+    // }
+    
+    const currentTime = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true });
+    mainWindow.webContents.send('main-update-time', `${currentTime} <span style="color: green;"><b>(ONLINE)</b></span>` );
+
+
+  }, 10000);
+
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common

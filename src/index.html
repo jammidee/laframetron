@@ -125,6 +125,7 @@
           <p id="wsid"><i class="fas fa-atom"></i>DEVICE ID </p>
           <p id="hddid"><i class="fas fa-atom"></i>STORAGE SN </p>
           <p id="macaddr"><i class="fas fa-atom"></i>MAC ADDRESS </p>
+          <p id="servertime"><i class="fas fa-atom"></i>SERVER TIME</p>
           <!-- <p id="machid"><i class="fas fa-atom"></i>MACH ID </p> -->
         </div>
       </div>
@@ -223,6 +224,11 @@
       //       icon: 'info',
       //   });
       // });
+
+      //wait for Time event in main process JMD 02/04/2024
+      ipcRenderer.on('main-update-time', (event, ptime) => {
+        document.getElementById("servertime").innerHTML  = `<i class="fas fa-ethernet"></i> SERVER TIME: ${ptime}`;
+      });
 
       //Detected Environment Information JMD 02/02/2024
       ipcRenderer.on('receive-env-info', (event, info) => {
