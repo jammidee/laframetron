@@ -18,9 +18,12 @@
 
       pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
+      //=============================================
+      // Declare library for IPC here
+      // * If there is a renderer.js, declare there
+      // * the declaration below.
+      //=============================================
       const { remote } = require('electron');
-
-      //Declare library for IPC here
       const { ipcRenderer } = require('electron');
       window.ipcRenderer = ipcRenderer;
 
