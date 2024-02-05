@@ -42,6 +42,7 @@
     "serialport": "^12.0.0",
     "sqlite3": "^5.1.7",
     "sweetalert2": "^11.10.2",
+    "uuid": "^9.0.1",
     "webcamjs": "^1.0.26"
   },
   "devDependencies": {
