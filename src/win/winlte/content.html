@@ -4,7 +4,7 @@
     <title>AdminLTE</title>
     <!-- <link rel="stylesheet" href="../index.css" />
     <link rel="stylesheet" href="../node_modules/@fortawesome/fontawesome-free/css/all.min.css"> -->
-    <link rel="stylesheet" href="./styles.css">
+    <!-- <link rel="stylesheet" href="./styles.css"> -->
     <!-- Include AdminLTE CSS -->
     <link rel="stylesheet" href="../../resources/app/node_modules/admin-lte/dist/css/adminlte.min.css">
 
@@ -81,9 +81,10 @@
     </div>
 
     <!-- Include AdminLTE JS and dependencies -->
-    <script src="../../resources/app/node_modules/admin-lte/plugins/jquery/jquery.min.js"></script>
-    <script src="../../resources/app/node_modules/admin-lte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="../../resources/app/node_modules/admin-lte/dist/js/adminlte.min.js"></script>
+    <!-- <script src="../../../node_modules/admin-lte/plugins/jquery/jquery.min.js"></script> -->
+    <script>window.$ = window.jQuery = require("../../../node_modules/admin-lte/plugins/jquery/jquery.min.js");</script>
+    <script src="../../../node_modules/admin-lte/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../../../node_modules/admin-lte/dist/js/adminlte.min.js"></script>
 
     <!-- Include your external script file -->
     <script>

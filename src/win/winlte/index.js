@@ -34,7 +34,7 @@ function createLteWindow( mainWindow, glovars ) {
     height: 600,
     parent: mainWindow, //make modal
     modal: true, //make modal
-    resizable: false,
+    //resizable: false,
     icon: path.join(__dirname, '../../favicon.ico'),
     webPreferences: {
       nodeIntegration: true,
@@ -76,6 +76,8 @@ function createLteWindow( mainWindow, glovars ) {
     newWindow.webContents.send('version-to-lte', appInfo);
 
   });
+
+  //newWindow.webContents.openDevTools();
 
   newWindow.on('close', (event) => {
 
