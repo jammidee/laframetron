@@ -13,6 +13,7 @@ Tested / QA by:				Jammi Dee
 02/04/2024  - Added a timer event that updates the main using main process
             - Fixed the AdminLte issue on jquery and bootstrap.
             - Fixed the declaration of all windows
+            - Standardize the api call using token using path /api/v1/security
             - 
             
 02/02/2024  - fixed the passing of global parameters

@@ -103,7 +103,7 @@ function createLoginWindow( mainWindow ) {
       const baseUrl = `${process.env.APP_PROTOCOL}://${process.env.APP_HOST}:${process.env.APP_PORT}`;
   
       // Request for token
-      const response = await axios.get(`${baseUrl}/m/mdbex/getaccesstoken`, {
+      const response = await axios.get(`${baseUrl}/api/v1/security/getaccesstoken`, {
         headers: {
           Authorization: `Basic ${Buffer.from(`${username}:${password}`).toString('base64')}`,
           'Content-Type': 'application/json',
@@ -132,7 +132,7 @@ function createLoginWindow( mainWindow ) {
 
   async function checkConnectivity() {
     try {
-      await axios.get(`${process.env.APP_PROTOCOL}://${process.env.APP_HOST}:${process.env.APP_PORT}/m/mdbex/`);
+      await axios.get(`${process.env.APP_PROTOCOL}://${process.env.APP_HOST}:${process.env.APP_PORT}/api/v1/security/`);
     } catch (error) {
       //throw new Error('No connectivity');
       return 'ERROR';

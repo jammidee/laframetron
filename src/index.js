@@ -307,7 +307,7 @@ app.whenReady().then(() => {
     async function checkConnectivity() {
       try {
   
-        await axios.get(`${process.env.APP_PROTOCOL}://${process.env.APP_HOST}:${process.env.APP_PORT}/m/mdbex/`);
+        await axios.get(`${process.env.APP_PROTOCOL}://${process.env.APP_HOST}:${process.env.APP_PORT}/api/v1/security/`);
         return 'OK';
   
       } catch (error) {
