@@ -37,7 +37,7 @@
         justify-content: center;
         align-items: center;
         height: 100vh;
-        background-color: #f0f0f0;
+        background-color: #f0efef !important;
 
         /* margin-top: 30px;
         padding: 20px; */
@@ -49,7 +49,7 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         border-radius: 8px;
         padding: 20px;
-        max-width: 600px;
+        max-width: 800px;
         width: 100%;
       }
   
@@ -110,7 +110,7 @@
     <div class="flex-container">
       <div id="welcome" class="paper-area">
         <center>
-          <h1>🌟Welcome to Laframetron</h1>
+          <h2>🌟Welcome to Laframetron</h2>
         </center>
         <center>
           <p>
@@ -122,25 +122,78 @@
       <!-- deviceID, driveCSerial, macAddress, macid -->
       <div id="gathered-info" class="paper-area">
         <div>
-          <p id="wsid"><i class="fas fa-atom"></i>DEVICE ID </p>
+          <table>
+            <tr>
+              <td>
+                <p id="wsid"><i class="fas fa-atom"></i>DEVICE ID </p>
+              </td>
+              <td>
+                <p id="hddid"><i class="fas fa-atom"></i>STORAGE SN </p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p id="macaddr"><i class="fas fa-atom"></i>MAC ADDRESS </p>
+              </td>
+              <td>
+                <p id="servertime"><i class="fas fa-atom"></i>SERVER TIME</p>
+              </td>
+            </tr>
+          </table>
+          <!-- <p id="wsid"><i class="fas fa-atom"></i>DEVICE ID </p>
           <p id="hddid"><i class="fas fa-atom"></i>STORAGE SN </p>
           <p id="macaddr"><i class="fas fa-atom"></i>MAC ADDRESS </p>
-          <p id="servertime"><i class="fas fa-atom"></i>SERVER TIME</p>
+          <p id="servertime"><i class="fas fa-atom"></i>SERVER TIME</p> -->
           <!-- <p id="machid"><i class="fas fa-atom"></i>MACH ID </p> -->
         </div>
       </div>
       <br>
       <div id="hightlight" class="paper-area">
         <div>
-          <h1>💖 Hello World!</h1>
+          <h4>💖 Hello World!</h4>
           <p>Welcome to your ElectronJS boilerplate by Lalulla.</p>
-          <p>🌟 Star: Represents excellence, achievement, or special recognition.</p>
+          <table>
+            <tr>
+              <td>
+                <p>🌟 Star: Represents excellence, achievement, or special recognition.</p>
+              </td>
+              <td>
+                <p>🔥 Fire: Indicates something that is trendy, hot, or on fire.</p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>👍 Thumbs Up: A positive gesture or agreement.</p>
+              </td>
+              <td>
+                <p>🌈 Rainbow: Symbolizes diversity, inclusivity, or positivity.</p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>❤️ Red Heart: Represents love, affection, or approval.</p>
+              </td>
+              <td>
+                p><i class="fas fa-atom"></i> Welcome to your Electron application.</p>
+              </td>
+            </tr>
+          </table>
+          <!-- <p>🌟 Star: Represents excellence, achievement, or special recognition.</p>
           <p>🔥 Fire: Indicates something that is trendy, hot, or on fire.</p>
           <p>👍 Thumbs Up: A positive gesture or agreement.</p>
           <p>🌈 Rainbow: Symbolizes diversity, inclusivity, or positivity.</p>
           <p>❤️ Red Heart: Represents love, affection, or approval.</p>
-          <p><i class="fas fa-atom"></i> Welcome to your Electron application.</p>
+          <p><i class="fas fa-atom"></i> Welcome to your Electron application.</p> -->
           <button class="btn btn-primary">Click me - a Bootstrap Button</button>
+        </div>
+      </div>
+      <br>
+
+      <div id="clientupdates" class="paper-area" style="display: none;" >
+        <div>
+          <h4>Client Update Available</h4>
+          <p id="clientversion">VERSION: 1.0.0</p>
+          <p id="clientchanges">Improve the security codes</p>
         </div>
       </div>
 
@@ -169,17 +222,6 @@
       </div> -->
 
     </div>
-    
-    <!-- <div id="welcome" class="flex-container" style="display: block;" >
-      <div>
-        <div id="myClickableDiv" class="clickable-div">Click me!</div>
-      </div>
-      <div>
-        <p>
-          This is an example of calling a function using invoke and handle of IPCRenderer.
-        </p>
-      </div>
-    </div> -->
 
     <!-- Include your external script file -->
     <script>
@@ -233,12 +275,20 @@
       //Detected Environment Information JMD 02/02/2024
       ipcRenderer.on('receive-env-info', (event, info) => {
 
-        const { deviceID, driveCSerial, macAddress, macid } = info;
+        const { deviceID, driveCSerial, macAddress, macid, needUpdate, currVersion, currChanges, appUpdatePath } = info;
 
-        document.getElementById("wsid").innerHTML     = `💖</i>DEVICE ID: ${deviceID}`;
-        document.getElementById("hddid").innerHTML    = `🔥</i>STORAGE SN: ${driveCSerial}`;
-        document.getElementById("macaddr").innerHTML  = `<i class="fas fa-atom"></i>MAC ADDRESS: ${macAddress}`;
+        document.getElementById("wsid").innerHTML     = `💖 </i>DEVICE ID: ${deviceID}`;
+        document.getElementById("hddid").innerHTML    = `🔥 </i>STORAGE SN: ${driveCSerial}`;
+        document.getElementById("macaddr").innerHTML  = `<i class="fas fa-atom"></i> MAC ADDRESS: ${macAddress}`;
         //document.getElementById("machid").innerHTML = `MACH ID: ${macid}`;
+
+        if( needUpdate == 1){
+
+          document.getElementById('clientupdates').style.display = "block";
+          document.getElementById("clientversion").innerHTML  = `VERSION: ${currVersion}`;
+          document.getElementById("clientchanges").innerHTML  = `${currChanges}. You can <a href="${appUpdatePath}">Download Here</a>.`;
+
+        }
 
         // Swal.fire({
         //     title: 'Gathered Environment',

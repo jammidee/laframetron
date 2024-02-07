@@ -10,6 +10,11 @@ Framework Design: 			Jammi Dee
 Developed / Programmed by : Joel Margate Damaso aka Jammi Dee
 Tested / QA by:				Jammi Dee
 
+02/07/2024  - Added axios library in the main process
+            - Added detection of version during the application loading
+            - Improve main main page UI
+            - 
+
 02/04/2024  - Added a timer event that updates the main using main process
             - Fixed the AdminLte issue on jquery and bootstrap.
             - Fixed the declaration of all windows

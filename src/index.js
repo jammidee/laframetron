@@ -40,6 +40,8 @@ const driveInfo             = osUtils.drive;
 const osInfo                = osUtils.os;
 //const getmac              = require('getmac');
 
+const axios                 = require('axios');
+
 //Custom library
 const libt = require('./libs/lalibtools');
 const { checkForUpdates } = require('./libs/update-checker');
@@ -380,7 +382,62 @@ ipcMain.on('quit-to-index', (event, formData) => {
 // Global Initialization goes here when DOM is ready
 // This means we have a nice UI already to be used.
 //===================================================
-ipcMain.on('gather-env-info', function (event) {
+ipcMain.on('gather-env-info', async function (event) {
+
+  //==========================================
+  // Get the latest client version 02/07/2024
+  //==========================================
+  var needUpdate      = 0;
+  var currVersion     = "";
+  var currChanges     = "";
+  var appUpdatePath   = "";
+  try {
+
+    const locVersion  = app.getVersion();
+    const locComp     = locVersion.split('.');
+    // Calculate the version value
+    const locValue =  parseInt(locComp[0]) * 10000 + 
+                      parseInt(locComp[1]) * 1000 + 
+                      parseInt(locComp[2]);
+
+    glovars.clientversion = locValue;
+
+    const baseUrl   = `${process.env.APP_PROTOCOL}://${process.env.APP_HOST}:${process.env.APP_PORT}`;
+    appUpdatePath   = `${baseUrl}/resources/notice/clientlatest.zip`
+    const response  = await axios.get(`${baseUrl}/resources/notice/clientversion.json`);
+    const verData   = response.data;
+    
+    console.log('Version File:', JSON.stringify(verData) );
+
+    // Extract the current version
+    currVersion = verData.currentversion;
+    currChanges = verData.updates;
+    
+    // Split the version into its components
+    const verComp = currVersion.split('.');
+    
+    // Calculate the version value
+    const verValue =  parseInt(verComp[0]) * 10000 + 
+                      parseInt(verComp[1]) * 1000 + 
+                      parseInt(verComp[2]);
+                         
+    console.log('Version value:', verValue);
+    glovars.latestclientversion  = verValue;
+  
+    console.log(`Versions: latest ${verValue} local ${locValue}`);
+    if( verValue > locValue){
+      needUpdate = 1;
+    }
+    glovars.needupdate            = needUpdate;
+    glovars.currversion           = currVersion;
+    glovars.currchanges           = currChanges;
+
+  } catch (error) {
+
+    glovars.latestclientversion  = 0;
+    console.error('Error fetching version:', error);
+      
+  }  
 
     // Execute the VBScript JMD 01/19/2024
 
@@ -467,7 +524,7 @@ ipcMain.on('gather-env-info', function (event) {
     console.log('Machine ID:', id);
 
     //Send the gathered info
-    mainWindow.webContents.send('receive-env-info', {deviceID, driveCSerial, macAddress, macid });
+    mainWindow.webContents.send('receive-env-info', {deviceID, driveCSerial, macAddress, macid, needUpdate, currVersion, currChanges, appUpdatePath });
 
   });
 
