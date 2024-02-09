@@ -34,7 +34,7 @@ document.getElementById('generatePdfBtn').addEventListener('click', () => {
 
 function generatePdf() {
 
-    alert(`Hi1`);
+    //alert(`Hi1`);
     //Recreate content
     var contentarr = [];
     
@@ -43,7 +43,7 @@ function generatePdf() {
     contentarr.push('This is a sample report generated using pdfmake in ElectronJS.\r\n');
     contentarr.push('You can customize it further as per your requirements.\r\n');
 
-    alert(`Hi2`);
+    //alert(`Hi2`);
     const docDefinition = {
         content: contentarr,
         // styles: {
