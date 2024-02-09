@@ -22,11 +22,11 @@
     <!-- Include your external script file -->
     <script>
 
-      const { remote } = require('electron');
-
+      const Swal              = require('sweetalert2');
+      const { remote }        = require('electron');
       //Declare library for IPC here
-      const { ipcRenderer } = require('electron');
-      window.ipcRenderer = ipcRenderer;
+      const { ipcRenderer }   = require('electron');
+      window.ipcRenderer      = ipcRenderer;
 
       //=================
       // Initialize page
