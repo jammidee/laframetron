@@ -12,6 +12,7 @@ Tested / QA by:				Jammi Dee
 
 02/10/2024  - Improve the PDFMake example. Remove the menu in the report
             - Make the report auto load instead of clicking a button.
+            - Added sample full report for development reference.
             - 
 
 02/07/2024  - Added axios library in the main process
