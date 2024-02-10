@@ -38,11 +38,19 @@
         glovars = pvars;
       });
       
-      // ipcRenderer.on('version-to-pdfmake', (event, appinfo) => {
-      //   // Update the version in the placeholder element
-      //   document.getElementById('txtauthor').innerText = `Name: ${appinfo.name}`;
-      //   document.getElementById('txtversion').innerText = `Version: ${appinfo.version}`;
-      // })
+      //=================================================
+      // Safe Area here. You can do some processing and
+      // initialization here
+      //=================================================
+      document.addEventListener('DOMContentLoaded', function () {
+
+        ipcRenderer.on('report-to-pdfmake', (event, appinfo) => {
+
+            generatePdf();
+
+        })
+
+      });
 
       //==================================
       // Custom page events and functions
@@ -52,41 +60,7 @@
           generatePdf();
       });
 
-      // const generatePdfBtn = document.getElementById('generatePdfBtn');
-      // generatePdfBtn.addEventListener('click', () => {
-      //   require('electron').ipcRenderer.send('generate-pdfmake');
-      // });
-
-      // document.getElementById('evtClose').addEventListener('click', async () => {
-      //   try {
-
-      //     ipcRenderer.send('close-to-pdfmake');
-
-      //   } catch (error) {
-      //     console.log(`Error while closing window ${document.title}:`, error);
-      //   }
-
-      // });
-
       function generatePdf() {
-
-        // pdfMake.fonts = {
-        //     Arial: {
-        //         normal: '.arial.ttf',
-        //         bold: 'Arial-Bold.ttf',
-        //     },
-        //     // download default Roboto font from cdnjs.com
-        //     Impact: {
-        //         normal: 'impact.ttf',
-        //         bold: 'Impacted.ttf',
-        //     },
-        //     'Roboto' : {
-        //         normal: `Roboto-Regular.ttf`,
-        //         bold: `Roboto-Medium.ttf`,
-        //         italics: `Roboto-Italic.ttf`,
-        //         bolditalics: `Roboto-BoldItalic.ttf`
-        //     },
-        // }
         
         //Recreate content
         var contentarr = [];
@@ -182,7 +156,10 @@
         const pdfDoc = pdfMake.createPdf(docDefinition);
 
         pdfDoc.getBase64((data) => {
+
             ipcRenderer.send('generate-pdfmake', data);
+            window.close();
+            
         });
       }
 

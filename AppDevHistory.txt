@@ -10,6 +10,10 @@ Framework Design: 			Jammi Dee
 Developed / Programmed by : Joel Margate Damaso aka Jammi Dee
 Tested / QA by:				Jammi Dee
 
+02/10/2024  - Improve the PDFMake example. Remove the menu in the report
+            - Make the report auto load instead of clicking a button.
+            - 
+
 02/07/2024  - Added axios library in the main process
             - Added detection of version during the application loading
             - Improve main main page UI

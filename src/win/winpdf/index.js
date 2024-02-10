@@ -73,11 +73,7 @@ function createPdfWindow( mainWindow, glovars ) {
   //Send the version to the window
   newWindow.webContents.on('did-finish-load', () => {
 
-    const appInfo = {
-      name: app.getName(),
-      version: app.getVersion(),
-    };
-    newWindow.webContents.send('version-to-pdfmake', appInfo);
+    newWindow.webContents.send('report-to-pdfmake');
 
     // newWindow.webContents.executeJavaScript(`
     //   const generatePdfBtn = document.getElementById('generatePdfBtn');
@@ -136,7 +132,12 @@ function createPdfWindow( mainWindow, glovars ) {
 
         // Set the zoom factor to 100%
         pdfWindow.webContents.on('did-finish-load', () => {
+
           pdfWindow.webContents.setZoomFactor(1);
+          // Create an empty menu
+          const menu = Menu.buildFromTemplate([]);
+          pdfWindow.setMenu(menu);
+
         });
 
     } catch (error) {
