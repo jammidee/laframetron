@@ -44,7 +44,10 @@ const { createAuditWindow }   = require('./win/winaudit/index');
 
 const iconSize = { width: 16, height: 16 };
 
-function createMainMenu(app, mainWindow, gvars) {
+function createMainMenu(app, mainWindow, gvars, gshow ) {
+
+    // Create an empty menu
+    const emptyMenu = Menu.buildFromTemplate([]);
 
     const mainMenu = Menu.buildFromTemplate([
         {
@@ -272,7 +275,12 @@ function createMainMenu(app, mainWindow, gvars) {
         },
       ]);
 
-    Menu.setApplicationMenu(mainMenu);
+    if( gshow == "ON" ){
+      Menu.setApplicationMenu( mainMenu );
+    } else {
+      Menu.setApplicationMenu( emptyMenu );
+    }
+    
 }
 
 module.exports = createMainMenu;

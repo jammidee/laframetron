@@ -49,6 +49,9 @@ const { checkForUpdates } = require('./libs/update-checker');
 //Use for the login window
 const { createLoginWindow } = require('./winlogin/index');
 
+// Keep the last connection status
+var lastConnStatus = "ERROR";
+
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
   app.quit();
@@ -151,7 +154,7 @@ const createWindow = () => {
 
   //Create the customized menu here
   const createMainMenu = require('./modmenu');
-  createMainMenu(app, mainWindow, glovars);
+  createMainMenu(app, mainWindow, glovars, "ON");
 
   // Maximize the window
   mainWindow.maximize();
@@ -306,36 +309,58 @@ app.whenReady().then(() => {
   // Set up an interval to send IPC messages every second
   setInterval( async () => {
 
-    async function checkConnectivity() {
+    //Get the server time
+    async function getServerDateTime( token ) {
       try {
   
-        await axios.get(`${process.env.APP_PROTOCOL}://${process.env.APP_HOST}:${process.env.APP_PORT}/api/v1/security/`);
-        return 'OK';
+        const headers = {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        };
+        const response = await axios.get(`${process.env.APP_PROTOCOL}://${process.env.APP_HOST}:${process.env.APP_PORT}/api/v1/security/datetime`,{headers});
+        return response ;
   
       } catch (error) {
   
+        console.log(error);
         //throw new Error('No connectivity');
         return 'ERROR';
   
       }
     }
 
-    // const constatus = await checkConnectivity();
+    const createMainMenu  = require('./modmenu');
+    const constatus       = await getServerDateTime(glovars.token);
 
-    // if( constatus === "ERROR"){
+    if( lastConnStatus == "ERROR" && constatus !== "ERROR"){
 
-    //   mainWindow.webContents.send('main-update-time', 'Cannot connect to the server <span style="color: red;"><b>(OFFLINE)</b></span>');
+      // have menu
+      createMainMenu(app, mainWindow, glovars, "ON" );
 
-    // } else {
+    }
+    if( lastConnStatus !== "ERROR" && constatus == "ERROR"){
 
-    //   const currentTime = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true });
-    //   mainWindow.webContents.send('main-update-time', `${currentTime} <span style="color: green;"><b>(ONLINE)</b></span>` );
+      // No menu
+      createMainMenu(app, mainWindow, glovars, "OFF" );
 
-    // }
+    }
+
+    if( constatus === "ERROR"){
+
+      mainWindow.webContents.send('main-update-time', 'Cannot connect to the server <span style="color: red;"><b>(OFFLINE)</b></span>');
+
+    } else {
+
+      //console.log(constatus.data.datetime);
+      const currentTime = new Date( constatus.data.datetime ).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true });
+      mainWindow.webContents.send('main-update-time', `${currentTime} <span style="color: green;"><b>(ONLINE)</b></span>` );
+
+    }
     
-    const currentTime = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true });
-    mainWindow.webContents.send('main-update-time', `${currentTime} <span style="color: green;"><b>(ONLINE)</b></span>` );
+    // const currentTime = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true });
+    // mainWindow.webContents.send('main-update-time', `${currentTime} <span style="color: green;"><b>(ONLINE)</b></span>` );
 
+    lastConnStatus = constatus;
 
   }, 10000);
 
@@ -533,10 +558,16 @@ ipcMain.on('gather-env-info', async function (event) {
 
   // Detect if the Server is running or not.
   let isServerUp = 'YES';
-  const constatus = await checkConnectivity();
-  if( constatus === 'ERROR'){
-    isServerUp = 'NO';
+  const enforce_server_up_detection = process.env.ENFORCE_SERVER_UP_DETECTION || "YES";
+  if( enforce_server_up_detection == "YES"){
+
+    const constatus = await checkConnectivity();
+    if( constatus === 'ERROR'){
+      isServerUp = 'NO';
+    }
+
   }
+
 
   let macid = "";
   // Get the unique machine ID  JMD 01/11/2024
