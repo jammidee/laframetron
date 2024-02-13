@@ -10,6 +10,10 @@ Framework Design: 			Jammi Dee
 Developed / Programmed by : Joel Margate Damaso aka Jammi Dee
 Tested / QA by:				Jammi Dee
 
+02/13/2024  - Added boot process that detects if the server is up or down
+            - Modified the alert of there is no MAC Address of the server is down.
+            - 
+
 02/10/2024  - Improve the PDFMake example. Remove the menu in the report
             - Make the report auto load instead of clicking a button.
             - Added sample full report for development reference.

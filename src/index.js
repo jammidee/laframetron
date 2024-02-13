@@ -516,6 +516,28 @@ ipcMain.on('gather-env-info', async function (event) {
       console.error(`Error executing VBScript: ${error.message}`);
   }
 
+  // Get the server presense JMD 02/13/2024
+  async function checkConnectivity() {
+    try {
+
+      await axios.get(`${process.env.APP_PROTOCOL}://${process.env.APP_HOST}:${process.env.APP_PORT}/api/v1/security/`);
+      return 'OK';
+
+    } catch (error) {
+
+      //throw new Error('No connectivity');
+      return 'ERROR';
+
+    }
+  }
+
+  // Detect if the Server is running or not.
+  let isServerUp = 'YES';
+  const constatus = await checkConnectivity();
+  if( constatus === 'ERROR'){
+    isServerUp = 'NO';
+  }
+
   let macid = "";
   // Get the unique machine ID  JMD 01/11/2024
   machineId.machineId().then(id => {
@@ -524,7 +546,7 @@ ipcMain.on('gather-env-info', async function (event) {
     console.log('Machine ID:', id);
 
     //Send the gathered info
-    mainWindow.webContents.send('receive-env-info', {deviceID, driveCSerial, macAddress, macid, needUpdate, currVersion, currChanges, appUpdatePath });
+    mainWindow.webContents.send('receive-env-info', {deviceID, driveCSerial, macAddress, macid, needUpdate, currVersion, currChanges, appUpdatePath, isServerUp });
 
   });
 

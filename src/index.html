@@ -275,7 +275,7 @@
       //Detected Environment Information JMD 02/02/2024
       ipcRenderer.on('receive-env-info', (event, info) => {
 
-        const { deviceID, driveCSerial, macAddress, macid, needUpdate, currVersion, currChanges, appUpdatePath } = info;
+        const { deviceID, driveCSerial, macAddress, macid, needUpdate, currVersion, currChanges, appUpdatePath, isServerUp } = info;
 
         document.getElementById("wsid").innerHTML     = `💖 </i>DEVICE ID: ${deviceID}`;
         document.getElementById("hddid").innerHTML    = `🔥 </i>STORAGE SN: ${driveCSerial}`;
@@ -300,28 +300,68 @@
         // If not networked Exit, user can ignore
         // this message and proceed with the application.
         //================================================
-        if(macAddress === 'MAC Address not found.'){
+        if( macAddress === 'MAC Address not found.' ){
           Swal.fire({
-            title: 'Alert',
-            text: 'This workstation in not networked. Exiting application!',
-            icon: 'warning', // Change 'info' to 'warning' for a warning icon
-            showCancelButton: false,
-            confirmButtonText: 'OK',
-          }).then((result) => {
-            if (result.isConfirmed) {
+              title: 'Alert',
+              text: 'This workstation in not networked. Exiting application!',
+              icon: 'warning', // Change 'info' to 'warning' for a warning icon
+              showCancelButton: false,
+              confirmButtonText: 'OK',
+            }).then((result) => {
+              if (result.isConfirmed) {
 
-              // Quit the main application
-              ipcRenderer.send('quit-to-index');
+                ipcRenderer.send('quit-to-index');
 
-            }
+              }
           });
 
         } else {
 
-          // Initiate the login sequence.
-          ipcRenderer.send('request-to-login');
+          // Exit if the server is down
+          if( isServerUp === 'NO' ){
+            Swal.fire({
+              title: 'Alert',
+              text: 'The Server is down. Terminating the app...',
+              icon: 'warning', // Change 'info' to 'warning' for a warning icon
+              showCancelButton: false,
+              confirmButtonText: 'OK',
+            }).then((result) => {
+              if (result.isConfirmed) {
+
+                ipcRenderer.send('quit-to-index');
+
+              }
+            });
+          } else {
+
+            ipcRenderer.send('request-to-login');
+
+          }
 
         }
+
+        // if(macAddress === 'MAC Address not found.'){
+        //   Swal.fire({
+        //     title: 'Alert',
+        //     text: 'This workstation in not networked. Exiting application!',
+        //     icon: 'warning', // Change 'info' to 'warning' for a warning icon
+        //     showCancelButton: false,
+        //     confirmButtonText: 'OK',
+        //   }).then((result) => {
+        //     if (result.isConfirmed) {
+
+        //       // Quit the main application
+        //       ipcRenderer.send('quit-to-index');
+
+        //     }
+        //   });
+
+        // } else {
+
+        //   // Initiate the login sequence.
+        //   ipcRenderer.send('request-to-login');
+
+        // }
 
       });
 
