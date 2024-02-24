@@ -10,11 +10,15 @@ Framework Design: 			Jammi Dee
 Developed / Programmed by : Joel Margate Damaso aka Jammi Dee
 Tested / QA by:				Jammi Dee
 
+02/24/2024  - Added script to copy the vbscript out of the asar file.
+            - 
+
 02/13/2024  - Added boot process that detects if the server is up or down
             - Modified the alert of there is no MAC Address of the server is down.
             - Make the setting on checking available in the .env ENFORCE_SERVER_UP_DETECTION
             - Create a script to detect to hide and show main menu depending if there is a connection to the server or not.
-            
+            - 
+
 
 02/10/2024  - Improve the PDFMake example. Remove the menu in the report
             - Make the report auto load instead of clicking a button.

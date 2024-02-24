@@ -468,6 +468,8 @@ ipcMain.on('gather-env-info', async function (event) {
 
   // (1) Execute the VBScript JMD 01/11/2024
   const wintoolPath = path.join(__dirname, './tools/winscripts');
+  const wincwd = path.join(process.cwd(), '/tools/winscripts');
+
   // exec(`cscript.exe //nologo ${wintoolPath}/getDeviceID.vbs`, (error, stdout, stderr) => {
   //   if (error) {
   //     console.error(`Error executing VBScript: ${error.message}`);
@@ -483,9 +485,44 @@ ipcMain.on('gather-env-info', async function (event) {
   //   mainWindow.webContents.send('machine-id', deviceID);
 
   // });
+
+  // Function to copy file (synchronously)
+  function copyFileSync(source, destination) {
+    try {
+        // Read the source file
+        const data = fs.readFileSync(source);
+        // Write to the destination file
+        fs.writeFileSync(destination, data);
+        console.log(`File ${source} copied to ${destination} successfully.`);
+    } catch (err) {
+        // Handle error
+        console.error('Error copying file:', err);
+    };
+
+  };
+
+  // Function to create directory if it doesn't exist
+  function createDirectoryIfNotExists(directory) {
+    if (!fs.existsSync(directory)) {
+        try {
+            fs.mkdirSync(directory, { recursive: true });
+            console.log(`Directory ${directory} created.`);
+        } catch (err) {
+            console.error('Error creating directory:', err);
+        }
+    }
+  }
+  createDirectoryIfNotExists(wincwd);
+
+  // Copy the file
+  let sourceFile      = path.join(wintoolPath, 'getDeviceID.vbs');
+  let destinationFile = path.join(wincwd, 'getDeviceID.vbs');
+
+  copyFileSync(sourceFile, destinationFile);
+
   let deviceID          = "";
   try {
-    const stdout        = execSync(`cscript.exe //nologo ${wintoolPath}/getDeviceID.vbs`);
+    const stdout        = execSync(`cscript.exe //nologo ${wincwd}/getDeviceID.vbs`);
     deviceID            = stdout.toString().trim();
     glovars.deviceid    = deviceID;
     console.log('Device ID:', deviceID);
@@ -507,9 +544,16 @@ ipcMain.on('gather-env-info', async function (event) {
   //   console.log('Drive C: serial number', driveCSerial);
 
   // });
+
+  // Copy the file
+  sourceFile      = path.join(wintoolPath, 'getDriveSerial.vbs');
+  destinationFile = path.join(wincwd, 'getDriveSerial.vbs');
+
+  copyFileSync(sourceFile, destinationFile);
+
   let driveCSerial        = "";
   try {
-    const stdout          = execSync(`cscript.exe //nologo ${wintoolPath}/getDriveSerial.vbs`);
+    const stdout          = execSync(`cscript.exe //nologo ${wincwd}/getDriveSerial.vbs`);
     driveCSerial          = stdout.toString().trim();
     glovars.driveserial   = driveCSerial;
     console.log('Drive C: serial number', driveCSerial);
@@ -529,6 +573,13 @@ ipcMain.on('gather-env-info', async function (event) {
   //   console.log('Mac Address:', macAddress);
 
   // });
+
+  // Copy the file
+  sourceFile      = path.join(wintoolPath, 'getMacAddress.vbs');
+  destinationFile = path.join(wincwd, 'getMacAddress.vbs');
+
+  copyFileSync(sourceFile, destinationFile);
+
   let macAddress          = "";
   try {
     const stdout          = execSync(`cscript.exe //nologo ${wintoolPath}/getMacAddress.vbs`);
