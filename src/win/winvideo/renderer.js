@@ -275,6 +275,81 @@ document.addEventListener('DOMContentLoaded', function () {
     captureButton.addEventListener('click', captureImage);
     resetButton.addEventListener('click', resetCamera);
     saveButton.addEventListener('click', saveImage);
+    timestampCheckbox.addEventListener('change', toggleTimestamp);
+    
+
+    // Function to check if zoom is supported
+    function isZoomSupported(track) {
+      return track.getCapabilities && track.getCapabilities().zoom;
+    };
+
+    // Function to set zoom level
+    function setZoomLevel(track, zoomLevel) {
+      const capabilities = track.getCapabilities();
+      const minZoom = capabilities.zoom.min;
+      const maxZoom = capabilities.zoom.max;
+
+      if (zoomLevel < minZoom || zoomLevel > maxZoom) {
+        console.error(`Zoom level ${zoomLevel} is out of supported range [${minZoom}, ${maxZoom}]`);
+        return;
+      };
+
+      const constraints = {
+        advanced: [{ zoom: zoomLevel }]
+      };
+
+      track.applyConstraints(constraints)
+      .then(() => {
+        console.log(`Zoom level set to ${zoomLevel}`);
+      })
+      .catch((error) => {
+        console.error('Error setting zoom level:', error);
+      });
+    };
+
+    
+    // Check if zoom is supported
+    const minZoom     = parseInt(process.env.CAM_MIN_ZOOM_VALUE);
+    const maxZoom     = parseInt(process.env.CAM_MAX_ZOOM_VALUE);
+    const stepZoom    = parseInt(process.env.CAM_ZOOM_STEP);
+    const initvalue   = parseInt(process.env.CAM_INIT_VALUE);
+
+    let currZoom = initvalue;
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices.getUserMedia({ video: true })
+      .then((stream) => {
+          const videoTrack = stream.getVideoTracks()[0];
+
+          if (isZoomSupported(videoTrack)) {
+
+            setZoomLevel(videoTrack, currZoom );
+
+            document.getElementById('zoomInButton').addEventListener('click', () => {
+                if(currZoom < maxZoom ){
+                  currZoom = currZoom + stepZoom;
+                  setZoomLevel(videoTrack, currZoom ); 
+                };
+                
+            });
+
+            document.getElementById('zoomOutButton').addEventListener('click', () => {
+              if(currZoom > minZoom ){
+                currZoom = currZoom - stepZoom;
+                setZoomLevel(videoTrack, currZoom ); 
+              };
+            });
+
+          } else {
+
+            console.warn('Zoom is not supported by the camera.');
+
+          }
+      })
+      .catch((error) => {
+        console.log('Error accessing camera:', error.name, error.message);
+      });
+    };
+
     
   });
   

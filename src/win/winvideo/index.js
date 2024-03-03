@@ -87,6 +87,9 @@ function createVideoWindow( mainWindow, glovars ) {
 
   });
 
+  newWindow.webContents.openDevTools();
+
+
 }
 
 module.exports = { createVideoWindow };

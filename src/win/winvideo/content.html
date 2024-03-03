@@ -41,6 +41,8 @@
       #saveButton,
       #captureButton,
       #resetButton,
+      #zoomInButton,
+      #zoomOutButton,
       #toggleTimestampButton {
         padding: 10px;
         background-color: #61dafb;
@@ -74,11 +76,13 @@
     <img id="capturedImage">
     <div id="cameraControls">
       <select id="cameraDropdown"></select>
-      <button id="captureButton" onclick="captureImage()">Capture</button>
-      <button id="resetButton" onclick="resetCamera()">Reset</button>
-      <button id="saveButton" onclick="saveImage()">Save Image</button>
+      <button id="captureButton">Capture</button>
+      <button id="resetButton">Reset</button>
+      <button id="saveButton">Save Image</button>
+      <button id="zoomInButton">Zoom In</button>
+      <button id="zoomOutButton">Zoom Out</button>
       <div id="timestampOption">
-        <input type="checkbox" id="timestampCheckbox" onchange="toggleTimestamp()">
+        <input type="checkbox" id="timestampCheckbox">
         <label for="timestampCheckbox">Show Timestamp</label>
       </div>
     </div>
