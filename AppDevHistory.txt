@@ -10,6 +10,13 @@ Framework Design: 			Jammi Dee
 Developed / Programmed by : Joel Margate Damaso aka Jammi Dee
 Tested / QA by:				Jammi Dee
 
+03/06/2024  - Improve the video window by adding sweet alert if zoom is not supported
+            - Improve the audit logic adding Swal
+            - Added xml2js library in the system
+            - Convert auditdata.xml to json and write it to file.
+            - Added script to bring the vbs out of asar by copying it outside /src folder
+            - 
+
 03/03/2024  - Added zoom control on the camera library.
 02/24/2024  - Added script to copy the vbscript out of the asar file.
             - 

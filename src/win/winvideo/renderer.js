@@ -24,6 +24,8 @@
 
 document.addEventListener('DOMContentLoaded', function () {
 
+    const Swal                  = require('sweetalert2');
+
     const videoElement          = document.getElementById('camera');
     const capturedImageElement  = document.getElementById('capturedImage');
     const cameraDropdown        = document.getElementById('cameraDropdown');
@@ -341,7 +343,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
           } else {
 
-            console.warn('Zoom is not supported by the camera.');
+            Swal.fire({
+              icon: 'warning',
+              title: 'Warning',
+              text: 'Camera does not support Zoom. Please replace camera!'
+            });
+
+            //console.warn('Zoom is not supported by the camera.');
 
           }
       })

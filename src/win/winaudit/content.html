@@ -52,13 +52,13 @@
 
       ipcRenderer.on('resp-audit-device', (event, data) => {
 
-        if(data==='OK'){
+        if(data.result ==='OK'){
 
           Swal.close(); // Close the loading pop-up
           Swal.fire({
               icon: 'success',
               title: 'Audit Successful',
-              text: `Device ID: ${data.deviceID}`
+              text: `Device ID: ${data.deviceid}. ${data.message}`
           });
 
         } else {

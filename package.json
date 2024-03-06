@@ -1,7 +1,7 @@
 {
   "name": "lakubotron",
   "productName": "lakubotron",
-  "version": "1.4.135",
+  "version": "1.5.137",
   "description": "Lalulla ElecronJS Boilerplate",
   "main": "src/index.js",
   "scripts": {
@@ -43,7 +43,8 @@
     "sqlite3": "^5.1.7",
     "sweetalert2": "^11.10.2",
     "uuid": "^9.0.1",
-    "webcamjs": "^1.0.26"
+    "webcamjs": "^1.0.26",
+    "xml2js": "^0.6.2"
   },
   "devDependencies": {
     "@electron-forge/cli": "^7.2.0",

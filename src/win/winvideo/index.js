@@ -87,8 +87,7 @@ function createVideoWindow( mainWindow, glovars ) {
 
   });
 
-  newWindow.webContents.openDevTools();
-
+  //newWindow.webContents.openDevTools();
 
 }
 

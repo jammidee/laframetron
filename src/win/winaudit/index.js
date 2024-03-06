@@ -26,10 +26,12 @@
 require('dotenv').config();
 
 const { app, BrowserWindow, Menu, ipcMain } = require('electron');
-const path = require('path');
 const { versionMdbTools, version, sql } = require('@el3um4s/mdbtools');
 const { exec } = require('child_process');
-const Swal = require('sweetalert2');
+
+const path    = require('path');
+const fs      = require('fs');
+const xml2js  = require('xml2js');
 
 function createAuditWindow( mainWindow, glovars ) {
   const newWindow = new BrowserWindow({
@@ -74,21 +76,89 @@ function createAuditWindow( mainWindow, glovars ) {
 
   ipcMain.on('get-audit-device', async (event, query) => {
 
-    console.error(`Executing VBScript...`);
-    // Execute the VBScript JMD 01/29/2024
     const wintoolPath = path.join(__dirname, '../../tools/winscripts');
-    exec(`cscript.exe //nologo ${wintoolPath}/auditWindows.vbs create_file=y create_filename="D:\\auditdata.xml"`, (error, stdout, stderr) => {
+    const wincwd = path.join(process.cwd(), '/tools/winscripts');
+  
+    // Function to copy file (synchronously)
+    function copyFileSync(source, destination) {
+      try {
+          // Read the source file
+          const data = fs.readFileSync(source);
+          // Write to the destination file
+          fs.writeFileSync(destination, data);
+          console.log(`File ${source} copied to ${destination} successfully.`);
+      } catch (err) {
+          // Handle error
+          console.error('Error copying file:', err);
+      };
+  
+    };
+  
+    // Function to create directory if it doesn't exist
+    function createDirectoryIfNotExists(directory) {
+      if (!fs.existsSync(directory)) {
+          try {
+              fs.mkdirSync(directory, { recursive: true });
+              console.log(`Directory ${directory} created.`);
+          } catch (err) {
+              console.error('Error creating directory:', err);
+          }
+      }
+    }
+    createDirectoryIfNotExists(wincwd);
+  
+    // Copy the file
+    let sourceFile      = path.join(wintoolPath, 'auditWindows.vbs');
+    let destinationFile = path.join(wincwd, 'auditWindows.vbs');
+  
+    copyFileSync(sourceFile, destinationFile);
+
+    console.log(`Executing VBScript...`);
+
+    // Execute the VBScript JMD 01/29/2024
+    exec(`cscript.exe //nologo ${wincwd}/auditWindows.vbs create_file=y create_filename="D:\\auditdata.xml"`, (error, stdout, stderr) => {
 
       console.error(`Executing VBScript done...`);
 
+      const xmlFilePath       = 'D:\\auditdata.xml';
+      const jsonFilePath      = 'D:\\auditdata.json';
+
+      // Read the XML file
+      fs.readFile(xmlFilePath, 'utf-8', (err, data) => {
+          if (err) {
+              console.error('Error reading file:', err);
+              return;
+          }
+
+          // Convert XML to JSON
+          xml2js.parseString(data, (parseErr, result) => {
+              if (parseErr) {
+                  console.error('Error parsing XML:', parseErr);
+                  return;
+              }
+
+              // Convert JSON object to string
+              const jsonData = JSON.stringify(result, null, 2);
+
+              // Write JSON data to file
+              fs.writeFile(jsonFilePath, jsonData, 'utf-8', (writeErr) => {
+                  if (writeErr) {
+                      console.error('Error writing to file:', writeErr);
+                      return;
+                  }
+                  console.log('JSON data saved to:', jsonFilePath);
+              });
+          });
+      });
+
       if (error) {
         console.error(`Error executing VBScript: ${error.message}`);
-        newWindow.webContents.send('resp-audit-device', "FAILED");
+        newWindow.webContents.send('resp-audit-device', { result: "FAILED", message: "Failed executing audit", deviceid: 'Unknown' } );
         return;
       }
 
       // // Pass the device ID to the renderer process if needed
-      newWindow.webContents.send('resp-audit-device', "OK");
+      newWindow.webContents.send('resp-audit-device', { result: "OK", message: "Successfully created audit file.", deviceid: 'Unknown' } );
 
     });
 
@@ -116,6 +186,9 @@ function createAuditWindow( mainWindow, glovars ) {
     //event.preventDefault();
 
   });
+
+  
+  //newWindow.webContents.openDevTools();
 
 }
 
