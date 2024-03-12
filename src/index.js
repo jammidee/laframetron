@@ -80,8 +80,8 @@ var glovars = {
 // Function to copy the example .env file if it doesn't exist
 //=============================================================
 const initializeEnvFile = () => {
-  const envFilePath = path.join(__dirname, './.env');
-  const exampleEnvFilePath = path.join(__dirname, 'resources', 'app', 'src',  'assets', 'env.sample');
+  const envFilePath = path.join(process.cwd(), './.env');
+  const exampleEnvFilePath = path.join(__dirname,'../env.sample');
 
   if (!fs.existsSync(envFilePath)) {
     const exampleEnvContent = fs.readFileSync(exampleEnvFilePath, 'utf-8');
