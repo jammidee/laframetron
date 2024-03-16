@@ -307,62 +307,68 @@ app.whenReady().then(() => {
   createTray();
 
   // Set up an interval to send IPC messages every second
-  setInterval( async () => {
+  const appServerCheck          = process.env.APP_SERVER_CHECK || 'YES';
+  const appServerCheckInterval  = process.env.APP_SERVER_CHECK_INTERVAL || 10000;
 
-    //Get the server time
-    async function getServerDateTime( token ) {
-      try {
-  
-        const headers = {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        };
-        const response = await axios.get(`${process.env.APP_PROTOCOL}://${process.env.APP_HOST}:${process.env.APP_PORT}/api/v1/security/datetime`,{headers});
-        return response ;
-  
-      } catch (error) {
-  
-        console.log(error);
-        //throw new Error('No connectivity');
-        return 'ERROR';
-  
-      }
-    }
+  if( appServerCheck === 'YES'){
+    setInterval( async () => {
 
-    const createMainMenu  = require('./modmenu');
-    const constatus       = await getServerDateTime(glovars.token);
-
-    if( lastConnStatus == "ERROR" && constatus !== "ERROR"){
-
-      // have menu
-      createMainMenu(app, mainWindow, glovars, "ON" );
-
-    }
-    if( lastConnStatus !== "ERROR" && constatus == "ERROR"){
-
-      // No menu
-      createMainMenu(app, mainWindow, glovars, "OFF" );
-
-    }
-
-    if( constatus === "ERROR"){
-
-      mainWindow.webContents.send('main-update-time', 'Cannot connect to the server <span style="color: red;"><b>(OFFLINE)</b></span>');
-
-    } else {
-
-      //console.log(constatus.data.datetime);
-      const currentTime = new Date( constatus.data.datetime ).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true });
-      mainWindow.webContents.send('main-update-time', `${currentTime} <span style="color: green;"><b>(ONLINE)</b></span>` );
-
-    }
+      //Get the server time
+      async function getServerDateTime( token ) {
+        try {
     
-    // const currentTime = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true });
-    // mainWindow.webContents.send('main-update-time', `${currentTime} <span style="color: green;"><b>(ONLINE)</b></span>` );
+          const headers = {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          };
+          const response = await axios.get(`${process.env.APP_PROTOCOL}://${process.env.APP_HOST}:${process.env.APP_PORT}/api/v1/security/datetime`,{headers});
+          return response ;
+    
+        } catch (error) {
+    
+          console.log(error);
+          //throw new Error('No connectivity');
+          return 'ERROR';
+    
+        }
+      }
 
-    lastConnStatus = constatus;
+      const createMainMenu  = require('./modmenu');
+      const constatus       = await getServerDateTime(glovars.token);
 
-  }, 10000);
+      if( lastConnStatus == "ERROR" && constatus !== "ERROR"){
+
+        // have menu
+        createMainMenu(app, mainWindow, glovars, "ON" );
+
+      }
+      if( lastConnStatus !== "ERROR" && constatus == "ERROR"){
+
+        // No menu
+        createMainMenu(app, mainWindow, glovars, "OFF" );
+
+      }
+
+      if( constatus === "ERROR"){
+
+        mainWindow.webContents.send('main-update-time', 'Cannot connect to the server <span style="color: red;"><b>(OFFLINE)</b></span>');
+
+      } else {
+
+        //console.log(constatus.data.datetime);
+        const currentTime = new Date( constatus.data.datetime ).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true });
+        mainWindow.webContents.send('main-update-time', `${currentTime} <span style="color: green;"><b>(ONLINE)</b></span>` );
+
+      }
+      
+      // const currentTime = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true });
+      // mainWindow.webContents.send('main-update-time', `${currentTime} <span style="color: green;"><b>(ONLINE)</b></span>` );
+
+      lastConnStatus = constatus;
+
+    }, appServerCheckInterval );
+
+  }; // if( appServerCheck === 'YES')
 
 });
 

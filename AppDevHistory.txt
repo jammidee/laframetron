@@ -10,6 +10,8 @@ Framework Design: 			Jammi Dee
 Developed / Programmed by : Joel Margate Damaso aka Jammi Dee
 Tested / QA by:				Jammi Dee
 
+03/16/2024  - Added switch to control the checking of the server
+
 03/12/2024  - fixed the issue in the initializeEnvFile
             - 
 
